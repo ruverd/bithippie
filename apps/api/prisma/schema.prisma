@@ -1,0 +1,187 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ValueType {
+  NUMERIC
+  CATEGORICAL
+  TEXT
+}
+
+enum ProjectStatus {
+  PLANNING
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum ExperimentStatus {
+  PLANNING
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum ResearcherRole {
+  PRINCIPAL_INVESTIGATOR
+  POSTDOC
+  GRADUATE_STUDENT
+  LAB_TECHNICIAN
+}
+
+enum ProjectRole {
+  LEAD
+  COLLABORATOR
+  CONTRIBUTOR
+}
+
+model Researcher {
+  id         String         @id @default(cuid())
+  name       String
+  email      String         @unique
+  phone      String?
+  globalRole ResearcherRole @map("global_role")
+  createdAt  DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt  DateTime       @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  projects     ProjectResearcher[]
+  measurements Measurement[]
+
+  @@map("researchers")
+}
+
+model Project {
+  id          String         @id @default(cuid())
+  title       String
+  description String?
+  status      ProjectStatus?
+  createdAt   DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime       @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  researchers ProjectResearcher[]
+  experiments Experiment[]
+
+  @@map("projects")
+}
+
+model ProjectResearcher {
+  projectId    String      @map("project_id")
+  researcherId String      @map("researcher_id")
+  projectRole  ProjectRole @map("project_role")
+  joinedAt     DateTime    @default(now()) @map("joined_at") @db.Timestamptz(6)
+
+  project    Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  researcher Researcher @relation(fields: [researcherId], references: [id], onDelete: Cascade)
+
+  @@id([projectId, researcherId])
+  @@index([researcherId])
+  @@map("project_researchers")
+}
+
+model Experiment {
+  id                   String            @id @default(cuid())
+  title                String
+  hypothesis           String?
+  status               ExperimentStatus?
+  startDate            DateTime?         @map("start_date") @db.Timestamptz(6)
+  endDate              DateTime?         @map("end_date") @db.Timestamptz(6)
+  projectId            String            @map("project_id")
+  previousExperimentId String?           @map("previous_experiment_id")
+  createdAt            DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt            DateTime          @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  project            Project            @relation(fields: [projectId], references: [id], onDelete: Restrict)
+  previousExperiment Experiment?        @relation("ExperimentFollowUp", fields: [previousExperimentId], references: [id], onDelete: SetNull)
+  followUps          Experiment[]       @relation("ExperimentFollowUp")
+  samples            ExperimentSample[]
+  measurements       Measurement[]
+
+  @@index([projectId])
+  @@index([previousExperimentId])
+  @@map("experiments")
+}
+
+model Sample {
+  id              String    @id @default(cuid())
+  code            String    @unique
+  specimenType    String    @map("specimen_type")
+  collectedAt     DateTime? @map("collected_at") @db.Timestamptz(6)
+  storageLocation String?   @map("storage_location")
+  createdAt       DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  experiments  ExperimentSample[]
+  measurements MeasurementSample[]
+
+  @@map("samples")
+}
+
+model ExperimentSample {
+  experimentId String   @map("experiment_id")
+  sampleId     String   @map("sample_id")
+  addedAt      DateTime @default(now()) @map("added_at") @db.Timestamptz(6)
+
+  experiment Experiment @relation(fields: [experimentId], references: [id], onDelete: Cascade)
+  sample     Sample     @relation(fields: [sampleId], references: [id], onDelete: Cascade)
+
+  @@id([experimentId, sampleId])
+  @@index([sampleId])
+  @@map("experiment_samples")
+}
+
+model MeasurementDefinition {
+  id                String    @id @default(cuid())
+  name              String    @unique
+  description       String?
+  valueType         ValueType @map("value_type")
+  defaultUnit       String?   @map("default_unit")
+  allowedCategories String[]  @map("allowed_categories")
+  createdAt         DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt         DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  measurements Measurement[]
+
+  @@map("measurement_definitions")
+}
+
+model Measurement {
+  id                      String   @id @default(cuid())
+  experimentId            String   @map("experiment_id")
+  measurementDefinitionId String   @map("measurement_definition_id")
+  recordedById            String?  @map("recorded_by_id")
+  numericValue            Decimal? @map("numeric_value") @db.Decimal(20, 6)
+  unit                    String?
+  categoricalValue        String?  @map("categorical_value")
+  textValue               String?  @map("text_value")
+  notes                   String?
+  recordedAt              DateTime @default(now()) @map("recorded_at") @db.Timestamptz(6)
+  createdAt               DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt               DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  experiment Experiment            @relation(fields: [experimentId], references: [id], onDelete: Cascade)
+  definition MeasurementDefinition @relation(fields: [measurementDefinitionId], references: [id], onDelete: Restrict)
+  recordedBy Researcher?           @relation(fields: [recordedById], references: [id], onDelete: SetNull)
+  samples    MeasurementSample[]
+
+  @@index([experimentId])
+  @@index([measurementDefinitionId])
+  @@index([recordedById])
+  @@map("measurements")
+}
+
+model MeasurementSample {
+  measurementId String @map("measurement_id")
+  sampleId      String @map("sample_id")
+
+  measurement Measurement @relation(fields: [measurementId], references: [id], onDelete: Cascade)
+  sample      Sample      @relation(fields: [sampleId], references: [id], onDelete: Cascade)
+
+  @@id([measurementId, sampleId])
+  @@index([sampleId])
+  @@map("measurement_samples")
+}
