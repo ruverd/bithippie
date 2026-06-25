@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { PrismaClient, ResearcherRole, ValueType } from "@prisma/client";
+import { PrismaClient, ValueType } from "@prisma/client";
 
 const prisma = new PrismaClient();
 

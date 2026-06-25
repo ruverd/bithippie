@@ -142,16 +142,15 @@ export async function seed(prisma: PrismaClient): Promise<void> {
 
 if (import.meta.main) {
   const prisma = new PrismaClient();
-  seed(prisma)
-    .then(async () => {
-      await prisma.$disconnect();
-      // eslint-disable-next-line no-console
-      console.log("Seed complete.");
-    })
-    .catch(async (e) => {
-      // eslint-disable-next-line no-console
-      console.error(e);
-      await prisma.$disconnect();
-      process.exit(1);
-    });
+  try {
+    await seed(prisma);
+    // eslint-disable-next-line no-console
+    console.log("Seed complete.");
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error(e);
+    process.exit(1);
+  } finally {
+    await prisma.$disconnect();
+  }
 }
