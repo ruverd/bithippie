@@ -1,0 +1,11 @@
+{
+  "name": "lab-experiment-tracking",
+  "private": true,
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "db:migrate": "cd apps/api && bun run db:migrate:dev",
+    "db:seed": "cd apps/api && bun run db:seed",
+    "db:reset": "cd apps/api && bun run db:reset",
+    "test": "cd apps/api && bun run test"
+  }
+}

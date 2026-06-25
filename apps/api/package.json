@@ -1,0 +1,26 @@
+{
+  "name": "@lab/api",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "db:migrate:dev": "prisma migrate dev",
+    "db:migrate": "prisma migrate deploy",
+    "db:seed": "prisma db seed",
+    "db:reset": "prisma migrate reset --force",
+    "generate": "prisma generate",
+    "postinstall": "prisma generate || true",
+    "test": "prisma migrate reset --force --skip-seed && vitest run"
+  },
+  "prisma": {
+    "seed": "bun run prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.0.0"
+  },
+  "devDependencies": {
+    "prisma": "^6.0.0",
+    "vitest": "^2.1.0",
+    "typescript": "^5.6.0",
+    "bun-types": "^1.1.0"
+  }
+}

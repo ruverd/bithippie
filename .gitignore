@@ -1,1 +1,9 @@
 .superpowers/
+node_modules/
+dist/
+*.log
+.env
+apps/*/.env
+!.env.example
+.DS_Store
+apps/api/prisma/.prisma
