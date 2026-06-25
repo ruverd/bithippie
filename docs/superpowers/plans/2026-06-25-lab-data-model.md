@@ -145,7 +145,9 @@ Expected: confirms `@lab/api` is part of the workspace.
 - [ ] **Step 8: Commit**
 
 ```bash
-git add package.json tsconfig.base.json .gitignore .env.example apps/api/package.json apps/api/tsconfig.json bun.lockb
+# Stage the bun lockfile under whichever name your Bun version produced (bun.lock or bun.lockb).
+git add package.json tsconfig.base.json .gitignore .env.example apps/api/package.json apps/api/tsconfig.json
+git add bun.lock bun.lockb 2>/dev/null || true
 git commit -m "chore: scaffold bun-workspaces monorepo with apps/api
 
 Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
@@ -807,7 +809,8 @@ FROM oven/bun:1
 WORKDIR /app
 
 # Install workspace deps (root + apps/api) using the lockfile.
-COPY package.json bun.lockb ./
+# bun.lock* matches whichever lockfile name your Bun version produced.
+COPY package.json bun.lock* ./
 COPY apps/api/package.json apps/api/package.json
 RUN bun install --frozen-lockfile
 
