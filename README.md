@@ -134,7 +134,7 @@ surface-level now; the answers should drive the next design iteration.
 4. Do samples need **chain-of-custody** records?
 5. Should storage location be **structured** (building, room, freezer, rack) instead of free text?
 6. Do project or experiment statuses need **approval workflows** (e.g. a transition from PLANNING to ACTIVE requires a sign-off)?
-7. Are researcher roles global, project-specific, or both? (Assumed: both — modeled separately.)
+7. Should a researcher's project role override or merely coexist with their global lab role when we later add permissions? (We currently model both independently.)
 8. Should measurements support **file attachments** (images, instrument output files)?
 9. Should categorical options be **reusable** across definitions, i.e. a shared `Category` table rather than per-definition `allowedCategories` arrays?
 10. Do measurements need **audit history or versioning** (who changed a value, when, and from what)?
