@@ -12,8 +12,10 @@ Requirements: Docker.
 docker compose up --build
 ```
 
-This starts PostgreSQL, applies all migrations, and loads the seed data. After
-the `migrate` service prints `Seed complete.` and exits, the database is ready.
+This starts PostgreSQL, applies all migrations, and loads the seed data. The
+database is ready once you see `Seed complete.` in the output; the `db` service
+continues running in the foreground (press Ctrl-C to stop, or pass `-d` to
+detach).
 
 Connect with: `postgresql://lab:lab@localhost:5432/lab`
 
@@ -30,6 +32,7 @@ With a Postgres reachable at `DATABASE_URL` (e.g. `docker compose up db`):
 
 ```bash
 bun install
+cp apps/api/.env.example apps/api/.env   # populate DATABASE_URL (skip if already set)
 cd apps/api && bun run test
 ```
 
@@ -57,6 +60,11 @@ defensible; different answers would shift the schema.
 7. **No authentication or authorization** — out of scope per the brief.
 8. **No sample inventory** (quantity, depletion, chain of custody, storage
    temperature, audit history). See the tradeoffs section for rationale.
+9. `Project.status` and `Experiment.status` are **nullable with no default**:
+   a record may be created or imported before its lifecycle state is known, and
+   we model the lifecycle without forcing an initial state or an approval
+   workflow. A NOT NULL default (e.g. `PLANNING`) would be incorrect for
+   records whose starting state is genuinely unknown.
 
 ---
 

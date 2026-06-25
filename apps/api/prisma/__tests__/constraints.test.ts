@@ -41,7 +41,7 @@ describe("measurements_exactly_one_value CHECK", () => {
       prisma.measurement.create({
         data: { experimentId: EXPERIMENT_ID, measurementDefinitionId: DEFINITION_ID, numericValue: 1, textValue: "x" },
       }),
-    ).rejects.toThrow();
+    ).rejects.toThrow(/measurements_exactly_one_value/);
   });
 
   it("rejects zero value columns", async () => {
@@ -49,6 +49,6 @@ describe("measurements_exactly_one_value CHECK", () => {
       prisma.measurement.create({
         data: { experimentId: EXPERIMENT_ID, measurementDefinitionId: DEFINITION_ID },
       }),
-    ).rejects.toThrow();
+    ).rejects.toThrow(/measurements_exactly_one_value/);
   });
 });
