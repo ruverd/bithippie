@@ -1,8 +1,6 @@
 import { PrismaClient, ProjectRole, ProjectStatus, ResearcherRole, ValueType } from "@prisma/client";
 
-const prisma = new PrismaClient();
-
-export async function seed(): Promise<void> {
+export async function seed(prisma: PrismaClient): Promise<void> {
   // --- Researchers ---
   const alice = await prisma.researcher.upsert({
     where: { id: "seed-researcher-alice" },
@@ -143,7 +141,8 @@ export async function seed(): Promise<void> {
 }
 
 if (import.meta.main) {
-  seed()
+  const prisma = new PrismaClient();
+  seed(prisma)
     .then(async () => {
       await prisma.$disconnect();
       // eslint-disable-next-line no-console

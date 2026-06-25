@@ -5,7 +5,7 @@ import { seed } from "../seed";
 const prisma = new PrismaClient();
 
 beforeAll(async () => {
-  await seed();
+  await seed(prisma);
 });
 
 afterAll(async () => {
@@ -34,9 +34,9 @@ describe("seed data", () => {
   });
 
   it("has numeric, categorical and text measurements", async () => {
-    const numeric = await prisma.measurement.findFirst({ where: { numericValue: { not: null } } });
-    const categorical = await prisma.measurement.findFirst({ where: { categoricalValue: { not: null } } });
-    const text = await prisma.measurement.findFirst({ where: { textValue: { not: null } } });
+    const numeric = await prisma.measurement.findFirst({ where: { id: { startsWith: "seed-meas-" }, numericValue: { not: null } } });
+    const categorical = await prisma.measurement.findFirst({ where: { id: { startsWith: "seed-meas-" }, categoricalValue: { not: null } } });
+    const text = await prisma.measurement.findFirst({ where: { id: { startsWith: "seed-meas-" }, textValue: { not: null } } });
     expect(numeric).not.toBeNull();
     expect(categorical).not.toBeNull();
     expect(text).not.toBeNull();
@@ -50,8 +50,8 @@ describe("seed data", () => {
   });
 
   it("is idempotent (second run does not duplicate)", async () => {
-    await seed();
-    const measurements = await prisma.measurement.count();
+    await seed(prisma);
+    const measurements = await prisma.measurement.count({ where: { id: { startsWith: "seed-meas-" } } });
     expect(measurements).toBe(5);
   });
 });
