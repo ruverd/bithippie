@@ -32,6 +32,7 @@ describe("experiments routes (integration)", () => {
     const categorical = body.find((m: Record<string, unknown>) => m.valueType === "CATEGORICAL");
     const text = body.find((m: Record<string, unknown>) => m.valueType === "TEXT");
     expect(numeric).toBeDefined();
+    expect(typeof numeric.numericValue).toBe("number");
     expect(categorical).toBeDefined();
     expect(text).toBeDefined();
     expect(body[0]).toHaveProperty("id");
