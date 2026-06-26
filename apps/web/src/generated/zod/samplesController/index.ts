@@ -1,2 +1,2 @@
-export { getSamplesBySampleIdPathParamsSchema, getSamplesBySampleIdQueryResponseSchema } from "./getSamplesBySampleIdSchema.ts";
-export { getSamplesQueryResponseSchema } from "./getSamplesSchema.ts";
+export { getSamplesBySampleId200Schema, getSamplesBySampleIdPathParamsSchema, getSamplesBySampleIdQueryResponseSchema } from "./getSamplesBySampleIdSchema.ts";
+export { getSamples200Schema, getSamplesQueryResponseSchema } from "./getSamplesSchema.ts";

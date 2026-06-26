@@ -4,9 +4,39 @@
 */
 
 
-export type GetMeasurementDefinitionsQueryResponse = any;
+/**
+ * @description Response for status 200
+*/
+export type GetMeasurementDefinitions200 = {
+    /**
+     * @type string
+    */
+    id: string;
+    /**
+     * @type string
+    */
+    name: string;
+    /**
+     * @type string
+    */
+    valueType: string;
+    /**
+     * @type string,null
+    */
+    defaultUnit: string | null;
+    /**
+     * @type array
+    */
+    allowedCategories: string[];
+    /**
+     * @type string,null
+    */
+    description: string | null;
+}[];
+
+export type GetMeasurementDefinitionsQueryResponse = GetMeasurementDefinitions200;
 
 export type GetMeasurementDefinitionsQuery = {
-    Response: any;
+    Response: GetMeasurementDefinitions200;
     Errors: any;
 };

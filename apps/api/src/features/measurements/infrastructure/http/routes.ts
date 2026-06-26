@@ -2,6 +2,7 @@ import { Elysia, t } from "elysia";
 import { measurementValueInputSchema } from "@lab/shared";
 import type { MeasurementsRepository } from "../../domain/measurements.repository";
 import { createMeasurement } from "../../application/create-measurement";
+import { createdMeasurementSchema } from "../../application/schemas";
 
 export function measurementsRouter(repo: MeasurementsRepository) {
   return new Elysia().post(
@@ -14,6 +15,7 @@ export function measurementsRouter(repo: MeasurementsRepository) {
     {
       params: t.Object({ experimentId: t.String() }),
       body: measurementValueInputSchema,
+      response: { 201: createdMeasurementSchema },
       detail: { tags: ["Measurements"], summary: "Record a measurement for an experiment" },
     },
   );

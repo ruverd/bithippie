@@ -15,9 +15,12 @@ export const researcherMembershipSchema = z.object({
   globalRole: z.string(),
   projectRole: z.string(),
 });
+export const researcherMembershipListSchema = z.array(researcherMembershipSchema);
+
 export const projectExperimentSchema = z.object({
   id: z.string(),
   title: z.string(),
   status: z.string().nullable(),
   previousExperimentId: z.string().nullable(),
 });
+export const projectExperimentListSchema = z.array(projectExperimentSchema);

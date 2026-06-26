@@ -4,9 +4,31 @@
 */
 
 
-export type GetProjectsQueryResponse = any;
+/**
+ * @description Response for status 200
+*/
+export type GetProjects200 = {
+    /**
+     * @type string
+    */
+    id: string;
+    /**
+     * @type string
+    */
+    title: string;
+    /**
+     * @type string,null
+    */
+    description: string | null;
+    /**
+     * @type string,null
+    */
+    status: string | null;
+}[];
+
+export type GetProjectsQueryResponse = GetProjects200;
 
 export type GetProjectsQuery = {
-    Response: any;
+    Response: GetProjects200;
     Errors: any;
 };

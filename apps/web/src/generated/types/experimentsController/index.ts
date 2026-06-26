@@ -1,3 +1,3 @@
-export type { GetExperimentsByExperimentIdPathParams, GetExperimentsByExperimentIdQuery, GetExperimentsByExperimentIdQueryResponse } from "./GetExperimentsByExperimentId.ts";
-export type { GetExperimentsByExperimentIdMeasurementsPathParams, GetExperimentsByExperimentIdMeasurementsQuery, GetExperimentsByExperimentIdMeasurementsQueryResponse } from "./GetExperimentsByExperimentIdMeasurements.ts";
-export type { GetExperimentsByExperimentIdSamplesPathParams, GetExperimentsByExperimentIdSamplesQuery, GetExperimentsByExperimentIdSamplesQueryResponse } from "./GetExperimentsByExperimentIdSamples.ts";
+export type { GetExperimentsByExperimentId200, GetExperimentsByExperimentIdPathParams, GetExperimentsByExperimentIdQuery, GetExperimentsByExperimentIdQueryResponse } from "./GetExperimentsByExperimentId.ts";
+export type { GetExperimentsByExperimentIdMeasurements200, GetExperimentsByExperimentIdMeasurementsPathParams, GetExperimentsByExperimentIdMeasurementsQuery, GetExperimentsByExperimentIdMeasurementsQueryResponse } from "./GetExperimentsByExperimentIdMeasurements.ts";
+export type { GetExperimentsByExperimentIdSamples200, GetExperimentsByExperimentIdSamplesPathParams, GetExperimentsByExperimentIdSamplesQuery, GetExperimentsByExperimentIdSamplesQueryResponse } from "./GetExperimentsByExperimentIdSamples.ts";

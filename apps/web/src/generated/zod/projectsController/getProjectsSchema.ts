@@ -5,4 +5,14 @@
 
 import * as z from "zod";
 
-export const getProjectsQueryResponseSchema = z.any()
+/**
+ * @description Response for status 200
+ */
+export const getProjects200Schema = z.array(z.object({
+    "id": z.string(),
+"title": z.string(),
+"description": z.nullable(z.string()),
+"status": z.nullable(z.string())
+    }))
+
+export const getProjectsQueryResponseSchema = z.lazy(() => getProjects200Schema)

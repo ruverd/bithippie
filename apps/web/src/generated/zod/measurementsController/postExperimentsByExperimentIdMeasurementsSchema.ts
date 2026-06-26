@@ -9,6 +9,23 @@ export const postExperimentsByExperimentIdMeasurementsPathParamsSchema = z.objec
     "experimentId": z.string()
     })
 
+/**
+ * @description Response for status 201
+ */
+export const postExperimentsByExperimentIdMeasurements201Schema = z.object({
+    "id": z.string(),
+"experimentId": z.string(),
+"measurementDefinitionId": z.string(),
+"numericValue": z.nullable(z.number()),
+"unit": z.nullable(z.string()),
+"categoricalValue": z.nullable(z.string()),
+"textValue": z.nullable(z.string()),
+"notes": z.nullable(z.string()),
+"recordedAt": z.string(),
+"recordedById": z.nullable(z.string()),
+"sampleIds": z.array(z.string())
+    })
+
 export const postExperimentsByExperimentIdMeasurementsMutationRequestSchema = z.object({
     "measurementDefinitionId": z.string().min(1),
 "numericValue": z.number().nullish(),
@@ -21,4 +38,4 @@ export const postExperimentsByExperimentIdMeasurementsMutationRequestSchema = z.
 "sampleIds": z.optional(z.array(z.string()))
     })
 
-export const postExperimentsByExperimentIdMeasurementsMutationResponseSchema = z.any()
+export const postExperimentsByExperimentIdMeasurementsMutationResponseSchema = z.lazy(() => postExperimentsByExperimentIdMeasurements201Schema)

@@ -1,1 +1,1 @@
-export { getMeasurementDefinitionsQueryResponseSchema } from "./getMeasurementDefinitionsSchema.ts";
+export { getMeasurementDefinitions200Schema, getMeasurementDefinitionsQueryResponseSchema } from "./getMeasurementDefinitionsSchema.ts";

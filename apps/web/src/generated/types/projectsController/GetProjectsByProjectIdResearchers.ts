@@ -11,10 +11,36 @@ export type GetProjectsByProjectIdResearchersPathParams = {
     projectId: string;
 };
 
-export type GetProjectsByProjectIdResearchersQueryResponse = any;
+/**
+ * @description Response for status 200
+*/
+export type GetProjectsByProjectIdResearchers200 = {
+    /**
+     * @type string
+    */
+    researcherId: string;
+    /**
+     * @type string
+    */
+    name: string;
+    /**
+     * @type string
+    */
+    email: string;
+    /**
+     * @type string
+    */
+    globalRole: string;
+    /**
+     * @type string
+    */
+    projectRole: string;
+}[];
+
+export type GetProjectsByProjectIdResearchersQueryResponse = GetProjectsByProjectIdResearchers200;
 
 export type GetProjectsByProjectIdResearchersQuery = {
-    Response: any;
+    Response: GetProjectsByProjectIdResearchers200;
     PathParams: GetProjectsByProjectIdResearchersPathParams;
     Errors: any;
 };

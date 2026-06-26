@@ -11,10 +11,32 @@ export type GetExperimentsByExperimentIdSamplesPathParams = {
     experimentId: string;
 };
 
-export type GetExperimentsByExperimentIdSamplesQueryResponse = any;
+/**
+ * @description Response for status 200
+*/
+export type GetExperimentsByExperimentIdSamples200 = {
+    /**
+     * @type string
+    */
+    id: string;
+    /**
+     * @type string
+    */
+    code: string;
+    /**
+     * @type string
+    */
+    specimenType: string;
+    /**
+     * @type string,null
+    */
+    storageLocation: string | null;
+}[];
+
+export type GetExperimentsByExperimentIdSamplesQueryResponse = GetExperimentsByExperimentIdSamples200;
 
 export type GetExperimentsByExperimentIdSamplesQuery = {
-    Response: any;
+    Response: GetExperimentsByExperimentIdSamples200;
     PathParams: GetExperimentsByExperimentIdSamplesPathParams;
     Errors: any;
 };

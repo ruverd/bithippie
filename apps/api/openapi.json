@@ -20,6 +20,49 @@
         "tags": [
           "Projects"
         ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "status": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "title",
+                      "description",
+                      "status"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "$schema": "http://json-schema.org/draft-07/schema#"
+                }
+              }
+            }
+          }
+        },
         "operationId": "getProjects"
       }
     },
@@ -38,6 +81,46 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "status": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "title",
+                    "description",
+                    "status"
+                  ],
+                  "additionalProperties": false,
+                  "$schema": "http://json-schema.org/draft-07/schema#"
+                }
+              }
+            }
+          }
+        },
         "operationId": "getProjectsByProjectId"
       }
     },
@@ -56,6 +139,47 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "researcherId": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string"
+                      },
+                      "globalRole": {
+                        "type": "string"
+                      },
+                      "projectRole": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "researcherId",
+                      "name",
+                      "email",
+                      "globalRole",
+                      "projectRole"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "$schema": "http://json-schema.org/draft-07/schema#"
+                }
+              }
+            }
+          }
+        },
         "operationId": "getProjectsByProjectIdResearchers"
       }
     },
@@ -74,6 +198,49 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "previousExperimentId": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "title",
+                      "status",
+                      "previousExperimentId"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "$schema": "http://json-schema.org/draft-07/schema#"
+                }
+              }
+            }
+          }
+        },
         "operationId": "getProjectsByProjectIdExperiments"
       }
     },
@@ -92,6 +259,71 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "hypothesis": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "status": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "projectId": {
+                      "type": "string"
+                    },
+                    "previousExperimentId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "startDate": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "endDate": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "title",
+                    "hypothesis",
+                    "status",
+                    "projectId",
+                    "previousExperimentId",
+                    "startDate",
+                    "endDate"
+                  ],
+                  "additionalProperties": false,
+                  "$schema": "http://json-schema.org/draft-07/schema#"
+                }
+              }
+            }
+          }
+        },
         "operationId": "getExperimentsByExperimentId"
       }
     },
@@ -110,6 +342,89 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "measurementDefinitionId": {
+                        "type": "string"
+                      },
+                      "definitionName": {
+                        "type": "string"
+                      },
+                      "valueType": {
+                        "type": "string"
+                      },
+                      "numericValue": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "unit": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "categoricalValue": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "textValue": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "notes": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "recordedAt": {
+                        "type": "string"
+                      },
+                      "recordedById": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "measurementDefinitionId",
+                      "definitionName",
+                      "valueType",
+                      "numericValue",
+                      "unit",
+                      "categoricalValue",
+                      "textValue",
+                      "notes",
+                      "recordedAt",
+                      "recordedById"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "$schema": "http://json-schema.org/draft-07/schema#"
+                }
+              }
+            }
+          }
+        },
         "operationId": "getExperimentsByExperimentIdMeasurements"
       },
       "post": {
@@ -339,6 +654,89 @@
             }
           }
         },
+        "responses": {
+          "201": {
+            "description": "Response for status 201",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "experimentId": {
+                      "type": "string"
+                    },
+                    "measurementDefinitionId": {
+                      "type": "string"
+                    },
+                    "numericValue": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "unit": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "categoricalValue": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "textValue": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "notes": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "recordedAt": {
+                      "type": "string"
+                    },
+                    "recordedById": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "sampleIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "experimentId",
+                    "measurementDefinitionId",
+                    "numericValue",
+                    "unit",
+                    "categoricalValue",
+                    "textValue",
+                    "notes",
+                    "recordedAt",
+                    "recordedById",
+                    "sampleIds"
+                  ],
+                  "additionalProperties": false,
+                  "$schema": "http://json-schema.org/draft-07/schema#"
+                }
+              }
+            }
+          }
+        },
         "operationId": "postExperimentsByExperimentIdMeasurements"
       }
     },
@@ -357,6 +755,46 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "specimenType": {
+                        "type": "string"
+                      },
+                      "storageLocation": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "code",
+                      "specimenType",
+                      "storageLocation"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "$schema": "http://json-schema.org/draft-07/schema#"
+                }
+              }
+            }
+          }
+        },
         "operationId": "getExperimentsByExperimentIdSamples"
       }
     },
@@ -365,6 +803,53 @@
         "tags": [
           "Samples"
         ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "specimenType": {
+                        "type": "string"
+                      },
+                      "collectedAt": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "storageLocation": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "code",
+                      "specimenType",
+                      "collectedAt",
+                      "storageLocation"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "$schema": "http://json-schema.org/draft-07/schema#"
+                }
+              }
+            }
+          }
+        },
         "operationId": "getSamples"
       }
     },
@@ -383,6 +868,50 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "specimenType": {
+                      "type": "string"
+                    },
+                    "collectedAt": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "storageLocation": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "code",
+                    "specimenType",
+                    "collectedAt",
+                    "storageLocation"
+                  ],
+                  "additionalProperties": false,
+                  "$schema": "http://json-schema.org/draft-07/schema#"
+                }
+              }
+            }
+          }
+        },
         "operationId": "getSamplesBySampleId"
       }
     },
@@ -391,6 +920,60 @@
         "tags": [
           "MeasurementDefinitions"
         ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "valueType": {
+                        "type": "string"
+                      },
+                      "defaultUnit": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "allowedCategories": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "description": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "name",
+                      "valueType",
+                      "defaultUnit",
+                      "allowedCategories",
+                      "description"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "$schema": "http://json-schema.org/draft-07/schema#"
+                }
+              }
+            }
+          }
+        },
         "operationId": "getMeasurement-definitions"
       }
     }

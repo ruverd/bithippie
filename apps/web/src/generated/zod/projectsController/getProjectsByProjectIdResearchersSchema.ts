@@ -9,4 +9,15 @@ export const getProjectsByProjectIdResearchersPathParamsSchema = z.object({
     "projectId": z.string()
     })
 
-export const getProjectsByProjectIdResearchersQueryResponseSchema = z.any()
+/**
+ * @description Response for status 200
+ */
+export const getProjectsByProjectIdResearchers200Schema = z.array(z.object({
+    "researcherId": z.string(),
+"name": z.string(),
+"email": z.string(),
+"globalRole": z.string(),
+"projectRole": z.string()
+    }))
+
+export const getProjectsByProjectIdResearchersQueryResponseSchema = z.lazy(() => getProjectsByProjectIdResearchers200Schema)

@@ -5,4 +5,15 @@
 
 import * as z from "zod";
 
-export const getSamplesQueryResponseSchema = z.any()
+/**
+ * @description Response for status 200
+ */
+export const getSamples200Schema = z.array(z.object({
+    "id": z.string(),
+"code": z.string(),
+"specimenType": z.string(),
+"collectedAt": z.nullable(z.string()),
+"storageLocation": z.nullable(z.string())
+    }))
+
+export const getSamplesQueryResponseSchema = z.lazy(() => getSamples200Schema)

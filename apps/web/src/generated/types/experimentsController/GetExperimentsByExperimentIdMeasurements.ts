@@ -11,10 +11,60 @@ export type GetExperimentsByExperimentIdMeasurementsPathParams = {
     experimentId: string;
 };
 
-export type GetExperimentsByExperimentIdMeasurementsQueryResponse = any;
+/**
+ * @description Response for status 200
+*/
+export type GetExperimentsByExperimentIdMeasurements200 = {
+    /**
+     * @type string
+    */
+    id: string;
+    /**
+     * @type string
+    */
+    measurementDefinitionId: string;
+    /**
+     * @type string
+    */
+    definitionName: string;
+    /**
+     * @type string
+    */
+    valueType: string;
+    /**
+     * @type number,null
+    */
+    numericValue: number | null;
+    /**
+     * @type string,null
+    */
+    unit: string | null;
+    /**
+     * @type string,null
+    */
+    categoricalValue: string | null;
+    /**
+     * @type string,null
+    */
+    textValue: string | null;
+    /**
+     * @type string,null
+    */
+    notes: string | null;
+    /**
+     * @type string
+    */
+    recordedAt: string;
+    /**
+     * @type string,null
+    */
+    recordedById: string | null;
+}[];
+
+export type GetExperimentsByExperimentIdMeasurementsQueryResponse = GetExperimentsByExperimentIdMeasurements200;
 
 export type GetExperimentsByExperimentIdMeasurementsQuery = {
-    Response: any;
+    Response: GetExperimentsByExperimentIdMeasurements200;
     PathParams: GetExperimentsByExperimentIdMeasurementsPathParams;
     Errors: any;
 };

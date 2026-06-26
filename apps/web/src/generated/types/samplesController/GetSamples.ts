@@ -4,9 +4,35 @@
 */
 
 
-export type GetSamplesQueryResponse = any;
+/**
+ * @description Response for status 200
+*/
+export type GetSamples200 = {
+    /**
+     * @type string
+    */
+    id: string;
+    /**
+     * @type string
+    */
+    code: string;
+    /**
+     * @type string
+    */
+    specimenType: string;
+    /**
+     * @type string,null
+    */
+    collectedAt: string | null;
+    /**
+     * @type string,null
+    */
+    storageLocation: string | null;
+}[];
+
+export type GetSamplesQueryResponse = GetSamples200;
 
 export type GetSamplesQuery = {
-    Response: any;
+    Response: GetSamples200;
     Errors: any;
 };

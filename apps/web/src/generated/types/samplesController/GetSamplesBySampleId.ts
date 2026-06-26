@@ -11,10 +11,36 @@ export type GetSamplesBySampleIdPathParams = {
     sampleId: string;
 };
 
-export type GetSamplesBySampleIdQueryResponse = any;
+/**
+ * @description Response for status 200
+*/
+export type GetSamplesBySampleId200 = {
+    /**
+     * @type string
+    */
+    id: string;
+    /**
+     * @type string
+    */
+    code: string;
+    /**
+     * @type string
+    */
+    specimenType: string;
+    /**
+     * @type string,null
+    */
+    collectedAt: string | null;
+    /**
+     * @type string,null
+    */
+    storageLocation: string | null;
+};
+
+export type GetSamplesBySampleIdQueryResponse = GetSamplesBySampleId200;
 
 export type GetSamplesBySampleIdQuery = {
-    Response: any;
+    Response: GetSamplesBySampleId200;
     PathParams: GetSamplesBySampleIdPathParams;
     Errors: any;
 };

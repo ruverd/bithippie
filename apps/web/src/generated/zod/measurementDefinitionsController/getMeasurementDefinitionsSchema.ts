@@ -5,4 +5,16 @@
 
 import * as z from "zod";
 
-export const getMeasurementDefinitionsQueryResponseSchema = z.any()
+/**
+ * @description Response for status 200
+ */
+export const getMeasurementDefinitions200Schema = z.array(z.object({
+    "id": z.string(),
+"name": z.string(),
+"valueType": z.string(),
+"defaultUnit": z.nullable(z.string()),
+"allowedCategories": z.array(z.string()),
+"description": z.nullable(z.string())
+    }))
+
+export const getMeasurementDefinitionsQueryResponseSchema = z.lazy(() => getMeasurementDefinitions200Schema)

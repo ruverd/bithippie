@@ -9,4 +9,18 @@ export const getExperimentsByExperimentIdPathParamsSchema = z.object({
     "experimentId": z.string()
     })
 
-export const getExperimentsByExperimentIdQueryResponseSchema = z.any()
+/**
+ * @description Response for status 200
+ */
+export const getExperimentsByExperimentId200Schema = z.object({
+    "id": z.string(),
+"title": z.string(),
+"hypothesis": z.nullable(z.string()),
+"status": z.nullable(z.string()),
+"projectId": z.string(),
+"previousExperimentId": z.nullable(z.string()),
+"startDate": z.nullable(z.string()),
+"endDate": z.nullable(z.string())
+    })
+
+export const getExperimentsByExperimentIdQueryResponseSchema = z.lazy(() => getExperimentsByExperimentId200Schema)

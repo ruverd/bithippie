@@ -1,3 +1,3 @@
-export { getExperimentsByExperimentIdMeasurementsPathParamsSchema, getExperimentsByExperimentIdMeasurementsQueryResponseSchema } from "./getExperimentsByExperimentIdMeasurementsSchema.ts";
-export { getExperimentsByExperimentIdSamplesPathParamsSchema, getExperimentsByExperimentIdSamplesQueryResponseSchema } from "./getExperimentsByExperimentIdSamplesSchema.ts";
-export { getExperimentsByExperimentIdPathParamsSchema, getExperimentsByExperimentIdQueryResponseSchema } from "./getExperimentsByExperimentIdSchema.ts";
+export { getExperimentsByExperimentIdMeasurements200Schema, getExperimentsByExperimentIdMeasurementsPathParamsSchema, getExperimentsByExperimentIdMeasurementsQueryResponseSchema } from "./getExperimentsByExperimentIdMeasurementsSchema.ts";
+export { getExperimentsByExperimentIdSamples200Schema, getExperimentsByExperimentIdSamplesPathParamsSchema, getExperimentsByExperimentIdSamplesQueryResponseSchema } from "./getExperimentsByExperimentIdSamplesSchema.ts";
+export { getExperimentsByExperimentId200Schema, getExperimentsByExperimentIdPathParamsSchema, getExperimentsByExperimentIdQueryResponseSchema } from "./getExperimentsByExperimentIdSchema.ts";

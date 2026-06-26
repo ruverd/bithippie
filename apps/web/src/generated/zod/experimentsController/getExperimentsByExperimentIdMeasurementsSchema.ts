@@ -9,4 +9,21 @@ export const getExperimentsByExperimentIdMeasurementsPathParamsSchema = z.object
     "experimentId": z.string()
     })
 
-export const getExperimentsByExperimentIdMeasurementsQueryResponseSchema = z.any()
+/**
+ * @description Response for status 200
+ */
+export const getExperimentsByExperimentIdMeasurements200Schema = z.array(z.object({
+    "id": z.string(),
+"measurementDefinitionId": z.string(),
+"definitionName": z.string(),
+"valueType": z.string(),
+"numericValue": z.nullable(z.number()),
+"unit": z.nullable(z.string()),
+"categoricalValue": z.nullable(z.string()),
+"textValue": z.nullable(z.string()),
+"notes": z.nullable(z.string()),
+"recordedAt": z.string(),
+"recordedById": z.nullable(z.string())
+    }))
+
+export const getExperimentsByExperimentIdMeasurementsQueryResponseSchema = z.lazy(() => getExperimentsByExperimentIdMeasurements200Schema)

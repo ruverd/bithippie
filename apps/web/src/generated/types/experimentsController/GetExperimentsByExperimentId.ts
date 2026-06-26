@@ -11,10 +11,48 @@ export type GetExperimentsByExperimentIdPathParams = {
     experimentId: string;
 };
 
-export type GetExperimentsByExperimentIdQueryResponse = any;
+/**
+ * @description Response for status 200
+*/
+export type GetExperimentsByExperimentId200 = {
+    /**
+     * @type string
+    */
+    id: string;
+    /**
+     * @type string
+    */
+    title: string;
+    /**
+     * @type string,null
+    */
+    hypothesis: string | null;
+    /**
+     * @type string,null
+    */
+    status: string | null;
+    /**
+     * @type string
+    */
+    projectId: string;
+    /**
+     * @type string,null
+    */
+    previousExperimentId: string | null;
+    /**
+     * @type string,null
+    */
+    startDate: string | null;
+    /**
+     * @type string,null
+    */
+    endDate: string | null;
+};
+
+export type GetExperimentsByExperimentIdQueryResponse = GetExperimentsByExperimentId200;
 
 export type GetExperimentsByExperimentIdQuery = {
-    Response: any;
+    Response: GetExperimentsByExperimentId200;
     PathParams: GetExperimentsByExperimentIdPathParams;
     Errors: any;
 };

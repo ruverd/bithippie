@@ -9,4 +9,15 @@ export const getSamplesBySampleIdPathParamsSchema = z.object({
     "sampleId": z.string()
     })
 
-export const getSamplesBySampleIdQueryResponseSchema = z.any()
+/**
+ * @description Response for status 200
+ */
+export const getSamplesBySampleId200Schema = z.object({
+    "id": z.string(),
+"code": z.string(),
+"specimenType": z.string(),
+"collectedAt": z.nullable(z.string()),
+"storageLocation": z.nullable(z.string())
+    })
+
+export const getSamplesBySampleIdQueryResponseSchema = z.lazy(() => getSamplesBySampleId200Schema)

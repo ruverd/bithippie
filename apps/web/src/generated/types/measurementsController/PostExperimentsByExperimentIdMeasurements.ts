@@ -11,6 +11,56 @@ export type PostExperimentsByExperimentIdMeasurementsPathParams = {
     experimentId: string;
 };
 
+/**
+ * @description Response for status 201
+*/
+export type PostExperimentsByExperimentIdMeasurements201 = {
+    /**
+     * @type string
+    */
+    id: string;
+    /**
+     * @type string
+    */
+    experimentId: string;
+    /**
+     * @type string
+    */
+    measurementDefinitionId: string;
+    /**
+     * @type number,null
+    */
+    numericValue: number | null;
+    /**
+     * @type string,null
+    */
+    unit: string | null;
+    /**
+     * @type string,null
+    */
+    categoricalValue: string | null;
+    /**
+     * @type string,null
+    */
+    textValue: string | null;
+    /**
+     * @type string,null
+    */
+    notes: string | null;
+    /**
+     * @type string
+    */
+    recordedAt: string;
+    /**
+     * @type string,null
+    */
+    recordedById: string | null;
+    /**
+     * @type array
+    */
+    sampleIds: string[];
+};
+
 export type PostExperimentsByExperimentIdMeasurementsMutationRequest = {
     /**
      * @minLength 1
@@ -48,10 +98,10 @@ export type PostExperimentsByExperimentIdMeasurementsMutationRequest = {
     sampleIds?: string[];
 };
 
-export type PostExperimentsByExperimentIdMeasurementsMutationResponse = any;
+export type PostExperimentsByExperimentIdMeasurementsMutationResponse = PostExperimentsByExperimentIdMeasurements201;
 
 export type PostExperimentsByExperimentIdMeasurementsMutation = {
-    Response: any;
+    Response: PostExperimentsByExperimentIdMeasurements201;
     Request: PostExperimentsByExperimentIdMeasurementsMutationRequest;
     PathParams: PostExperimentsByExperimentIdMeasurementsPathParams;
     Errors: any;
