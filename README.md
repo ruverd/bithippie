@@ -12,12 +12,58 @@ Requirements: Docker.
 docker compose up --build
 ```
 
-This starts PostgreSQL, applies all migrations, and loads the seed data. The
-database is ready once you see `Seed complete.` in the output; the `db` service
-continues running in the foreground (press Ctrl-C to stop, or pass `-d` to
-detach).
+This starts PostgreSQL, applies all migrations, seeds the database, and starts
+the API. The API is ready once you see `API listening on http://localhost:3000`
+in the output (press Ctrl-C to stop, or pass `-d` to detach).
 
-Connect with: `postgresql://lab:lab@localhost:5432/lab`
+Connect to the database directly with: `postgresql://lab:lab@localhost:5432/lab`
+
+## API
+
+Base URL: `http://localhost:3000`
+
+OpenAPI (Swagger UI): `http://localhost:3000/openapi`
+OpenAPI JSON schema: `http://localhost:3000/openapi/json`
+
+### Endpoints
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/health` | Health check — returns `{"status":"ok"}` |
+| `GET` | `/projects` | List all projects |
+| `GET` | `/projects/:projectId` | Get a single project |
+| `GET` | `/projects/:projectId/researchers` | List researchers on a project |
+| `GET` | `/projects/:projectId/experiments` | List experiments in a project |
+| `GET` | `/experiments/:experimentId` | Get a single experiment |
+| `GET` | `/experiments/:experimentId/measurements` | List measurements for an experiment |
+| `GET` | `/experiments/:experimentId/samples` | List samples for an experiment |
+| `GET` | `/samples` | List all samples |
+| `GET` | `/samples/:sampleId` | Get a single sample |
+| `GET` | `/measurement-definitions` | List all measurement definitions |
+| `POST` | `/experiments/:experimentId/measurements` | Create a measurement (201 on success, 404 unknown experiment, 422 validation failure) |
+
+### POST /experiments/:experimentId/measurements
+
+Body schema (JSON):
+
+| Field | Type | Required | Notes |
+|-------|------|----------|-------|
+| `measurementDefinitionId` | string | yes | Must match an existing definition |
+| `numericValue` | number | no\* | Required when definition valueType is `NUMERIC` |
+| `categoricalValue` | string | no\* | Required when definition valueType is `CATEGORICAL` |
+| `textValue` | string | no\* | Required when definition valueType is `TEXT` |
+| `unit` | string | no | Optional unit label for numeric measurements |
+| `sampleIds` | string[] | no | IDs of samples to associate (must belong to the experiment) |
+
+\* Exactly one value field must be provided; the kind must match the definition's `valueType`.
+
+Example write flow using the seeded data:
+
+```bash
+curl -X POST http://localhost:3000/experiments/seed-exp-1/measurements \
+  -H 'content-type: application/json' \
+  -d '{"measurementDefinitionId":"seed-def-lead","numericValue":7.7,"unit":"mg/L","sampleIds":["seed-sample-blood"]}'
+```
 
 ## Project layout
 
