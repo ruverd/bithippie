@@ -28,6 +28,10 @@ export type GetSamples200 = {
      * @type string,null
     */
     storageLocation: string | null;
+    /**
+     * @type number
+    */
+    experimentCount: number;
 }[];
 
 export type GetSamplesQueryResponse = GetSamples200;

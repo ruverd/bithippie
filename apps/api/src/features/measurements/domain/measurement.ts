@@ -32,3 +32,20 @@ export interface DefinitionRuleRow {
   valueType: MeasurementValueType;
   allowedCategories: string[];
 }
+
+export interface MeasurementListItem {
+  id: string;
+  experimentId: string;
+  experimentName: string;
+  measurementDefinitionId: string;
+  definitionName: string;
+  valueType: string;
+  numericValue: number | null;
+  unit: string | null;
+  categoricalValue: string | null;
+  textValue: string | null;
+  notes: string | null;
+  recordedAt: string;
+  recordedById: string | null;
+  recordedByName: string | null;
+}

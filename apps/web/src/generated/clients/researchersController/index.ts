@@ -1,0 +1,1 @@
+export { getResearchers } from "./getResearchers.ts";

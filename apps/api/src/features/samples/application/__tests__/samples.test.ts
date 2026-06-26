@@ -8,8 +8,8 @@ let repo: InMemorySamplesRepository;
 
 beforeEach(() => {
   repo = new InMemorySamplesRepository([
-    { id: "s1", code: "BLOOD-001", specimenType: "blood", collectedAt: "2024-01-01T00:00:00.000Z", storageLocation: "-80C" },
-    { id: "s2", code: "SOIL-001", specimenType: "soil", collectedAt: null, storageLocation: "Room temp" },
+    { id: "s1", code: "BLOOD-001", specimenType: "blood", collectedAt: "2024-01-01T00:00:00.000Z", storageLocation: "-80C", experimentCount: 2 },
+    { id: "s2", code: "SOIL-001", specimenType: "soil", collectedAt: null, storageLocation: "Room temp", experimentCount: 1 },
   ]);
 });
 

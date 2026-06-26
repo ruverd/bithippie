@@ -1,12 +1,15 @@
+export { getExperiments } from "./experimentsController/getExperiments.ts";
 export { getExperimentsByExperimentId } from "./experimentsController/getExperimentsByExperimentId.ts";
 export { getExperimentsByExperimentIdMeasurements } from "./experimentsController/getExperimentsByExperimentIdMeasurements.ts";
 export { getExperimentsByExperimentIdSamples } from "./experimentsController/getExperimentsByExperimentIdSamples.ts";
 export { getHealth } from "./healthController/getHealth.ts";
 export { getMeasurementDefinitions } from "./measurementDefinitionsController/getMeasurementDefinitions.ts";
+export { getMeasurements } from "./measurementsController/getMeasurements.ts";
 export { postExperimentsByExperimentIdMeasurements } from "./measurementsController/postExperimentsByExperimentIdMeasurements.ts";
 export { getProjects } from "./projectsController/getProjects.ts";
 export { getProjectsByProjectId } from "./projectsController/getProjectsByProjectId.ts";
 export { getProjectsByProjectIdExperiments } from "./projectsController/getProjectsByProjectIdExperiments.ts";
 export { getProjectsByProjectIdResearchers } from "./projectsController/getProjectsByProjectIdResearchers.ts";
+export { getResearchers } from "./researchersController/getResearchers.ts";
 export { getSamples } from "./samplesController/getSamples.ts";
 export { getSamplesBySampleId } from "./samplesController/getSamplesBySampleId.ts";

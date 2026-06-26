@@ -244,6 +244,84 @@
         "operationId": "getProjectsByProjectIdExperiments"
       }
     },
+    "/experiments/": {
+      "get": {
+        "tags": [
+          "Experiments"
+        ],
+        "summary": "List all experiments",
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "hypothesis": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "status": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "projectId": {
+                        "type": "string"
+                      },
+                      "projectName": {
+                        "type": "string"
+                      },
+                      "leadName": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "measurementCount": {
+                        "type": "number"
+                      },
+                      "startDate": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "title",
+                      "hypothesis",
+                      "status",
+                      "projectId",
+                      "projectName",
+                      "leadName",
+                      "measurementCount",
+                      "startDate"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "$schema": "http://json-schema.org/draft-07/schema#"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "getExperiments"
+      }
+    },
     "/experiments/{experimentId}": {
       "get": {
         "tags": [
@@ -838,6 +916,9 @@
                           "string",
                           "null"
                         ]
+                      },
+                      "experimentCount": {
+                        "type": "number"
                       }
                     },
                     "required": [
@@ -845,7 +926,8 @@
                       "code",
                       "specimenType",
                       "collectedAt",
-                      "storageLocation"
+                      "storageLocation",
+                      "experimentCount"
                     ],
                     "additionalProperties": false
                   },
@@ -901,6 +983,9 @@
                         "string",
                         "null"
                       ]
+                    },
+                    "experimentCount": {
+                      "type": "number"
                     }
                   },
                   "required": [
@@ -908,7 +993,8 @@
                     "code",
                     "specimenType",
                     "collectedAt",
-                    "storageLocation"
+                    "storageLocation",
+                    "experimentCount"
                   ],
                   "additionalProperties": false,
                   "$schema": "http://json-schema.org/draft-07/schema#"
@@ -985,6 +1071,178 @@
           }
         },
         "operationId": "getMeasurement-definitions"
+      }
+    },
+    "/measurements": {
+      "get": {
+        "tags": [
+          "Measurements"
+        ],
+        "summary": "List all recorded measurements",
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "experimentId": {
+                        "type": "string"
+                      },
+                      "experimentName": {
+                        "type": "string"
+                      },
+                      "measurementDefinitionId": {
+                        "type": "string"
+                      },
+                      "definitionName": {
+                        "type": "string"
+                      },
+                      "valueType": {
+                        "type": "string",
+                        "enum": [
+                          "NUMERIC",
+                          "CATEGORICAL",
+                          "TEXT"
+                        ]
+                      },
+                      "numericValue": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "unit": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "categoricalValue": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "textValue": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "notes": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "recordedAt": {
+                        "type": "string"
+                      },
+                      "recordedById": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "recordedByName": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "experimentId",
+                      "experimentName",
+                      "measurementDefinitionId",
+                      "definitionName",
+                      "valueType",
+                      "numericValue",
+                      "unit",
+                      "categoricalValue",
+                      "textValue",
+                      "notes",
+                      "recordedAt",
+                      "recordedById",
+                      "recordedByName"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "$schema": "http://json-schema.org/draft-07/schema#"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "getMeasurements"
+      }
+    },
+    "/researchers/": {
+      "get": {
+        "tags": [
+          "Researchers"
+        ],
+        "summary": "List all researchers",
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string"
+                      },
+                      "globalRole": {
+                        "type": "string",
+                        "enum": [
+                          "PRINCIPAL_INVESTIGATOR",
+                          "POSTDOC",
+                          "GRADUATE_STUDENT",
+                          "LAB_TECHNICIAN"
+                        ]
+                      },
+                      "projectCount": {
+                        "type": "number"
+                      },
+                      "measurementCount": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "name",
+                      "email",
+                      "globalRole",
+                      "projectCount",
+                      "measurementCount"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "$schema": "http://json-schema.org/draft-07/schema#"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "getResearchers"
       }
     }
   },

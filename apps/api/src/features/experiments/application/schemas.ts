@@ -11,6 +11,19 @@ export const experimentSchema = z.object({
   endDate: z.string().nullable(),
 });
 
+export const experimentListItemSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  hypothesis: z.string().nullable(),
+  status: z.string().nullable(),
+  projectId: z.string(),
+  projectName: z.string(),
+  leadName: z.string().nullable(),
+  measurementCount: z.number(),
+  startDate: z.string().nullable(),
+});
+export const experimentListSchema = z.array(experimentListItemSchema);
+
 export const experimentMeasurementSchema = z.object({
   id: z.string(),
   measurementDefinitionId: z.string(),

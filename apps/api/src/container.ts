@@ -9,6 +9,8 @@ import type { MeasurementDefinitionsRepository } from "./features/measurement-de
 import { PrismaMeasurementDefinitionsRepository } from "./features/measurement-definitions/infrastructure/repositories/prisma";
 import type { MeasurementsRepository } from "./features/measurements/domain/measurements.repository";
 import { PrismaMeasurementsRepository } from "./features/measurements/infrastructure/repositories/prisma";
+import type { ResearchersRepository } from "./features/researchers/domain/researchers.repository";
+import { PrismaResearchersRepository } from "./features/researchers/infrastructure/repositories/prisma";
 
 export interface Container {
   prisma: PrismaClient;
@@ -17,6 +19,7 @@ export interface Container {
   samples: SamplesRepository;
   measurementDefinitions: MeasurementDefinitionsRepository;
   measurements: MeasurementsRepository;
+  researchers: ResearchersRepository;
 }
 
 export function buildContainer(prisma: PrismaClient): Container {
@@ -27,5 +30,6 @@ export function buildContainer(prisma: PrismaClient): Container {
     samples: new PrismaSamplesRepository(prisma),
     measurementDefinitions: new PrismaMeasurementDefinitionsRepository(prisma),
     measurements: new PrismaMeasurementsRepository(prisma),
+    researchers: new PrismaResearchersRepository(prisma),
   };
 }

@@ -16,7 +16,7 @@ This starts PostgreSQL, applies all migrations, seeds the database, and starts
 the API. The API is ready once you see `API listening on http://localhost:3000`
 in the output (press Ctrl-C to stop, or pass `-d` to detach).
 
-Connect to the database directly with: `postgresql://lab:lab@localhost:5432/lab`
+Connect to the database directly with: `postgresql://lab:lab@localhost:5433/lab`
 
 ## API
 

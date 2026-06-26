@@ -4,4 +4,5 @@ export interface Sample {
   specimenType: string;
   collectedAt: string | null;
   storageLocation: string | null;
+  experimentCount: number;
 }

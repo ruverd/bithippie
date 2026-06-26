@@ -1,9 +1,153 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import type { ColumnDef } from "@tanstack/react-table";
+import { Plus, Search } from "lucide-react";
 import { useGetSamples } from "@/generated/hooks/samplesController/useGetSamples";
+import type { GetSamples200 } from "@/generated/types/samplesController/GetSamples";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { DataTable } from "@/components/data-table";
+
+type Sample = GetSamples200[number];
+
+function formatDate(iso: string | null): string {
+  if (!iso) return "—";
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "—";
+  return d.toLocaleDateString("en-US", {
+    month: "short",
+    day: "2-digit",
+    year: "numeric",
+  });
+}
+
+const columns: ColumnDef<Sample>[] = [
+  {
+    id: "code",
+    accessorKey: "code",
+    header: "Code",
+    meta: { headClassName: "w-[130px]" },
+    cell: ({ row }) => (
+      <Link
+        to={`/samples/${row.original.id}`}
+        className="text-sm font-semibold hover:underline"
+      >
+        {row.original.code}
+      </Link>
+    ),
+  },
+  {
+    id: "specimenType",
+    accessorKey: "specimenType",
+    header: "Specimen Type",
+    meta: { cellClassName: "text-sm" },
+  },
+  {
+    id: "collected",
+    accessorKey: "collectedAt",
+    header: "Collected",
+    meta: { headClassName: "w-[140px]", cellClassName: "text-[13px] text-muted-foreground" },
+    cell: ({ row }) => formatDate(row.original.collectedAt),
+  },
+  {
+    id: "storage",
+    accessorFn: (s) => s.storageLocation ?? "",
+    header: "Storage",
+    meta: { headClassName: "w-[170px]", cellClassName: "text-[13px]" },
+    cell: ({ row }) =>
+      row.original.storageLocation ?? (
+        <span className="text-muted-foreground">—</span>
+      ),
+  },
+  {
+    id: "experiments",
+    accessorKey: "experimentCount",
+    header: "Experiments",
+    meta: { headClassName: "w-[110px]", cellClassName: "text-sm" },
+  },
+];
 
 export function SamplesPage() {
   const { data, isLoading, isError } = useGetSamples();
-  if (isLoading) return <p>Loading…</p>;
-  if (isError) return <p role="alert">Failed to load samples.</p>;
-  if (!data || data.length === 0) return <p>No samples.</p>;
-  return <pre className="text-xs">{JSON.stringify(data, null, 2)}</pre>;
+  const [search, setSearch] = useState("");
+  const [typeFilter, setTypeFilter] = useState("all");
+
+  const allSamples = data ?? [];
+
+  const specimenTypes = Array.from(
+    new Set(allSamples.map((s) => s.specimenType)),
+  ).sort();
+
+  const filtered = allSamples.filter((s) => {
+    const term = search.toLowerCase();
+    const matchesSearch =
+      s.code.toLowerCase().includes(term) ||
+      s.specimenType.toLowerCase().includes(term) ||
+      (s.storageLocation?.toLowerCase().includes(term) ?? false);
+    const matchesType = typeFilter === "all" || s.specimenType === typeFilter;
+    return matchesSearch && matchesType;
+  });
+
+  return (
+    <div className="flex flex-col gap-5 p-8">
+      <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-1">
+          <h1 className="text-[28px] font-bold leading-tight">Samples</h1>
+          <p className="text-sm text-muted-foreground">
+            Specimens tracked across experiments
+          </p>
+        </div>
+        <Button>
+          <Plus size={16} />
+          Register Sample
+        </Button>
+      </div>
+
+      <div className="flex items-center gap-3">
+        <div className="relative flex-1">
+          <Search
+            size={15}
+            className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground"
+          />
+          <Input
+            className="pl-8"
+            placeholder="Search samples…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+        <Select
+          value={typeFilter === "all" ? undefined : typeFilter}
+          onValueChange={(v) => setTypeFilter(v ?? "all")}
+        >
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="All types" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All types</SelectItem>
+            {specimenTypes.map((t) => (
+              <SelectItem key={t} value={t}>
+                {t}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      <DataTable
+        columns={columns}
+        data={filtered}
+        noun="samples"
+        isLoading={isLoading}
+        isError={isError}
+      />
+    </div>
+  );
 }

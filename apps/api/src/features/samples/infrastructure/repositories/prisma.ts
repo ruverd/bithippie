@@ -5,11 +5,19 @@ export class PrismaSamplesRepository implements SamplesRepository {
   constructor(private prisma: PrismaClient) {}
 
   async list() {
-    return (await this.prisma.sample.findMany({ orderBy: { code: "asc" } })).map(this.toDto);
+    return (
+      await this.prisma.sample.findMany({
+        orderBy: { code: "asc" },
+        include: { _count: { select: { experiments: true } } },
+      })
+    ).map(this.toDto);
   }
 
   async findById(id: string) {
-    const s = await this.prisma.sample.findUnique({ where: { id } });
+    const s = await this.prisma.sample.findUnique({
+      where: { id },
+      include: { _count: { select: { experiments: true } } },
+    });
     return s ? this.toDto(s) : null;
   }
 
@@ -19,11 +27,13 @@ export class PrismaSamplesRepository implements SamplesRepository {
     specimenType: string;
     collectedAt: Date | null;
     storageLocation: string | null;
+    _count: { experiments: number };
   }) => ({
     id: s.id,
     code: s.code,
     specimenType: s.specimenType,
     collectedAt: s.collectedAt?.toISOString() ?? null,
     storageLocation: s.storageLocation,
+    experimentCount: s._count.experiments,
   });
 }

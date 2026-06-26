@@ -10,6 +10,22 @@ const app = buildApp(buildContainer(prisma));
 beforeAll(async () => { await seed(prisma); });
 
 describe("experiments routes (integration)", () => {
+  it("GET /experiments lists experiments enriched with project, lead and measurement count", async () => {
+    const res = await app.handle(new Request("http://localhost/experiments"));
+    expect(res.status).toBe(200);
+    const body = (await res.json()) as Array<Record<string, unknown>>;
+    expect(body.length).toBeGreaterThanOrEqual(3);
+
+    const exp1 = body.find((e) => e.id === "seed-exp-1");
+    expect(exp1).toMatchObject({
+      title: "Baseline lead screening",
+      projectName: "Municipal Water Quality",
+      leadName: "Alice Nguyen",
+    });
+    expect(typeof exp1?.measurementCount).toBe("number");
+    expect(exp1?.measurementCount).toBeGreaterThanOrEqual(3);
+  });
+
   it("GET /experiments/seed-exp-1 returns experiment detail", async () => {
     const res = await app.handle(new Request("http://localhost/experiments/seed-exp-1"));
     expect(res.status).toBe(200);

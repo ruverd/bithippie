@@ -1,4 +1,9 @@
-import type { CreateMeasurementInput, CreatedMeasurement, DefinitionRuleRow } from "../../domain/measurement";
+import type {
+  CreateMeasurementInput,
+  CreatedMeasurement,
+  DefinitionRuleRow,
+  MeasurementListItem,
+} from "../../domain/measurement";
 import type { MeasurementsRepository } from "../../domain/measurements.repository";
 
 interface Seed {
@@ -6,6 +11,7 @@ interface Seed {
   samples: Record<string, string[]>;
   researchers: string[];
   definitions: Record<string, DefinitionRuleRow>;
+  list?: MeasurementListItem[];
 }
 
 export class InMemoryMeasurementsRepository implements MeasurementsRepository {
@@ -43,5 +49,9 @@ export class InMemoryMeasurementsRepository implements MeasurementsRepository {
       recordedById: input.recordedById ?? null,
       sampleIds: input.sampleIds ?? [],
     };
+  }
+
+  async list(): Promise<MeasurementListItem[]> {
+    return this.data.list ?? [];
   }
 }

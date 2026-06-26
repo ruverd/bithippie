@@ -1,6 +1,6 @@
 import type { PrismaClient } from "@prisma/client";
 import type { MeasurementValueType } from "@lab/shared";
-import type { CreateMeasurementInput, CreatedMeasurement } from "../../domain/measurement";
+import type { CreateMeasurementInput, CreatedMeasurement, MeasurementListItem } from "../../domain/measurement";
 import type { MeasurementsRepository } from "../../domain/measurements.repository";
 
 export class PrismaMeasurementsRepository implements MeasurementsRepository {
@@ -59,5 +59,28 @@ export class PrismaMeasurementsRepository implements MeasurementsRepository {
       recordedById: created.recordedById,
       sampleIds: created.samples.map((s) => s.sampleId),
     };
+  }
+
+  async list(): Promise<MeasurementListItem[]> {
+    const rows = await this.prisma.measurement.findMany({
+      include: { definition: true, experiment: true, recordedBy: true },
+      orderBy: { recordedAt: "desc" },
+    });
+    return rows.map((m) => ({
+      id: m.id,
+      experimentId: m.experimentId,
+      experimentName: m.experiment.title,
+      measurementDefinitionId: m.measurementDefinitionId,
+      definitionName: m.definition.name,
+      valueType: m.definition.valueType,
+      numericValue: m.numericValue == null ? null : Number(m.numericValue),
+      unit: m.unit,
+      categoricalValue: m.categoricalValue,
+      textValue: m.textValue,
+      notes: m.notes,
+      recordedAt: m.recordedAt.toISOString(),
+      recordedById: m.recordedById,
+      recordedByName: m.recordedBy?.name ?? null,
+    }));
   }
 }

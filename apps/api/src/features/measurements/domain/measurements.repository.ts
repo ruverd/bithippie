@@ -1,4 +1,9 @@
-import type { CreateMeasurementInput, CreatedMeasurement, DefinitionRuleRow } from "./measurement";
+import type {
+  CreateMeasurementInput,
+  CreatedMeasurement,
+  DefinitionRuleRow,
+  MeasurementListItem,
+} from "./measurement";
 
 export interface MeasurementsRepository {
   experimentExists(id: string): Promise<boolean>;
@@ -6,4 +11,5 @@ export interface MeasurementsRepository {
   experimentSampleIds(experimentId: string): Promise<string[]>;
   researcherExists(id: string): Promise<boolean>;
   create(input: CreateMeasurementInput): Promise<CreatedMeasurement>;
+  list(): Promise<MeasurementListItem[]>;
 }

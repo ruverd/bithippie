@@ -1,3 +1,64 @@
+### Task 5 Report (Plan 3 Frontend): Create-Measurement Form
+
+---
+
+## TDD Evidence
+
+**RED (Step 2):** `bunx vitest run --project unit src/features/measurements/create-measurement-form.test.tsx` → FAIL
+- Error: `Failed to resolve import "./create-measurement-form"` — component did not exist yet.
+- 0 tests collected, 1 suite failed.
+
+**GREEN (Step 4):** Same command after implementing the form → PASS
+- 2 tests passed: "shows the categorical field" + "submits the measurement via the generated mutation".
+
+## How Mutate + Invalidation Was Wired
+
+**Mutate shape:** `create.mutate({ experimentId, data: values })` — matches the generated mutation's variable type `{ experimentId: string; data: PostExperimentsByExperimentIdMeasurementsMutationRequest }`.
+
+**Invalidation:** Used the generated query-key factory `getExperimentsByExperimentIdMeasurementsQueryKey(experimentId)` exported from `@/generated/hooks/experimentsController/useGetExperimentsByExperimentIdMeasurements`. This factory returns `[{ url: '/experiments/:experimentId/measurements', params: { experimentId } }]` so it precisely targets the experiment's measurements list.
+
+```ts
+queryClient.invalidateQueries({
+  queryKey: getExperimentsByExperimentIdMeasurementsQueryKey(experimentId),
+})
+```
+
+## Type Note
+
+The generated type for measurement definitions (`GetMeasurementDefinitions200`) types `valueType` as `string` (not the `MeasurementValueType` union). A `as MeasurementValueType` cast is used when passing to `MeasurementValueField`, which requires the specific union. tsc + build both pass clean.
+
+## Full Web Unit Suite
+
+```
+Test Files  3 passed (3)
+     Tests  6 passed (6)
+```
+
+- `MeasurementValueField.test.tsx` — 3 tests
+- `create-measurement-form.test.tsx` — 2 tests
+- `home.test.tsx` (pre-existing) — 1 test
+
+## tsc + build
+
+- `bunx tsc -b` — clean (no errors)
+- `bun run build` — clean, 190 modules transformed, 462.72 kB JS bundle
+
+## Staged Paths (Explicit — No -A)
+
+```
+apps/web/src/features/measurements/create-measurement-form.tsx       (new)
+apps/web/src/features/measurements/create-measurement-form.test.tsx  (new)
+apps/web/src/app/routes/experiment-detail.tsx                        (modified)
+```
+
+## Concerns
+
+None. The `as MeasurementValueType` cast is expected — the generated OpenAPI type doesn't narrow `valueType` to the union (it comes back as `string` from Kubb's type generation), but the runtime value is always one of the three valid members.
+
+---
+
+### Original Plan 2 Task 5 Report (API — kept below for reference)
+
 ### Task 5 Report: measurements write flow — POST /experiments/:experimentId/measurements
 
 ## What was implemented

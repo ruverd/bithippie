@@ -10,11 +10,15 @@ const app = buildApp(buildContainer(prisma));
 beforeAll(async () => { await seed(prisma); });
 
 describe("samples routes (integration)", () => {
-  it("GET /samples returns ≥2 samples", async () => {
+  it("GET /samples returns ≥2 samples with experiment counts", async () => {
     const res = await app.handle(new Request("http://localhost/samples"));
     expect(res.status).toBe(200);
-    const body = await res.json();
+    const body = (await res.json()) as Array<Record<string, unknown>>;
     expect(body.length).toBeGreaterThanOrEqual(2);
+    const blood = body.find((s) => s.id === "seed-sample-blood");
+    expect(blood?.code).toBe("BLD-001");
+    expect(typeof blood?.experimentCount).toBe("number");
+    expect(blood?.experimentCount).toBeGreaterThanOrEqual(1);
   });
 
   it("GET /samples/seed-sample-blood returns 200", async () => {

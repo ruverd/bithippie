@@ -35,6 +35,10 @@ export type GetSamplesBySampleId200 = {
      * @type string,null
     */
     storageLocation: string | null;
+    /**
+     * @type number
+    */
+    experimentCount: number;
 };
 
 export type GetSamplesBySampleIdQueryResponse = GetSamplesBySampleId200;

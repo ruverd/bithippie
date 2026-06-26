@@ -14,6 +14,7 @@ const post = (experimentId: string, body: unknown) =>
       body: JSON.stringify(body),
     }),
   );
+const getAll = () => app.handle(new Request("http://localhost/measurements"));
 
 beforeAll(async () => {
   await seed(prisma);
@@ -56,5 +57,32 @@ describe("POST measurements (integration)", () => {
   it("rejects a malformed body (422 from Zod)", async () => {
     const res = await post("seed-exp-1", { numericValue: 1 }); // missing measurementDefinitionId
     expect(res.status).toBe(422);
+  });
+});
+
+describe("GET /measurements (integration)", () => {
+  it("lists seeded measurements enriched with experiment and recorder names", async () => {
+    const res = await getAll();
+    expect(res.status).toBe(200);
+    const rows = (await res.json()) as Array<Record<string, unknown>>;
+    expect(rows.length).toBeGreaterThanOrEqual(5);
+
+    const lead = rows.find((r) => r.id === "seed-meas-lead-1");
+    expect(lead).toMatchObject({
+      experimentId: "seed-exp-1",
+      experimentName: "Baseline lead screening",
+      definitionName: "Lead concentration",
+      valueType: "NUMERIC",
+      numericValue: 12.4,
+      unit: "mg/L",
+      recordedByName: "Alice Nguyen",
+    });
+  });
+
+  it("returns rows ordered by recordedAt descending", async () => {
+    const rows = (await (await getAll()).json()) as Array<{ recordedAt: string }>;
+    const times = rows.map((r) => new Date(r.recordedAt).getTime());
+    const sorted = [...times].sort((a, b) => b - a);
+    expect(times).toEqual(sorted);
   });
 });
