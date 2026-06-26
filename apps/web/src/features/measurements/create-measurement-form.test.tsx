@@ -56,6 +56,9 @@ describe("CreateMeasurementForm", () => {
       "positive",
     );
     await userEvent.click(screen.getByRole("button", { name: /save/i }));
-    expect(mutate).toHaveBeenCalled();
+    expect(mutate).toHaveBeenCalledWith(
+      { experimentId: "e1", data: expect.objectContaining({ measurementDefinitionId: "def-screen", categoricalValue: "positive" }) },
+      expect.anything(),
+    );
   });
 });

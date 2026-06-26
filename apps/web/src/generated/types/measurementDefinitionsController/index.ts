@@ -1,1 +1,2 @@
-export type { GetMeasurementDefinitions200, GetMeasurementDefinitionsQuery, GetMeasurementDefinitionsQueryResponse } from "./GetMeasurementDefinitions.ts";
+export type { GetMeasurementDefinitions200, GetMeasurementDefinitions200ValueTypeEnumKey, GetMeasurementDefinitionsQuery, GetMeasurementDefinitionsQueryResponse } from "./GetMeasurementDefinitions.ts";
+export { getMeasurementDefinitions200ValueTypeEnum } from "./GetMeasurementDefinitions.ts";

@@ -1,6 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { measurementValueInputSchema } from "@lab/shared";
-import type { MeasurementValueType } from "@lab/shared";
 import { useQueryClient } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
 import type { z } from "zod";
@@ -69,11 +68,11 @@ export function CreateMeasurementForm({ experimentId }: { experimentId: string }
             <label className="flex flex-col gap-1">
               <span>Value</span>
               <MeasurementValueField
-                valueType={def.valueType as MeasurementValueType}
+                valueType={def.valueType}
                 allowedCategories={def.allowedCategories ?? []}
                 value={field.value == null ? "" : String(field.value)}
                 onChange={(v) =>
-                  field.onChange(def.valueType === "NUMERIC" ? Number(v) : v)
+                  field.onChange(def.valueType === "NUMERIC" ? (v === "" ? undefined : Number(v)) : v)
                 }
               />
             </label>

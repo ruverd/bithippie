@@ -15,7 +15,7 @@ export const experimentMeasurementSchema = z.object({
   id: z.string(),
   measurementDefinitionId: z.string(),
   definitionName: z.string(),
-  valueType: z.string(),
+  valueType: z.enum(["NUMERIC", "CATEGORICAL", "TEXT"]),
   numericValue: z.number().nullable(),
   unit: z.string().nullable(),
   categoricalValue: z.string().nullable(),

@@ -1,8 +1,8 @@
 export type { GetExperimentsByExperimentId200, GetExperimentsByExperimentIdPathParams, GetExperimentsByExperimentIdQuery, GetExperimentsByExperimentIdQueryResponse } from "./experimentsController/GetExperimentsByExperimentId.ts";
-export type { GetExperimentsByExperimentIdMeasurements200, GetExperimentsByExperimentIdMeasurementsPathParams, GetExperimentsByExperimentIdMeasurementsQuery, GetExperimentsByExperimentIdMeasurementsQueryResponse } from "./experimentsController/GetExperimentsByExperimentIdMeasurements.ts";
+export type { GetExperimentsByExperimentIdMeasurements200, GetExperimentsByExperimentIdMeasurements200ValueTypeEnumKey, GetExperimentsByExperimentIdMeasurementsPathParams, GetExperimentsByExperimentIdMeasurementsQuery, GetExperimentsByExperimentIdMeasurementsQueryResponse } from "./experimentsController/GetExperimentsByExperimentIdMeasurements.ts";
 export type { GetExperimentsByExperimentIdSamples200, GetExperimentsByExperimentIdSamplesPathParams, GetExperimentsByExperimentIdSamplesQuery, GetExperimentsByExperimentIdSamplesQueryResponse } from "./experimentsController/GetExperimentsByExperimentIdSamples.ts";
 export type { GetHealthQuery, GetHealthQueryResponse } from "./healthController/GetHealth.ts";
-export type { GetMeasurementDefinitions200, GetMeasurementDefinitionsQuery, GetMeasurementDefinitionsQueryResponse } from "./measurementDefinitionsController/GetMeasurementDefinitions.ts";
+export type { GetMeasurementDefinitions200, GetMeasurementDefinitions200ValueTypeEnumKey, GetMeasurementDefinitionsQuery, GetMeasurementDefinitionsQueryResponse } from "./measurementDefinitionsController/GetMeasurementDefinitions.ts";
 export type { PostExperimentsByExperimentIdMeasurements201, PostExperimentsByExperimentIdMeasurementsMutation, PostExperimentsByExperimentIdMeasurementsMutationRequest, PostExperimentsByExperimentIdMeasurementsMutationResponse, PostExperimentsByExperimentIdMeasurementsPathParams } from "./measurementsController/PostExperimentsByExperimentIdMeasurements.ts";
 export type { GetProjects200, GetProjectsQuery, GetProjectsQueryResponse } from "./projectsController/GetProjects.ts";
 export type { GetProjectsByProjectId200, GetProjectsByProjectIdPathParams, GetProjectsByProjectIdQuery, GetProjectsByProjectIdQueryResponse } from "./projectsController/GetProjectsByProjectId.ts";
@@ -10,3 +10,5 @@ export type { GetProjectsByProjectIdExperiments200, GetProjectsByProjectIdExperi
 export type { GetProjectsByProjectIdResearchers200, GetProjectsByProjectIdResearchersPathParams, GetProjectsByProjectIdResearchersQuery, GetProjectsByProjectIdResearchersQueryResponse } from "./projectsController/GetProjectsByProjectIdResearchers.ts";
 export type { GetSamples200, GetSamplesQuery, GetSamplesQueryResponse } from "./samplesController/GetSamples.ts";
 export type { GetSamplesBySampleId200, GetSamplesBySampleIdPathParams, GetSamplesBySampleIdQuery, GetSamplesBySampleIdQueryResponse } from "./samplesController/GetSamplesBySampleId.ts";
+export { getExperimentsByExperimentIdMeasurements200ValueTypeEnum } from "./experimentsController/GetExperimentsByExperimentIdMeasurements.ts";
+export { getMeasurementDefinitions200ValueTypeEnum } from "./measurementDefinitionsController/GetMeasurementDefinitions.ts";

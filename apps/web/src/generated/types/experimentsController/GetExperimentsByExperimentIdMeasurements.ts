@@ -11,6 +11,14 @@ export type GetExperimentsByExperimentIdMeasurementsPathParams = {
     experimentId: string;
 };
 
+export const getExperimentsByExperimentIdMeasurements200ValueTypeEnum = {
+    NUMERIC: "NUMERIC",
+    CATEGORICAL: "CATEGORICAL",
+    TEXT: "TEXT"
+} as const;
+
+export type GetExperimentsByExperimentIdMeasurements200ValueTypeEnumKey = (typeof getExperimentsByExperimentIdMeasurements200ValueTypeEnum)[keyof typeof getExperimentsByExperimentIdMeasurements200ValueTypeEnum];
+
 /**
  * @description Response for status 200
 */
@@ -30,7 +38,7 @@ export type GetExperimentsByExperimentIdMeasurements200 = {
     /**
      * @type string
     */
-    valueType: string;
+    valueType: GetExperimentsByExperimentIdMeasurements200ValueTypeEnumKey;
     /**
      * @type number,null
     */

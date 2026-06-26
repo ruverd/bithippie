@@ -4,6 +4,14 @@
 */
 
 
+export const getMeasurementDefinitions200ValueTypeEnum = {
+    NUMERIC: "NUMERIC",
+    CATEGORICAL: "CATEGORICAL",
+    TEXT: "TEXT"
+} as const;
+
+export type GetMeasurementDefinitions200ValueTypeEnumKey = (typeof getMeasurementDefinitions200ValueTypeEnum)[keyof typeof getMeasurementDefinitions200ValueTypeEnum];
+
 /**
  * @description Response for status 200
 */
@@ -19,7 +27,7 @@ export type GetMeasurementDefinitions200 = {
     /**
      * @type string
     */
-    valueType: string;
+    valueType: GetMeasurementDefinitions200ValueTypeEnumKey;
     /**
      * @type string,null
     */

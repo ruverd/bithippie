@@ -362,7 +362,12 @@
                         "type": "string"
                       },
                       "valueType": {
-                        "type": "string"
+                        "type": "string",
+                        "enum": [
+                          "NUMERIC",
+                          "CATEGORICAL",
+                          "TEXT"
+                        ]
                       },
                       "numericValue": {
                         "type": [
@@ -937,7 +942,12 @@
                         "type": "string"
                       },
                       "valueType": {
-                        "type": "string"
+                        "type": "string",
+                        "enum": [
+                          "NUMERIC",
+                          "CATEGORICAL",
+                          "TEXT"
+                        ]
                       },
                       "defaultUnit": {
                         "type": [
