@@ -21,6 +21,12 @@ describe("projects routes (integration)", () => {
     expect(res.status).toBe(200);
     expect((await res.json()).length).toBeGreaterThanOrEqual(3);
   });
+  it("GET /projects/:id/experiments returns experiments", async () => {
+    const res = await app.handle(new Request("http://localhost/projects/seed-project-water/experiments"));
+    expect(res.status).toBe(200);
+    const body = await res.json();
+    expect(body.length).toBeGreaterThanOrEqual(2);
+  });
   it("GET /projects/:id returns 404 for unknown id", async () => {
     const res = await app.handle(new Request("http://localhost/projects/nope"));
     expect(res.status).toBe(404);
