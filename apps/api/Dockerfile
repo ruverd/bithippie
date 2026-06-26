@@ -5,6 +5,7 @@ WORKDIR /app
 # bun.lock* matches whichever lockfile name your Bun version produced.
 COPY package.json bun.lock* ./
 COPY apps/api/package.json apps/api/package.json
+COPY packages packages
 RUN bun install --frozen-lockfile
 
 # Copy the source needed for migrations + seed.
