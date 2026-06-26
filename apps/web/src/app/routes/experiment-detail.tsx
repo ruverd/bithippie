@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useGetExperimentsByExperimentId } from "@/generated/hooks/experimentsController/useGetExperimentsByExperimentId";
 import { useGetExperimentsByExperimentIdMeasurements } from "@/generated/hooks/experimentsController/useGetExperimentsByExperimentIdMeasurements";
 import { useGetExperimentsByExperimentIdSamples } from "@/generated/hooks/experimentsController/useGetExperimentsByExperimentIdSamples";
+import { CreateMeasurementForm } from "@/features/measurements/create-measurement-form";
 
 export function ExperimentDetailPage() {
   const { experimentId = "" } = useParams();
@@ -15,7 +16,7 @@ export function ExperimentDetailPage() {
       <pre>{JSON.stringify(experiment.data, null, 2)}</pre>
       <pre>{JSON.stringify(measurements.data ?? [], null, 2)}</pre>
       <pre>{JSON.stringify(samples.data ?? [], null, 2)}</pre>
-      {/* Task 5 mounts <CreateMeasurementForm experimentId={experimentId} /> here */}
+      <CreateMeasurementForm experimentId={experimentId} />
     </div>
   );
 }
