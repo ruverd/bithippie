@@ -1,5 +1,6 @@
 import { Elysia } from "elysia";
 import openapi from "@elysiajs/openapi";
+import { zodToJsonSchema } from "zod-to-json-schema";
 import type { Container } from "./container";
 import { errorHandler } from "./infrastructure/http/error-handler";
 import { projectsRouter } from "./features/projects/infrastructure/http/routes";
@@ -11,7 +12,7 @@ import { measurementsRouter } from "./features/measurements/infrastructure/http/
 export function buildApp(container: Container): Elysia {
   return new Elysia()
     .use(errorHandler)
-    .use(openapi({ path: "/openapi" }))
+    .use(openapi({ path: "/openapi", mapJsonSchema: { zod: zodToJsonSchema } }))
     .get("/health", () => ({ status: "ok" }), {
       detail: { summary: "Health check", tags: ["Health"] },
     })
