@@ -40,6 +40,11 @@ describe("experiments routes (integration)", () => {
     expect(body[0]).toHaveProperty("recordedAt");
   });
 
+  it("GET /experiments/nope/measurements returns 404", async () => {
+    const res = await app.handle(new Request("http://localhost/experiments/nope/measurements"));
+    expect(res.status).toBe(404);
+  });
+
   it("GET /experiments/seed-exp-1/samples returns the blood sample", async () => {
     const res = await app.handle(new Request("http://localhost/experiments/seed-exp-1/samples"));
     expect(res.status).toBe(200);

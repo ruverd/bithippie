@@ -73,9 +73,8 @@ describe("experiments use cases", () => {
     expect(result[0].definitionName).toBe("Lead");
   });
 
-  it("returns empty array for measurements of unknown experiment", async () => {
-    const result = await getExperimentMeasurements(repo, "nope");
-    expect(result).toHaveLength(0);
+  it("throws NotFoundError for measurements of unknown experiment", async () => {
+    await expect(getExperimentMeasurements(repo, "nope")).rejects.toBeInstanceOf(NotFoundError);
   });
 
   it("lists samples for an experiment", async () => {
@@ -84,8 +83,7 @@ describe("experiments use cases", () => {
     expect(result[0].code).toBe("BLOOD-001");
   });
 
-  it("returns empty array for samples of unknown experiment", async () => {
-    const result = await getExperimentSamples(repo, "nope");
-    expect(result).toHaveLength(0);
+  it("throws NotFoundError for samples of unknown experiment", async () => {
+    await expect(getExperimentSamples(repo, "nope")).rejects.toBeInstanceOf(NotFoundError);
   });
 });
