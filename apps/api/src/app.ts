@@ -6,6 +6,7 @@ import { projectsRouter } from "./features/projects/infrastructure/http/routes";
 import { experimentsRouter } from "./features/experiments/infrastructure/http/routes";
 import { samplesRouter } from "./features/samples/infrastructure/http/routes";
 import { measurementDefinitionsRouter } from "./features/measurement-definitions/infrastructure/http/routes";
+import { measurementsRouter } from "./features/measurements/infrastructure/http/routes";
 
 export function buildApp(container: Container): Elysia {
   return new Elysia()
@@ -17,5 +18,6 @@ export function buildApp(container: Container): Elysia {
     .use(projectsRouter(container.projects))
     .use(experimentsRouter(container.experiments))
     .use(samplesRouter(container.samples))
-    .use(measurementDefinitionsRouter(container.measurementDefinitions));
+    .use(measurementDefinitionsRouter(container.measurementDefinitions))
+    .use(measurementsRouter(container.measurements));
 }
