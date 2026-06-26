@@ -1,0 +1,2 @@
+export type { GetSamplesQuery, GetSamplesQueryResponse } from "./GetSamples.ts";
+export type { GetSamplesBySampleIdPathParams, GetSamplesBySampleIdQuery, GetSamplesBySampleIdQueryResponse } from "./GetSamplesBySampleId.ts";

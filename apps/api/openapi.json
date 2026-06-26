@@ -1,0 +1,401 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Elysia Documentation",
+    "description": "Development documentation",
+    "version": "0.0.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health check",
+        "tags": [
+          "Health"
+        ],
+        "operationId": "getHealth"
+      }
+    },
+    "/projects/": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "operationId": "getProjects"
+      }
+    },
+    "/projects/{projectId}": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "getProjectsByProjectId"
+      }
+    },
+    "/projects/{projectId}/researchers": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "getProjectsByProjectIdResearchers"
+      }
+    },
+    "/projects/{projectId}/experiments": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "getProjectsByProjectIdExperiments"
+      }
+    },
+    "/experiments/{experimentId}": {
+      "get": {
+        "tags": [
+          "Experiments"
+        ],
+        "parameters": [
+          {
+            "name": "experimentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "getExperimentsByExperimentId"
+      }
+    },
+    "/experiments/{experimentId}/measurements": {
+      "get": {
+        "tags": [
+          "Experiments"
+        ],
+        "parameters": [
+          {
+            "name": "experimentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "getExperimentsByExperimentIdMeasurements"
+      },
+      "post": {
+        "tags": [
+          "Measurements"
+        ],
+        "summary": "Record a measurement for an experiment",
+        "parameters": [
+          {
+            "name": "experimentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "measurementDefinitionId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "numericValue": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "categoricalValue": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "textValue": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "unit": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "notes": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "recordedAt": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "recordedById": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "sampleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "measurementDefinitionId"
+                ],
+                "additionalProperties": false,
+                "$schema": "http://json-schema.org/draft-07/schema#"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "measurementDefinitionId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "numericValue": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "categoricalValue": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "textValue": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "unit": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "notes": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "recordedAt": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "recordedById": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "sampleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "measurementDefinitionId"
+                ],
+                "additionalProperties": false,
+                "$schema": "http://json-schema.org/draft-07/schema#"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "measurementDefinitionId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "numericValue": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "categoricalValue": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "textValue": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "unit": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "notes": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "recordedAt": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "recordedById": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "sampleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "measurementDefinitionId"
+                ],
+                "additionalProperties": false,
+                "$schema": "http://json-schema.org/draft-07/schema#"
+              }
+            }
+          }
+        },
+        "operationId": "postExperimentsByExperimentIdMeasurements"
+      }
+    },
+    "/experiments/{experimentId}/samples": {
+      "get": {
+        "tags": [
+          "Experiments"
+        ],
+        "parameters": [
+          {
+            "name": "experimentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "getExperimentsByExperimentIdSamples"
+      }
+    },
+    "/samples/": {
+      "get": {
+        "tags": [
+          "Samples"
+        ],
+        "operationId": "getSamples"
+      }
+    },
+    "/samples/{sampleId}": {
+      "get": {
+        "tags": [
+          "Samples"
+        ],
+        "parameters": [
+          {
+            "name": "sampleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "getSamplesBySampleId"
+      }
+    },
+    "/measurement-definitions/": {
+      "get": {
+        "tags": [
+          "MeasurementDefinitions"
+        ],
+        "operationId": "getMeasurement-definitions"
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  }
+}

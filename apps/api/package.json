@@ -11,6 +11,7 @@
     "postinstall": "prisma generate || true",
     "dev": "bun run --watch src/main.ts",
     "start": "bun run src/main.ts",
+    "export:openapi": "bun run src/scripts/export-openapi.ts",
     "test": "prisma migrate reset --force --skip-seed && vitest run"
   },
   "prisma": {

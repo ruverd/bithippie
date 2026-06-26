@@ -1,0 +1,1 @@
+export type { GetHealthQuery, GetHealthQueryResponse } from "./GetHealth.ts";
