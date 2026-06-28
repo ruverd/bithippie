@@ -20,14 +20,6 @@ const chartConfig = {
   Cancelled: { label: "Cancelled", color: "var(--chart-4)" },
 } satisfies ChartConfig;
 
-// TODO: bind to stats endpoint
-export const EXPERIMENTS_STATUS_PLACEHOLDER: ExperimentStatusItem[] = [
-  { status: "Active", count: 7, color: "var(--chart-1)" },
-  { status: "Completed", count: 5, color: "var(--chart-2)" },
-  { status: "Planning", count: 4, color: "var(--chart-3)" },
-  { status: "Cancelled", count: 2, color: "var(--chart-4)" },
-];
-
 export function ExperimentsStatusDonut({ data, total }: ExperimentsStatusDonutProps) {
   return (
     <Card className="flex w-[380px] shrink-0 flex-col p-5">

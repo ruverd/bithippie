@@ -8,6 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Link } from "react-router-dom";
 
 interface MeasurementRow {
   definition: string;
@@ -21,23 +22,14 @@ interface RecentMeasurementsTableProps {
   rows: MeasurementRow[];
 }
 
-// TODO: bind to API
-export const RECENT_MEASUREMENTS_PLACEHOLDER: MeasurementRow[] = [
-  { definition: "Editing efficiency", experiment: "GUIDE-seq validation", value: "87.4 %", recordedBy: "SK", time: "2h ago" },
-  { definition: "Off-target sites", experiment: "Baseline Cas9 fidelity", value: "3 sites", recordedBy: "DV", time: "4h ago" },
-  { definition: "Cell viability", experiment: "Dose-response titration", value: "92.1 %", recordedBy: "PT", time: "Yesterday" },
-  { definition: "Indel frequency", experiment: "Cell-line panel sweep", value: "0.42", recordedBy: "MO", time: "Yesterday" },
-  { definition: "pH level", experiment: "Microbiome fasting cohort", value: "6.8", recordedBy: "JL", time: "2d ago" },
-];
-
 export function RecentMeasurementsTable({ rows }: RecentMeasurementsTableProps) {
   return (
     <Card className="flex flex-1 flex-col overflow-hidden p-0">
       <CardHeader className="flex flex-row items-center justify-between border-b px-5 py-4">
         <p className="text-base font-semibold">Recent Measurements</p>
-        <a href="#" className="text-[13px] font-medium text-primary">
+        <Link to="/measurements" className="text-[13px] font-medium text-primary">
           View all
-        </a>
+        </Link>
       </CardHeader>
       <CardContent className="flex-1 overflow-auto p-0">
         <Table>
@@ -51,22 +43,30 @@ export function RecentMeasurementsTable({ rows }: RecentMeasurementsTableProps) 
             </TableRow>
           </TableHeader>
           <TableBody>
-            {rows.map((row) => (
-              <TableRow key={`${row.definition}-${row.time}`}>
-                <TableCell className="text-sm font-medium">{row.definition}</TableCell>
-                <TableCell className="text-[13px] text-muted-foreground">{row.experiment}</TableCell>
-                <TableCell className="text-sm font-semibold">{row.value}</TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    <Avatar className="size-6 bg-muted">
-                      <AvatarFallback className="bg-muted text-[10px] font-semibold">{row.recordedBy}</AvatarFallback>
-                    </Avatar>
-                    <span className="text-sm">{row.recordedBy}</span>
-                  </div>
+            {rows.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={5} className="py-10 text-center text-sm text-muted-foreground">
+                  No measurements yet.
                 </TableCell>
-                <TableCell className="text-[13px] text-muted-foreground">{row.time}</TableCell>
               </TableRow>
-            ))}
+            ) : (
+              rows.map((row) => (
+                <TableRow key={`${row.definition}-${row.time}`}>
+                  <TableCell className="text-sm font-medium">{row.definition}</TableCell>
+                  <TableCell className="text-[13px] text-muted-foreground">{row.experiment}</TableCell>
+                  <TableCell className="text-sm font-semibold">{row.value}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <Avatar className="size-6 bg-muted">
+                        <AvatarFallback className="bg-muted text-[10px] font-semibold">{row.recordedBy}</AvatarFallback>
+                      </Avatar>
+                      <span className="text-sm">{row.recordedBy}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-[13px] text-muted-foreground">{row.time}</TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
       </CardContent>

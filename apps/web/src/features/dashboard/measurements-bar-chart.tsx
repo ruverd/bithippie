@@ -18,18 +18,6 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-// TODO: bind to stats endpoint
-export const MEASUREMENTS_PLACEHOLDER: MonthlyCount[] = [
-  { m: "Nov", v: 420 },
-  { m: "Dec", v: 560 },
-  { m: "Jan", v: 680 },
-  { m: "Feb", v: 510 },
-  { m: "Mar", v: 790 },
-  { m: "Apr", v: 620 },
-  { m: "May", v: 890 },
-  { m: "Jun", v: 980 },
-];
-
 export function MeasurementsBarChart({ data }: MeasurementsBarChartProps) {
   return (
     <Card className="flex flex-1 flex-col p-5">

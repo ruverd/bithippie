@@ -5,7 +5,7 @@ interface StatCardProps {
   label: string;
   value: string;
   icon: LucideIcon;
-  delta: string;
+  delta?: string;
 }
 
 export function StatCard({ label, value, icon: Icon, delta }: StatCardProps) {
@@ -19,10 +19,12 @@ export function StatCard({ label, value, icon: Icon, delta }: StatCardProps) {
           </div>
         </div>
         <span className="text-3xl font-bold">{value}</span>
-        <div className="flex items-center gap-1">
-          <TrendingUp size={14} className="text-primary" />
-          <span className="text-xs text-muted-foreground">{delta}</span>
-        </div>
+        {delta ? (
+          <div className="flex items-center gap-1">
+            <TrendingUp size={14} className="text-primary" />
+            <span className="text-xs text-muted-foreground">{delta}</span>
+          </div>
+        ) : null}
       </CardContent>
     </Card>
   );
