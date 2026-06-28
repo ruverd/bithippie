@@ -17,10 +17,22 @@ export class InMemoryExperimentsRepository implements ExperimentsRepository {
     private samples: Record<string, ExperimentSample[]> = {},
     private listItems: ExperimentListItem[] = [],
     private knownProjectIds: string[] = [],
+    private sampleDirectory: Record<string, ExperimentSample> = {},
   ) {}
   async findById(id: string) { return this.experiments.find((e) => e.id === id) ?? null; }
   async list() { return this.listItems; }
   async projectExists(projectId: string) { return this.knownProjectIds.includes(projectId); }
+  async sampleExists(sampleId: string) { return sampleId in this.sampleDirectory; }
+  async attachSample(experimentId: string, sampleId: string): Promise<void> {
+    const current = this.samples[experimentId] ?? [];
+    if (current.some((s) => s.id === sampleId)) return;
+    const sample = this.sampleDirectory[sampleId];
+    if (!sample) return;
+    this.samples[experimentId] = [...current, sample];
+  }
+  async detachSample(experimentId: string, sampleId: string): Promise<void> {
+    this.samples[experimentId] = (this.samples[experimentId] ?? []).filter((s) => s.id !== sampleId);
+  }
   async create(input: CreateExperimentInput): Promise<Experiment> {
     this.seq += 1;
     const created: Experiment = {

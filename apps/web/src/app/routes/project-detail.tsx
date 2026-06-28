@@ -291,6 +291,7 @@ export function ProjectDetailPage() {
           if (!o) setSampleDialog(null);
         }}
         sample={sampleDialog?.mode === "edit" ? sampleDialog.sample : null}
+        availableExperiments={exps.map((e) => ({ id: e.id, title: e.title }))}
       />
     </div>
   );

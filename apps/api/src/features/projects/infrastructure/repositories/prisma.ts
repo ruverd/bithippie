@@ -126,6 +126,12 @@ export class PrismaProjectsRepository implements ProjectsRepository {
     const rows = await this.prisma.sample.findMany({
       where: { experiments: { some: { experiment: { projectId } } } },
       orderBy: { code: "asc" },
+      include: {
+        experiments: {
+          where: { experiment: { projectId } },
+          select: { experimentId: true },
+        },
+      },
     });
     return rows.map((s) => ({
       id: s.id,
@@ -133,6 +139,7 @@ export class PrismaProjectsRepository implements ProjectsRepository {
       specimenType: s.specimenType,
       collectedAt: s.collectedAt?.toISOString() ?? null,
       storageLocation: s.storageLocation,
+      experimentIds: s.experiments.map((e) => e.experimentId),
     }));
   }
 

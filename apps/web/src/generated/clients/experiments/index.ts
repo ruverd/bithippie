@@ -1,4 +1,5 @@
 export { deleteExperimentsByExperimentId } from "./deleteExperimentsByExperimentId.ts";
+export { deleteExperimentsByExperimentIdSamplesBySampleId } from "./deleteExperimentsByExperimentIdSamplesBySampleId.ts";
 export { experiments } from "./experiments.ts";
 export { getExperiments } from "./getExperiments.ts";
 export { getExperimentsByExperimentId } from "./getExperimentsByExperimentId.ts";
@@ -6,3 +7,4 @@ export { getExperimentsByExperimentIdMeasurements } from "./getExperimentsByExpe
 export { getExperimentsByExperimentIdSamples } from "./getExperimentsByExperimentIdSamples.ts";
 export { patchExperimentsByExperimentId } from "./patchExperimentsByExperimentId.ts";
 export { postExperiments } from "./postExperiments.ts";
+export { postExperimentsByExperimentIdSamples } from "./postExperimentsByExperimentIdSamples.ts";

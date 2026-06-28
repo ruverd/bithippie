@@ -1,4 +1,5 @@
 export type { DeleteExperimentsByExperimentIdMutationKey } from "./useDeleteExperimentsByExperimentId.ts";
+export type { DeleteExperimentsByExperimentIdSamplesBySampleIdMutationKey } from "./useDeleteExperimentsByExperimentIdSamplesBySampleId.ts";
 export type { GetExperimentsQueryKey } from "./useGetExperiments.ts";
 export type { GetExperimentsByExperimentIdQueryKey } from "./useGetExperimentsByExperimentId.ts";
 export type { GetExperimentsByExperimentIdMeasurementsQueryKey } from "./useGetExperimentsByExperimentIdMeasurements.ts";
@@ -9,9 +10,13 @@ export type { GetExperimentsByExperimentIdSuspenseQueryKey } from "./useGetExper
 export type { GetExperimentsSuspenseQueryKey } from "./useGetExperimentsSuspense.ts";
 export type { PatchExperimentsByExperimentIdMutationKey } from "./usePatchExperimentsByExperimentId.ts";
 export type { PostExperimentsMutationKey } from "./usePostExperiments.ts";
+export type { PostExperimentsByExperimentIdSamplesMutationKey } from "./usePostExperimentsByExperimentIdSamples.ts";
 export { deleteExperimentsByExperimentIdMutationKey } from "./useDeleteExperimentsByExperimentId.ts";
 export { deleteExperimentsByExperimentIdMutationOptions } from "./useDeleteExperimentsByExperimentId.ts";
 export { useDeleteExperimentsByExperimentId } from "./useDeleteExperimentsByExperimentId.ts";
+export { deleteExperimentsByExperimentIdSamplesBySampleIdMutationKey } from "./useDeleteExperimentsByExperimentIdSamplesBySampleId.ts";
+export { deleteExperimentsByExperimentIdSamplesBySampleIdMutationOptions } from "./useDeleteExperimentsByExperimentIdSamplesBySampleId.ts";
+export { useDeleteExperimentsByExperimentIdSamplesBySampleId } from "./useDeleteExperimentsByExperimentIdSamplesBySampleId.ts";
 export { getExperimentsQueryKey } from "./useGetExperiments.ts";
 export { getExperimentsQueryOptions } from "./useGetExperiments.ts";
 export { useGetExperiments } from "./useGetExperiments.ts";
@@ -42,3 +47,6 @@ export { usePatchExperimentsByExperimentId } from "./usePatchExperimentsByExperi
 export { postExperimentsMutationKey } from "./usePostExperiments.ts";
 export { postExperimentsMutationOptions } from "./usePostExperiments.ts";
 export { usePostExperiments } from "./usePostExperiments.ts";
+export { postExperimentsByExperimentIdSamplesMutationKey } from "./usePostExperimentsByExperimentIdSamples.ts";
+export { postExperimentsByExperimentIdSamplesMutationOptions } from "./usePostExperimentsByExperimentIdSamples.ts";
+export { usePostExperimentsByExperimentIdSamples } from "./usePostExperimentsByExperimentIdSamples.ts";

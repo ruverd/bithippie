@@ -14,6 +14,21 @@ export class PrismaExperimentsRepository implements ExperimentsRepository {
     return (await this.prisma.project.count({ where: { id: projectId } })) > 0;
   }
 
+  async sampleExists(sampleId: string) {
+    return (await this.prisma.sample.count({ where: { id: sampleId } })) > 0;
+  }
+
+  async attachSample(experimentId: string, sampleId: string): Promise<void> {
+    await this.prisma.experimentSample.createMany({
+      data: [{ experimentId, sampleId }],
+      skipDuplicates: true,
+    });
+  }
+
+  async detachSample(experimentId: string, sampleId: string): Promise<void> {
+    await this.prisma.experimentSample.deleteMany({ where: { experimentId, sampleId } });
+  }
+
   async create(input: CreateExperimentInput): Promise<Experiment> {
     const e = await this.prisma.experiment.create({
       data: {

@@ -56,6 +56,7 @@ export interface ProjectSample {
   specimenType: string;
   collectedAt: string | null;
   storageLocation: string | null;
+  experimentIds: string[];
 }
 
 export interface ProjectMeasurement {

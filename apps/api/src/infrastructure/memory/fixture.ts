@@ -84,6 +84,10 @@ export function buildMemoryRepositories(): MemoryRepositories {
       { id: EXP3, title: "Soil pH survey", hypothesis: "District A soil is more acidic.", status: "ACTIVE", projectId: SOIL, projectName: "Urban Soil Survey", leadName: "Alice Nguyen", measurementCount: 1, startDate: null },
     ],
     [WATER, SOIL],
+    {
+      [BLOOD]: { id: BLOOD, code: "BLD-001", specimenType: "blood", storageLocation: "Freezer A / Shelf 2" },
+      [SOIL_SAMPLE]: { id: SOIL_SAMPLE, code: "SOIL-001", specimenType: "soil", storageLocation: "Cabinet 3" },
+    },
   );
 
   const membership = (id: string, projectRole: string) => ({ researcherId: id, ...directory[id]!, projectRole });
@@ -106,8 +110,8 @@ export function buildMemoryRepositories(): MemoryRepositories {
     },
     [ALICE, BOB, CAROL],
     {
-      [WATER]: [{ id: BLOOD, code: "BLD-001", specimenType: "blood", collectedAt: null, storageLocation: "Freezer A / Shelf 2" }],
-      [SOIL]: [{ id: SOIL_SAMPLE, code: "SOIL-001", specimenType: "soil", collectedAt: null, storageLocation: "Cabinet 3" }],
+      [WATER]: [{ id: BLOOD, code: "BLD-001", specimenType: "blood", collectedAt: null, storageLocation: "Freezer A / Shelf 2", experimentIds: [EXP1, EXP2] }],
+      [SOIL]: [{ id: SOIL_SAMPLE, code: "SOIL-001", specimenType: "soil", collectedAt: null, storageLocation: "Cabinet 3", experimentIds: [EXP3] }],
     },
     {
       [WATER]: [

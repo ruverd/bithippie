@@ -62,6 +62,7 @@ export const projectSampleSchema = z.object({
   specimenType: z.string(),
   collectedAt: z.string().nullable(),
   storageLocation: z.string().nullable(),
+  experimentIds: z.array(z.string()),
 });
 export const projectSampleListSchema = z.array(projectSampleSchema);
 

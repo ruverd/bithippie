@@ -1,4 +1,5 @@
 export type { DeleteExperimentsByExperimentIdMutationKey } from "./experiments/useDeleteExperimentsByExperimentId.ts";
+export type { DeleteExperimentsByExperimentIdSamplesBySampleIdMutationKey } from "./experiments/useDeleteExperimentsByExperimentIdSamplesBySampleId.ts";
 export type { GetExperimentsQueryKey } from "./experiments/useGetExperiments.ts";
 export type { GetExperimentsByExperimentIdQueryKey } from "./experiments/useGetExperimentsByExperimentId.ts";
 export type { GetExperimentsByExperimentIdMeasurementsQueryKey } from "./experiments/useGetExperimentsByExperimentIdMeasurements.ts";
@@ -9,6 +10,7 @@ export type { GetExperimentsByExperimentIdSuspenseQueryKey } from "./experiments
 export type { GetExperimentsSuspenseQueryKey } from "./experiments/useGetExperimentsSuspense.ts";
 export type { PatchExperimentsByExperimentIdMutationKey } from "./experiments/usePatchExperimentsByExperimentId.ts";
 export type { PostExperimentsMutationKey } from "./experiments/usePostExperiments.ts";
+export type { PostExperimentsByExperimentIdSamplesMutationKey } from "./experiments/usePostExperimentsByExperimentIdSamples.ts";
 export type { GetHealthQueryKey } from "./health/useGetHealth.ts";
 export type { GetHealthSuspenseQueryKey } from "./health/useGetHealthSuspense.ts";
 export type { GetMeasurementDefinitionsQueryKey } from "./measurementDefinitions/useGetMeasurementDefinitions.ts";
@@ -46,6 +48,9 @@ export type { PostSamplesMutationKey } from "./samples/usePostSamples.ts";
 export { deleteExperimentsByExperimentIdMutationKey } from "./experiments/useDeleteExperimentsByExperimentId.ts";
 export { deleteExperimentsByExperimentIdMutationOptions } from "./experiments/useDeleteExperimentsByExperimentId.ts";
 export { useDeleteExperimentsByExperimentId } from "./experiments/useDeleteExperimentsByExperimentId.ts";
+export { deleteExperimentsByExperimentIdSamplesBySampleIdMutationKey } from "./experiments/useDeleteExperimentsByExperimentIdSamplesBySampleId.ts";
+export { deleteExperimentsByExperimentIdSamplesBySampleIdMutationOptions } from "./experiments/useDeleteExperimentsByExperimentIdSamplesBySampleId.ts";
+export { useDeleteExperimentsByExperimentIdSamplesBySampleId } from "./experiments/useDeleteExperimentsByExperimentIdSamplesBySampleId.ts";
 export { getExperimentsQueryKey } from "./experiments/useGetExperiments.ts";
 export { getExperimentsQueryOptions } from "./experiments/useGetExperiments.ts";
 export { useGetExperiments } from "./experiments/useGetExperiments.ts";
@@ -76,6 +81,9 @@ export { usePatchExperimentsByExperimentId } from "./experiments/usePatchExperim
 export { postExperimentsMutationKey } from "./experiments/usePostExperiments.ts";
 export { postExperimentsMutationOptions } from "./experiments/usePostExperiments.ts";
 export { usePostExperiments } from "./experiments/usePostExperiments.ts";
+export { postExperimentsByExperimentIdSamplesMutationKey } from "./experiments/usePostExperimentsByExperimentIdSamples.ts";
+export { postExperimentsByExperimentIdSamplesMutationOptions } from "./experiments/usePostExperimentsByExperimentIdSamples.ts";
+export { usePostExperimentsByExperimentIdSamples } from "./experiments/usePostExperimentsByExperimentIdSamples.ts";
 export { getHealthQueryKey } from "./health/useGetHealth.ts";
 export { getHealthQueryOptions } from "./health/useGetHealth.ts";
 export { useGetHealth } from "./health/useGetHealth.ts";

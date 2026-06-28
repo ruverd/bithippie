@@ -4,13 +4,15 @@
 */
 
 import { deleteExperimentsByExperimentId } from "./deleteExperimentsByExperimentId.ts";
+import { deleteExperimentsByExperimentIdSamplesBySampleId } from "./deleteExperimentsByExperimentIdSamplesBySampleId.ts";
 import { getExperiments } from "./getExperiments.ts";
 import { getExperimentsByExperimentId } from "./getExperimentsByExperimentId.ts";
 import { getExperimentsByExperimentIdMeasurements } from "./getExperimentsByExperimentIdMeasurements.ts";
 import { getExperimentsByExperimentIdSamples } from "./getExperimentsByExperimentIdSamples.ts";
 import { patchExperimentsByExperimentId } from "./patchExperimentsByExperimentId.ts";
 import { postExperiments } from "./postExperiments.ts";
+import { postExperimentsByExperimentIdSamples } from "./postExperimentsByExperimentIdSamples.ts";
 
 export function experiments() {
-  return { getExperiments, postExperiments, getExperimentsByExperimentId, patchExperimentsByExperimentId, deleteExperimentsByExperimentId, getExperimentsByExperimentIdMeasurements, getExperimentsByExperimentIdSamples }
+  return { getExperiments, postExperiments, getExperimentsByExperimentId, patchExperimentsByExperimentId, deleteExperimentsByExperimentId, getExperimentsByExperimentIdMeasurements, getExperimentsByExperimentIdSamples, postExperimentsByExperimentIdSamples, deleteExperimentsByExperimentIdSamplesBySampleId }
 }
