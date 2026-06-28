@@ -7,6 +7,7 @@ export type { PatchExperimentsByExperimentId200, PatchExperimentsByExperimentIdM
 export type { PostExperiments201, PostExperimentsMutation, PostExperimentsMutationRequest, PostExperimentsMutationRequestStatusEnumKey, PostExperimentsMutationResponse } from "./experiments/PostExperiments.ts";
 export type { GetHealthQuery, GetHealthQueryResponse } from "./health/GetHealth.ts";
 export type { GetMeasurementDefinitions200, GetMeasurementDefinitions200ValueTypeEnumKey, GetMeasurementDefinitionsQuery, GetMeasurementDefinitionsQueryResponse } from "./measurementDefinitions/GetMeasurementDefinitions.ts";
+export type { DeleteMeasurementsByMeasurementIdMutation, DeleteMeasurementsByMeasurementIdMutationResponse, DeleteMeasurementsByMeasurementIdPathParams } from "./measurements/DeleteMeasurementsByMeasurementId.ts";
 export type { GetMeasurements200, GetMeasurements200ValueTypeEnumKey, GetMeasurementsQuery, GetMeasurementsQueryResponse } from "./measurements/GetMeasurements.ts";
 export type { PatchMeasurementsByMeasurementId200, PatchMeasurementsByMeasurementIdMutation, PatchMeasurementsByMeasurementIdMutationRequest, PatchMeasurementsByMeasurementIdMutationResponse, PatchMeasurementsByMeasurementIdPathParams } from "./measurements/PatchMeasurementsByMeasurementId.ts";
 export type { PostExperimentsByExperimentIdMeasurements201, PostExperimentsByExperimentIdMeasurementsMutation, PostExperimentsByExperimentIdMeasurementsMutationRequest, PostExperimentsByExperimentIdMeasurementsMutationResponse, PostExperimentsByExperimentIdMeasurementsPathParams } from "./measurements/PostExperimentsByExperimentIdMeasurements.ts";
@@ -21,8 +22,10 @@ export type { PostProjects201, PostProjectsMutation, PostProjectsMutationRequest
 export type { GetResearchers200, GetResearchers200GlobalRoleEnumKey, GetResearchersQuery, GetResearchersQueryResponse } from "./researchers/GetResearchers.ts";
 export type { PatchResearchersByResearcherId200, PatchResearchersByResearcherId200GlobalRoleEnumKey, PatchResearchersByResearcherIdMutation, PatchResearchersByResearcherIdMutationRequest, PatchResearchersByResearcherIdMutationRequestGlobalRoleEnumKey, PatchResearchersByResearcherIdMutationResponse, PatchResearchersByResearcherIdPathParams } from "./researchers/PatchResearchersByResearcherId.ts";
 export type { PostResearchers201, PostResearchers201GlobalRoleEnumKey, PostResearchersMutation, PostResearchersMutationRequest, PostResearchersMutationRequestGlobalRoleEnumKey, PostResearchersMutationRequestProjectRoleEnumKey, PostResearchersMutationResponse } from "./researchers/PostResearchers.ts";
+export type { DeleteSamplesBySampleIdMutation, DeleteSamplesBySampleIdMutationResponse, DeleteSamplesBySampleIdPathParams } from "./samples/DeleteSamplesBySampleId.ts";
 export type { GetSamples200, GetSamplesQuery, GetSamplesQueryResponse } from "./samples/GetSamples.ts";
 export type { GetSamplesBySampleId200, GetSamplesBySampleIdPathParams, GetSamplesBySampleIdQuery, GetSamplesBySampleIdQueryResponse } from "./samples/GetSamplesBySampleId.ts";
+export type { PatchSamplesBySampleId200, PatchSamplesBySampleIdMutation, PatchSamplesBySampleIdMutationRequest, PatchSamplesBySampleIdMutationResponse, PatchSamplesBySampleIdPathParams } from "./samples/PatchSamplesBySampleId.ts";
 export type { PostSamples201, PostSamplesMutation, PostSamplesMutationRequest, PostSamplesMutationResponse } from "./samples/PostSamples.ts";
 export { getExperimentsByExperimentIdMeasurements200ValueTypeEnum } from "./experiments/GetExperimentsByExperimentIdMeasurements.ts";
 export { patchExperimentsByExperimentIdMutationRequestStatusEnum } from "./experiments/PatchExperimentsByExperimentId.ts";

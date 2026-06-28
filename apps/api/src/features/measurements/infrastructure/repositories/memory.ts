@@ -18,6 +18,7 @@ interface Seed {
 
 export class InMemoryMeasurementsRepository implements MeasurementsRepository {
   private seq = 0;
+  private created: CreatedMeasurement[] = [];
   constructor(private data: Seed) {}
 
   async experimentExists(id: string) {
@@ -38,7 +39,7 @@ export class InMemoryMeasurementsRepository implements MeasurementsRepository {
 
   async create(input: CreateMeasurementInput): Promise<CreatedMeasurement> {
     this.seq += 1;
-    return {
+    const created: CreatedMeasurement = {
       id: `mem-${this.seq}`,
       experimentId: input.experimentId,
       measurementDefinitionId: input.measurementDefinitionId,
@@ -51,9 +52,13 @@ export class InMemoryMeasurementsRepository implements MeasurementsRepository {
       recordedById: input.recordedById ?? null,
       sampleIds: input.sampleIds ?? [],
     };
+    this.created.push(created);
+    return created;
   }
 
   async findById(id: string): Promise<CreatedMeasurement | null> {
+    const fromCreated = this.created.find((x) => x.id === id);
+    if (fromCreated) return fromCreated;
     const m = (this.data.list ?? []).find((x) => x.id === id);
     return m
       ? {
@@ -94,6 +99,13 @@ export class InMemoryMeasurementsRepository implements MeasurementsRepository {
       recordedById: m.recordedById,
       sampleIds: input.sampleIds ?? [],
     };
+  }
+
+  async delete(id: string): Promise<void> {
+    this.created = this.created.filter((x) => x.id !== id);
+    if (this.data.list) {
+      this.data.list = this.data.list.filter((x) => x.id !== id);
+    }
   }
 
   async list(): Promise<MeasurementListItem[]> {

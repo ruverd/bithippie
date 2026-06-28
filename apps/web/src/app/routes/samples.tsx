@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import type { ColumnDef } from "@tanstack/react-table";
-import { Search } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import { useGetSamples } from "@/generated/hooks/samples/useGetSamples";
-import { RegisterSampleDialog } from "@/features/samples/register-sample-dialog";
+import { SampleFormDialog } from "@/features/samples/sample-form-dialog";
 import type { GetSamples200 } from "@/generated/types/samples/GetSamples";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -23,15 +23,7 @@ const columns: ColumnDef<Sample>[] = [
     id: "code",
     accessorKey: "code",
     header: "Code",
-    meta: { headClassName: "w-[130px]" },
-    cell: ({ row }) => (
-      <Link
-        to={`/samples/${row.original.id}`}
-        className="text-sm font-semibold hover:underline"
-      >
-        {row.original.code}
-      </Link>
-    ),
+    meta: { headClassName: "w-[130px]", cellClassName: "text-sm font-semibold" },
   },
   {
     id: "specimenType",
@@ -68,6 +60,9 @@ export function SamplesPage() {
   const { data, isLoading, isError } = useGetSamples();
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
+  const [dialog, setDialog] = useState<
+    { mode: "create" } | { mode: "edit"; sample: Sample } | null
+  >(null);
 
   const allSamples = data ?? [];
 
@@ -94,7 +89,10 @@ export function SamplesPage() {
             Specimens tracked across experiments
           </p>
         </div>
-        <RegisterSampleDialog />
+        <Button onClick={() => setDialog({ mode: "create" })}>
+          <Plus size={16} />
+          Register Sample
+        </Button>
       </div>
 
       <div className="flex items-center gap-3">
@@ -134,6 +132,15 @@ export function SamplesPage() {
         noun="samples"
         isLoading={isLoading}
         isError={isError}
+        onRowClick={(s) => setDialog({ mode: "edit", sample: s })}
+      />
+
+      <SampleFormDialog
+        open={dialog !== null}
+        onOpenChange={(o) => {
+          if (!o) setDialog(null);
+        }}
+        sample={dialog?.mode === "edit" ? dialog.sample : null}
       />
     </div>
   );

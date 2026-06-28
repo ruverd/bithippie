@@ -3,10 +3,12 @@
 * Do not edit manually.
 */
 
+import { deleteSamplesBySampleId } from "./deleteSamplesBySampleId.ts";
 import { getSamples } from "./getSamples.ts";
 import { getSamplesBySampleId } from "./getSamplesBySampleId.ts";
+import { patchSamplesBySampleId } from "./patchSamplesBySampleId.ts";
 import { postSamples } from "./postSamples.ts";
 
 export function samples() {
-  return { getSamples, postSamples, getSamplesBySampleId }
+  return { getSamples, postSamples, getSamplesBySampleId, patchSamplesBySampleId, deleteSamplesBySampleId }
 }

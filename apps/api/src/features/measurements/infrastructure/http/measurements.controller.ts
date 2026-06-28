@@ -23,4 +23,9 @@ export class MeasurementsController {
   updateMeasurement(id: string, body: UpdateMeasurementInput) {
     return this.services.updateMeasurement.execute(id, body);
   }
+
+  async deleteMeasurement(id: string, set: ResponseSet) {
+    await this.services.deleteMeasurement.execute(id);
+    set.status = 204;
+  }
 }

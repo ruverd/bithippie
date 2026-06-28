@@ -1,6 +1,11 @@
 import { Elysia, t } from "elysia";
 import type { SamplesServices } from "../../application/services";
-import { createSampleSchema, sampleListSchema, sampleSchema } from "../../application/schemas";
+import {
+  createSampleSchema,
+  sampleListSchema,
+  sampleSchema,
+  updateSampleSchema,
+} from "../../application/schemas";
 import { SamplesController } from "./samples.controller";
 
 export function samplesRouter(services: SamplesServices) {
@@ -19,5 +24,23 @@ export function samplesRouter(services: SamplesServices) {
       params: t.Object({ sampleId: t.String() }),
       detail: { tags: ["Samples"] },
       response: sampleSchema,
-    });
+    })
+    .patch(
+      "/:sampleId",
+      ({ params, body }) => controller.updateSample(params.sampleId, body),
+      {
+        params: t.Object({ sampleId: t.String() }),
+        body: updateSampleSchema,
+        response: sampleSchema,
+        detail: { tags: ["Samples"], summary: "Update a sample" },
+      },
+    )
+    .delete(
+      "/:sampleId",
+      ({ params, set }) => controller.deleteSample(params.sampleId, set),
+      {
+        params: t.Object({ sampleId: t.String() }),
+        detail: { tags: ["Samples"], summary: "Delete a sample" },
+      },
+    );
 }

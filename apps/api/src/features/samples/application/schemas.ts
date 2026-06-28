@@ -16,3 +16,10 @@ export const createSampleSchema = z.object({
   collectedAt: z.string().nullish(),
   storageLocation: z.string().nullish(),
 });
+
+export const updateSampleSchema = z.object({
+  code: z.string().min(1).optional(),
+  specimenType: z.string().min(1).optional(),
+  collectedAt: z.string().nullish(),
+  storageLocation: z.string().nullish(),
+});

@@ -41,10 +41,9 @@ import { usePostExperiments } from "@/generated/hooks/experiments/usePostExperim
 import { usePatchExperimentsByExperimentId } from "@/generated/hooks/experiments/usePatchExperimentsByExperimentId";
 import { useDeleteExperimentsByExperimentId } from "@/generated/hooks/experiments/useDeleteExperimentsByExperimentId";
 import { useGetExperimentsByExperimentId } from "@/generated/hooks/experiments/useGetExperimentsByExperimentId";
-import type { GetExperiments200 } from "@/generated/types/experiments/GetExperiments";
 import { emptyToUndefined } from "@/utils/empty-to-undefined";
 
-type ExperimentRow = GetExperiments200[number];
+type ExperimentRef = { id: string; title: string };
 
 const schema = z.object({
   title: z.string().min(1, "Required"),
@@ -68,10 +67,16 @@ const BLANK: FormValues = {
 export interface ExperimentFormDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  experiment?: ExperimentRow | null;
+  experiment?: ExperimentRef | null;
+  defaultProjectId?: string;
 }
 
-export function ExperimentFormDialog({ open, onOpenChange, experiment }: ExperimentFormDialogProps) {
+export function ExperimentFormDialog({
+  open,
+  onOpenChange,
+  experiment,
+  defaultProjectId,
+}: ExperimentFormDialogProps) {
   const isEdit = Boolean(experiment);
   const queryClient = useQueryClient();
   const projects = useGetProjects();
@@ -95,7 +100,7 @@ export function ExperimentFormDialog({ open, onOpenChange, experiment }: Experim
   useEffect(() => {
     if (!open) return;
     if (!isEdit) {
-      reset(BLANK);
+      reset({ ...BLANK, projectId: defaultProjectId ?? "" });
       return;
     }
     const d = detail.data;

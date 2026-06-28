@@ -1,4 +1,4 @@
-import type { CreateSampleInput } from "../../domain/sample";
+import type { CreateSampleInput, UpdateSampleInput } from "../../domain/sample";
 import type { SamplesServices } from "../../application/services";
 
 type ResponseSet = { status?: number | string };
@@ -18,5 +18,14 @@ export class SamplesController {
 
   getSample(id: string) {
     return this.services.getSample.execute(id);
+  }
+
+  updateSample(id: string, body: UpdateSampleInput) {
+    return this.services.updateSample.execute(id, body);
+  }
+
+  async deleteSample(id: string, set: ResponseSet) {
+    await this.services.deleteSample.execute(id);
+    set.status = 204;
   }
 }

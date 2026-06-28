@@ -13,3 +13,10 @@ export interface CreateSampleInput {
   collectedAt?: string | null;
   storageLocation?: string | null;
 }
+
+export interface UpdateSampleInput {
+  code?: string;
+  specimenType?: string;
+  collectedAt?: string | null;
+  storageLocation?: string | null;
+}

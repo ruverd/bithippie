@@ -12,6 +12,17 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -23,6 +34,7 @@ import { Field } from "@/components/form-field";
 import { useGetMeasurementDefinitions } from "@/generated/hooks/measurementDefinitions/useGetMeasurementDefinitions";
 import { useGetResearchers } from "@/generated/hooks/researchers/useGetResearchers";
 import { usePatchMeasurementsByMeasurementId } from "@/generated/hooks/measurements/usePatchMeasurementsByMeasurementId";
+import { useDeleteMeasurementsByMeasurementId } from "@/generated/hooks/measurements/useDeleteMeasurementsByMeasurementId";
 import type { GetMeasurements200 } from "@/generated/types/measurements/GetMeasurements";
 import { MeasurementValueField } from "./MeasurementValueField";
 
@@ -46,10 +58,12 @@ export function EditMeasurementDialog({ open, onOpenChange, measurement }: EditM
   const definitions = useGetMeasurementDefinitions();
   const researchers = useGetResearchers();
   const update = usePatchMeasurementsByMeasurementId();
+  const remove = useDeleteMeasurementsByMeasurementId();
 
   const [value, setValue] = useState("");
   const [unit, setUnit] = useState("");
   const [recordedById, setRecordedById] = useState("");
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   useEffect(() => {
     if (!open || !measurement) return;
@@ -62,6 +76,29 @@ export function EditMeasurementDialog({ open, onOpenChange, measurement }: EditM
 
   const def = (definitions.data ?? []).find((d) => d.id === measurement.measurementDefinitionId);
   const allowedCategories = def?.allowedCategories ?? [];
+
+  const invalidate = () =>
+    queryClient.invalidateQueries({
+      refetchType: "all",
+      predicate: (q) => {
+        const k = q.queryKey?.[0] as { url?: string } | undefined;
+        return typeof k?.url === "string" && k.url.includes("measurements");
+      },
+    });
+
+  const onDelete = () => {
+    remove.mutate(
+      { measurementId: measurement.id },
+      {
+        onSuccess: () => {
+          invalidate();
+          toast.success("Measurement deleted");
+          setConfirmOpen(false);
+          onOpenChange(false);
+        },
+      },
+    );
+  };
 
   const onSubmit = () => {
     const valuePart =
@@ -79,13 +116,7 @@ export function EditMeasurementDialog({ open, onOpenChange, measurement }: EditM
       { measurementId: measurement.id, data },
       {
         onSuccess: () => {
-          queryClient.invalidateQueries({
-            refetchType: "all",
-            predicate: (q) => {
-              const k = q.queryKey?.[0] as { url?: string } | undefined;
-              return typeof k?.url === "string" && k.url.includes("measurements");
-            },
-          });
+          invalidate();
           toast.success("Measurement updated");
           onOpenChange(false);
         },
@@ -155,6 +186,35 @@ export function EditMeasurementDialog({ open, onOpenChange, measurement }: EditM
           </Field>
 
           <DialogFooter>
+            <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
+              <AlertDialogTrigger
+                render={
+                  <Button type="button" variant="destructive" className="mr-auto">
+                    Delete
+                  </Button>
+                }
+              />
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Delete measurement?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This permanently deletes this {measurement.definitionName} measurement. This
+                    action cannot be undone.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                    type="button"
+                    variant="destructive"
+                    disabled={remove.isPending}
+                    onClick={onDelete}
+                  >
+                    Delete
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
             <DialogClose render={<Button variant="outline">Cancel</Button>} />
             <Button type="submit" disabled={update.isPending || value === ""}>
               Save Changes

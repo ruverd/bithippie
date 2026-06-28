@@ -1,10 +1,13 @@
+import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Pencil } from "lucide-react";
+import { Pencil, Plus } from "lucide-react";
 import { useGetProjectsByProjectId } from "@/generated/hooks/projects/useGetProjectsByProjectId";
 import { useGetProjectsByProjectIdResearchers } from "@/generated/hooks/projects/useGetProjectsByProjectIdResearchers";
 import { useGetProjectsByProjectIdExperiments } from "@/generated/hooks/projects/useGetProjectsByProjectIdExperiments";
 import { useGetProjectsByProjectIdSamples } from "@/generated/hooks/projects/useGetProjectsByProjectIdSamples";
 import { useGetProjectsByProjectIdMeasurements } from "@/generated/hooks/projects/useGetProjectsByProjectIdMeasurements";
+import type { GetProjectsByProjectIdExperiments200 } from "@/generated/types/projects/GetProjectsByProjectIdExperiments";
+import type { GetProjectsByProjectIdSamples200 } from "@/generated/types/projects/GetProjectsByProjectIdSamples";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -12,7 +15,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { StatusBadge } from "@/components/status-badge";
 import { ProjectFormDialog } from "@/features/projects/project-form-dialog";
-import { CreateExperimentDialog } from "@/features/experiments/create-experiment-dialog";
+import { ProjectResearchersTab } from "@/features/projects/project-researchers-tab";
+import { ExperimentFormDialog } from "@/features/experiments/experiment-form-dialog";
+import { SampleFormDialog } from "@/features/samples/sample-form-dialog";
 import { formatDate } from "@/utils/format-date";
 import { initials } from "@/utils/initials";
 import { formatRole } from "@/utils/format-role";
@@ -22,6 +27,9 @@ import { MetaChip } from "@/components/meta-chip";
 import { Empty } from "@/components/empty";
 import { SimpleTable } from "@/components/simple-table";
 
+type ProjectExperimentRow = GetProjectsByProjectIdExperiments200[number];
+type ProjectSampleRow = GetProjectsByProjectIdSamples200[number];
+
 export function ProjectDetailPage() {
   const { projectId = "" } = useParams();
   const project = useGetProjectsByProjectId(projectId);
@@ -29,6 +37,12 @@ export function ProjectDetailPage() {
   const experiments = useGetProjectsByProjectIdExperiments(projectId);
   const samples = useGetProjectsByProjectIdSamples(projectId);
   const measurements = useGetProjectsByProjectIdMeasurements(projectId);
+  const [expDialog, setExpDialog] = useState<
+    { mode: "create" } | { mode: "edit"; experiment: ProjectExperimentRow } | null
+  >(null);
+  const [sampleDialog, setSampleDialog] = useState<
+    { mode: "create" } | { mode: "edit"; sample: ProjectSampleRow } | null
+  >(null);
 
   if (project.isLoading) return <div className="p-8 text-sm text-muted-foreground">Loading…</div>;
   if (project.isError || !project.data)
@@ -75,7 +89,6 @@ export function ProjectDetailPage() {
               </Button>
             }
           />
-          <CreateExperimentDialog />
         </div>
       </div>
 
@@ -177,9 +190,15 @@ export function ProjectDetailPage() {
           </div>
         </TabsContent>
 
-        <TabsContent value="experiments">
+        <TabsContent value="experiments" className="flex flex-col gap-3">
+          <div className="flex justify-end">
+            <Button onClick={() => setExpDialog({ mode: "create" })}>
+              <Plus size={16} />
+              New Experiment
+            </Button>
+          </div>
           <SimpleTable
-            head={["Name", "Status", "Follow-up of"]}
+            head={["Name", "Status", "Follow-up of", ""]}
             empty={exps.length === 0}
             emptyLabel="No experiments."
           >
@@ -196,35 +215,35 @@ export function ProjectDetailPage() {
                 <TableCell className="py-3 px-4 text-[13px] text-muted-foreground">
                   {e.previousExperimentId ?? "—"}
                 </TableCell>
+                <TableCell className="py-3 px-4 text-right">
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    className="text-muted-foreground hover:text-foreground"
+                    aria-label={`Edit ${e.title}`}
+                    onClick={() => setExpDialog({ mode: "edit", experiment: e })}
+                  >
+                    <Pencil />
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
           </SimpleTable>
         </TabsContent>
 
         <TabsContent value="researchers">
-          <SimpleTable
-            head={["Name", "Role", "Email", "Project role"]}
-            empty={memberList.length === 0}
-            emptyLabel="No researchers."
-          >
-            {memberList.map((m) => (
-              <TableRow key={m.researcherId} className="hover:bg-muted/40">
-                <TableCell className="py-3 px-4 text-sm font-medium">{m.name}</TableCell>
-                <TableCell className="py-3 px-4 text-[13px]">{formatRole(m.globalRole)}</TableCell>
-                <TableCell className="py-3 px-4 text-[13px] text-muted-foreground">
-                  {m.email}
-                </TableCell>
-                <TableCell className="py-3 px-4">
-                  <Badge variant="outline">{formatRole(m.projectRole)}</Badge>
-                </TableCell>
-              </TableRow>
-            ))}
-          </SimpleTable>
+          <ProjectResearchersTab projectId={projectId} members={memberList} />
         </TabsContent>
 
-        <TabsContent value="samples">
+        <TabsContent value="samples" className="flex flex-col gap-3">
+          <div className="flex justify-end">
+            <Button onClick={() => setSampleDialog({ mode: "create" })}>
+              <Plus size={16} />
+              Register Sample
+            </Button>
+          </div>
           <SimpleTable
-            head={["Code", "Specimen type", "Collected", "Storage"]}
+            head={["Code", "Specimen type", "Collected", "Storage", ""]}
             empty={sampleRows.length === 0}
             emptyLabel="No samples."
           >
@@ -240,11 +259,39 @@ export function ProjectDetailPage() {
                   {formatDate(s.collectedAt)}
                 </TableCell>
                 <TableCell className="py-3 px-4 text-[13px]">{s.storageLocation ?? "—"}</TableCell>
+                <TableCell className="py-3 px-4 text-right">
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    className="text-muted-foreground hover:text-foreground"
+                    aria-label={`Edit ${s.code}`}
+                    onClick={() => setSampleDialog({ mode: "edit", sample: s })}
+                  >
+                    <Pencil />
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
           </SimpleTable>
         </TabsContent>
       </Tabs>
+
+      <ExperimentFormDialog
+        open={expDialog !== null}
+        onOpenChange={(o) => {
+          if (!o) setExpDialog(null);
+        }}
+        experiment={expDialog?.mode === "edit" ? expDialog.experiment : null}
+        defaultProjectId={projectId}
+      />
+
+      <SampleFormDialog
+        open={sampleDialog !== null}
+        onOpenChange={(o) => {
+          if (!o) setSampleDialog(null);
+        }}
+        sample={sampleDialog?.mode === "edit" ? sampleDialog.sample : null}
+      />
     </div>
   );
 }

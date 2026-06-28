@@ -1,5 +1,5 @@
-import { ValidationError } from "../../../../shared/domain/errors";
-import type { CreateSampleInput, Sample } from "../../domain/sample";
+import { NotFoundError, ValidationError } from "../../../../shared/domain/errors";
+import type { CreateSampleInput, Sample, UpdateSampleInput } from "../../domain/sample";
 import type { SamplesRepository } from "../../domain/samples.repository";
 
 export class InMemorySamplesRepository implements SamplesRepository {
@@ -22,5 +22,23 @@ export class InMemorySamplesRepository implements SamplesRepository {
     };
     this.samples.push(created);
     return created;
+  }
+  async update(id: string, input: UpdateSampleInput): Promise<Sample> {
+    const s = this.samples.find((x) => x.id === id);
+    if (!s) throw new NotFoundError(`Sample ${id} not found`);
+    if (
+      input.code !== undefined &&
+      this.samples.some((x) => x.id !== id && x.code === input.code)
+    ) {
+      throw new ValidationError(`Sample code "${input.code}" already exists`);
+    }
+    if (input.code !== undefined) s.code = input.code;
+    if (input.specimenType !== undefined) s.specimenType = input.specimenType;
+    if (input.collectedAt !== undefined) s.collectedAt = input.collectedAt ?? null;
+    if (input.storageLocation !== undefined) s.storageLocation = input.storageLocation ?? null;
+    return s;
+  }
+  async delete(id: string): Promise<void> {
+    this.samples = this.samples.filter((x) => x.id !== id);
   }
 }

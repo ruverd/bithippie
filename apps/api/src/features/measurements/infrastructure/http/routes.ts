@@ -34,5 +34,13 @@ export function measurementsRouter(services: MeasurementsServices) {
         response: createdMeasurementSchema,
         detail: { tags: ["Measurements"], summary: "Update a measurement" },
       },
+    )
+    .delete(
+      "/measurements/:measurementId",
+      ({ params, set }) => controller.deleteMeasurement(params.measurementId, set),
+      {
+        params: t.Object({ measurementId: t.String() }),
+        detail: { tags: ["Measurements"], summary: "Delete a measurement" },
+      },
     );
 }

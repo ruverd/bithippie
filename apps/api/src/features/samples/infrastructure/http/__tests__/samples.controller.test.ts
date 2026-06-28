@@ -43,4 +43,16 @@ describe("SamplesController", () => {
     expect(set.status).toBe(201);
     expect(result.code).toBe("SAMP-2");
   });
+
+  it("should updateSample forwards to the service", async () => {
+    const result = await controller.updateSample("s1", { specimenType: "serum" });
+    expect(result.specimenType).toBe("serum");
+  });
+
+  it("should deleteSample forwards to the service and sets status 204", async () => {
+    const set: { status?: number | string } = {};
+    await controller.deleteSample("s1", set);
+    expect(set.status).toBe(204);
+    await expect(controller.getSample("s1")).rejects.toBeTruthy();
+  });
 });

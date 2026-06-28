@@ -14,5 +14,6 @@ export interface MeasurementsRepository {
   create(input: CreateMeasurementInput): Promise<CreatedMeasurement>;
   findById(id: string): Promise<CreatedMeasurement | null>;
   update(id: string, input: UpdateMeasurementInput): Promise<CreatedMeasurement>;
+  delete(id: string): Promise<void>;
   list(): Promise<MeasurementListItem[]>;
 }

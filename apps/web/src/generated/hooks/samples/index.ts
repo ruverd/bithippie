@@ -1,8 +1,13 @@
+export type { DeleteSamplesBySampleIdMutationKey } from "./useDeleteSamplesBySampleId.ts";
 export type { GetSamplesQueryKey } from "./useGetSamples.ts";
 export type { GetSamplesBySampleIdQueryKey } from "./useGetSamplesBySampleId.ts";
 export type { GetSamplesBySampleIdSuspenseQueryKey } from "./useGetSamplesBySampleIdSuspense.ts";
 export type { GetSamplesSuspenseQueryKey } from "./useGetSamplesSuspense.ts";
+export type { PatchSamplesBySampleIdMutationKey } from "./usePatchSamplesBySampleId.ts";
 export type { PostSamplesMutationKey } from "./usePostSamples.ts";
+export { deleteSamplesBySampleIdMutationKey } from "./useDeleteSamplesBySampleId.ts";
+export { deleteSamplesBySampleIdMutationOptions } from "./useDeleteSamplesBySampleId.ts";
+export { useDeleteSamplesBySampleId } from "./useDeleteSamplesBySampleId.ts";
 export { getSamplesQueryKey } from "./useGetSamples.ts";
 export { getSamplesQueryOptions } from "./useGetSamples.ts";
 export { useGetSamples } from "./useGetSamples.ts";
@@ -15,6 +20,9 @@ export { useGetSamplesBySampleIdSuspense } from "./useGetSamplesBySampleIdSuspen
 export { getSamplesSuspenseQueryKey } from "./useGetSamplesSuspense.ts";
 export { getSamplesSuspenseQueryOptions } from "./useGetSamplesSuspense.ts";
 export { useGetSamplesSuspense } from "./useGetSamplesSuspense.ts";
+export { patchSamplesBySampleIdMutationKey } from "./usePatchSamplesBySampleId.ts";
+export { patchSamplesBySampleIdMutationOptions } from "./usePatchSamplesBySampleId.ts";
+export { usePatchSamplesBySampleId } from "./usePatchSamplesBySampleId.ts";
 export { postSamplesMutationKey } from "./usePostSamples.ts";
 export { postSamplesMutationOptions } from "./usePostSamples.ts";
 export { usePostSamples } from "./usePostSamples.ts";

@@ -124,6 +124,10 @@ export class PrismaMeasurementsRepository implements MeasurementsRepository {
     };
   }
 
+  async delete(id: string): Promise<void> {
+    await this.prisma.measurement.delete({ where: { id } });
+  }
+
   async list(): Promise<MeasurementListItem[]> {
     const rows = await this.prisma.measurement.findMany({
       include: { definition: true, experiment: true, recordedBy: true },

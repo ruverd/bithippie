@@ -3,10 +3,11 @@
 * Do not edit manually.
 */
 
+import { deleteMeasurementsByMeasurementId } from "./deleteMeasurementsByMeasurementId.ts";
 import { getMeasurements } from "./getMeasurements.ts";
 import { patchMeasurementsByMeasurementId } from "./patchMeasurementsByMeasurementId.ts";
 import { postExperimentsByExperimentIdMeasurements } from "./postExperimentsByExperimentIdMeasurements.ts";
 
 export function measurements() {
-  return { postExperimentsByExperimentIdMeasurements, getMeasurements, patchMeasurementsByMeasurementId }
+  return { postExperimentsByExperimentIdMeasurements, getMeasurements, patchMeasurementsByMeasurementId, deleteMeasurementsByMeasurementId }
 }

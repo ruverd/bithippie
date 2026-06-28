@@ -1,5 +1,5 @@
 import type { PrismaClient } from "@prisma/client";
-import type { CreateSampleInput } from "../../domain/sample";
+import type { CreateSampleInput, UpdateSampleInput } from "../../domain/sample";
 import type { SamplesRepository } from "../../domain/samples.repository";
 
 export class PrismaSamplesRepository implements SamplesRepository {
@@ -16,6 +16,28 @@ export class PrismaSamplesRepository implements SamplesRepository {
       include: { _count: { select: { experiments: true } } },
     });
     return this.toDto(s);
+  }
+
+  async update(id: string, input: UpdateSampleInput) {
+    const s = await this.prisma.sample.update({
+      where: { id },
+      data: {
+        ...(input.code !== undefined ? { code: input.code } : {}),
+        ...(input.specimenType !== undefined ? { specimenType: input.specimenType } : {}),
+        ...(input.collectedAt !== undefined
+          ? { collectedAt: input.collectedAt ? new Date(input.collectedAt) : null }
+          : {}),
+        ...(input.storageLocation !== undefined
+          ? { storageLocation: input.storageLocation ?? null }
+          : {}),
+      },
+      include: { _count: { select: { experiments: true } } },
+    });
+    return this.toDto(s);
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.prisma.sample.delete({ where: { id } });
   }
 
   async list() {
