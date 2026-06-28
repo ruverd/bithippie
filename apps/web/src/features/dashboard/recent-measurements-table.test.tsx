@@ -30,6 +30,7 @@ describe("RecentMeasurementsTable", () => {
       <RecentMeasurementsTable
         rows={[
           {
+            id: "m1",
             definition: "pH Level",
             experiment: "Buffer Test",
             value: "7.4",

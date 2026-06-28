@@ -11,6 +11,7 @@ import {
 import { Link } from "react-router-dom";
 
 interface MeasurementRow {
+  id: string;
   definition: string;
   experiment: string;
   value: string;
@@ -51,7 +52,7 @@ export function RecentMeasurementsTable({ rows }: RecentMeasurementsTableProps) 
               </TableRow>
             ) : (
               rows.map((row) => (
-                <TableRow key={`${row.definition}-${row.time}`}>
+                <TableRow key={row.id}>
                   <TableCell className="text-sm font-medium">{row.definition}</TableCell>
                   <TableCell className="text-[13px] text-muted-foreground">{row.experiment}</TableCell>
                   <TableCell className="text-sm font-semibold">{row.value}</TableCell>

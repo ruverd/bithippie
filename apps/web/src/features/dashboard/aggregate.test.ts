@@ -128,6 +128,7 @@ describe("recentMeasurements", () => {
     const rows = recentMeasurements([measurement()], 5);
     expect(rows).toHaveLength(1);
     expect(rows[0]).toEqual({
+      id: "m",
       definition: "Lead",
       experiment: "Exp",
       value: "1 mg/L",
@@ -146,6 +147,6 @@ describe("activeExperiments", () => {
       ],
       5,
     );
-    expect(result).toEqual([{ name: "A", project: "Water", measurementCount: 3 }]);
+    expect(result).toEqual([{ id: "e", name: "A", project: "Water", measurementCount: 3 }]);
   });
 });

@@ -18,8 +18,8 @@ describe("ActiveExperimentsList", () => {
     renderWithProviders(
       <ActiveExperimentsList
         experiments={[
-          { name: "Protein Folding Assay", project: "Alpha Project", measurementCount: 42 },
-          { name: "Enzyme Kinetics", project: "Beta Project", measurementCount: 7 },
+          { id: "x1", name: "Protein Folding Assay", project: "Alpha Project", measurementCount: 42 },
+          { id: "x2", name: "Enzyme Kinetics", project: "Beta Project", measurementCount: 7 },
         ]}
       />,
     );
@@ -34,7 +34,7 @@ describe("ActiveExperimentsList", () => {
   it("should not render the empty state when experiments are present", () => {
     renderWithProviders(
       <ActiveExperimentsList
-        experiments={[{ name: "Solo", project: "P", measurementCount: 1 }]}
+        experiments={[{ id: "x1", name: "Solo", project: "P", measurementCount: 1 }]}
       />,
     );
     expect(screen.queryByText(/no active experiments/i)).not.toBeInTheDocument();

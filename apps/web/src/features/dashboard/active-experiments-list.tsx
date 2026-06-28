@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { StatusBadge } from "@/components/status-badge";
 
 interface ActiveExperiment {
+  id: string;
   name: string;
   project: string;
   measurementCount: number;
@@ -25,7 +26,7 @@ export function ActiveExperimentsList({ experiments }: ActiveExperimentsListProp
         ) : (
           experiments.map((exp) => (
             <div
-              key={exp.name}
+              key={exp.id}
               className="flex flex-col gap-1.5 rounded-lg px-2 py-2.5 hover:bg-muted/60"
             >
               <div className="flex items-center justify-between">

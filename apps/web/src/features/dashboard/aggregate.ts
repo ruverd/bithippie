@@ -88,6 +88,7 @@ export function experimentsByStatus(experiments: Experiment[]): StatusBreakdown 
 }
 
 export interface RecentMeasurementRow {
+  id: string;
   definition: string;
   experiment: string;
   value: string;
@@ -97,6 +98,7 @@ export interface RecentMeasurementRow {
 
 export function recentMeasurements(measurements: Measurement[], limit = 5): RecentMeasurementRow[] {
   return measurements.slice(0, limit).map((m) => ({
+    id: m.id,
     definition: m.definitionName,
     experiment: m.experimentName,
     value: measurementValue(m),
@@ -106,6 +108,7 @@ export function recentMeasurements(measurements: Measurement[], limit = 5): Rece
 }
 
 export interface ActiveExperimentItem {
+  id: string;
   name: string;
   project: string;
   measurementCount: number;
@@ -115,5 +118,10 @@ export function activeExperiments(experiments: Experiment[], limit = 5): ActiveE
   return experiments
     .filter((e) => e.status === "ACTIVE")
     .slice(0, limit)
-    .map((e) => ({ name: e.title, project: e.projectName, measurementCount: e.measurementCount }));
+    .map((e) => ({
+      id: e.id,
+      name: e.title,
+      project: e.projectName,
+      measurementCount: e.measurementCount,
+    }));
 }
