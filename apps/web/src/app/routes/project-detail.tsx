@@ -53,7 +53,7 @@ export function ProjectDetailPage() {
     );
 
   const p = project.data;
-  const memberList = members.data ?? [];
+  const memberList = [...(members.data ?? [])].sort((a, b) => a.name.localeCompare(b.name));
   const lead = memberList.find((m) => m.projectRole === "LEAD");
   const editInitial = {
     title: p.title,
@@ -62,7 +62,7 @@ export function ProjectDetailPage() {
     leadResearcherId: lead?.researcherId,
     collaboratorIds: memberList.filter((m) => m.projectRole !== "LEAD").map((m) => m.researcherId),
   };
-  const exps = experiments.data ?? [];
+  const exps = [...(experiments.data ?? [])].sort((a, b) => a.title.localeCompare(b.title));
   const experimentTitle = (id: string | null) => exps.find((e) => e.id === id)?.title ?? null;
   const sampleRows = samples.data ?? [];
   const recentMeasurements = (measurements.data ?? []).slice(0, 5);

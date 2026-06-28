@@ -134,7 +134,10 @@ export function ExperimentFormDialog({
       refetchType: "all",
       predicate: (q) => {
         const k = q.queryKey?.[0] as { url?: string } | undefined;
-        return typeof k?.url === "string" && k.url.includes("/experiments");
+        return (
+          typeof k?.url === "string" &&
+          (k.url.includes("/experiments") || k.url.includes("/projects"))
+        );
       },
     });
 
