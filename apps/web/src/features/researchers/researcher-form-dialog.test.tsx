@@ -77,7 +77,14 @@ describe("ResearcherFormDialog", () => {
       <ResearcherFormDialog
         open
         onOpenChange={noop}
-        researcher={{ id: "r1", name: "Ada", email: "ada@lab.org", globalRole: "POSTDOC" }}
+        researcher={{
+          id: "r1",
+          name: "Ada",
+          email: "ada@lab.org",
+          globalRole: "POSTDOC",
+          projectCount: 0,
+          measurementCount: 0,
+        }}
       />,
     );
 
@@ -93,7 +100,14 @@ describe("ResearcherFormDialog", () => {
       <ResearcherFormDialog
         open
         onOpenChange={noop}
-        researcher={{ id: "r1", name: "Ada", email: "ada@lab.org", globalRole: "POSTDOC" }}
+        researcher={{
+          id: "r1",
+          name: "Ada",
+          email: "ada@lab.org",
+          globalRole: "POSTDOC",
+          projectCount: 0,
+          measurementCount: 0,
+        }}
       />,
     );
 

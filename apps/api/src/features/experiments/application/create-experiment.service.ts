@@ -9,6 +9,15 @@ export class CreateExperimentService {
     if (!(await this.repo.projectExists(input.projectId))) {
       throw new ValidationError(`Project ${input.projectId} not found`);
     }
+    if (input.previousExperimentId) {
+      const previous = await this.repo.findById(input.previousExperimentId);
+      if (!previous) {
+        throw new ValidationError(`Experiment ${input.previousExperimentId} not found`);
+      }
+      if (previous.projectId !== input.projectId) {
+        throw new ValidationError("A follow-up experiment must belong to the same project");
+      }
+    }
     return this.repo.create(input);
   }
 }

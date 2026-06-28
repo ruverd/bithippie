@@ -30,6 +30,10 @@ vi.mock("@/generated/hooks/experiments/useGetExperimentsByExperimentId", () => (
   useGetExperimentsByExperimentId: (_id: string | undefined, _opts: unknown) => detailData(),
 }));
 
+vi.mock("@/generated/hooks/experiments/useGetExperiments", () => ({
+  useGetExperiments: () => ({ data: [] }),
+}));
+
 import { ExperimentFormDialog } from "./experiment-form-dialog";
 
 describe("ExperimentFormDialog", () => {

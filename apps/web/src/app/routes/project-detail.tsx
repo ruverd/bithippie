@@ -63,6 +63,7 @@ export function ProjectDetailPage() {
     collaboratorIds: memberList.filter((m) => m.projectRole !== "LEAD").map((m) => m.researcherId),
   };
   const exps = experiments.data ?? [];
+  const experimentTitle = (id: string | null) => exps.find((e) => e.id === id)?.title ?? null;
   const sampleRows = samples.data ?? [];
   const recentMeasurements = (measurements.data ?? []).slice(0, 5);
 
@@ -213,7 +214,7 @@ export function ProjectDetailPage() {
                   {e.status ? <StatusBadge status={e.status} /> : "—"}
                 </TableCell>
                 <TableCell className="py-3 px-4 text-[13px] text-muted-foreground">
-                  {e.previousExperimentId ?? "—"}
+                  {e.previousExperimentId ? (experimentTitle(e.previousExperimentId) ?? "—") : "—"}
                 </TableCell>
                 <TableCell className="py-3 px-4 text-right">
                   <Button

@@ -62,6 +62,13 @@ vi.mock("@/generated/hooks/measurements/useGetMeasurements", () => ({
   getMeasurementsQueryKey: () => ["k"],
 }));
 
+vi.mock(
+  "@/generated/hooks/experiments/useGetExperimentsByExperimentIdSamples",
+  () => ({
+    useGetExperimentsByExperimentIdSamples: () => ({ data: [], isLoading: false }),
+  }),
+);
+
 import { CreateMeasurementDialog } from "./create-measurement-dialog";
 
 describe("CreateMeasurementDialog", () => {

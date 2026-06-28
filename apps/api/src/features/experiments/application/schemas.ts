@@ -16,6 +16,7 @@ export const createExperimentSchema = z.object({
   hypothesis: z.string().nullish(),
   projectId: z.string().min(1),
   status: z.enum(["PLANNING", "ACTIVE", "COMPLETED", "CANCELLED"]).nullish(),
+  previousExperimentId: z.string().nullish(),
   startDate: z.string().nullish(),
   endDate: z.string().nullish(),
 });
@@ -25,6 +26,7 @@ export const updateExperimentSchema = z.object({
   hypothesis: z.string().nullish(),
   projectId: z.string().min(1).optional(),
   status: z.enum(["PLANNING", "ACTIVE", "COMPLETED", "CANCELLED"]).nullish(),
+  previousExperimentId: z.string().nullish(),
   startDate: z.string().nullish(),
   endDate: z.string().nullish(),
 });

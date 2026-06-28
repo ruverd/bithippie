@@ -5,9 +5,26 @@ import { ValidationError } from "../../../../shared/domain/errors";
 
 let service: CreateExperimentService;
 
+const seedExperiment = (id: string, projectId: string) => ({
+  id,
+  title: id,
+  hypothesis: null,
+  status: null,
+  projectId,
+  previousExperimentId: null,
+  startDate: null,
+  endDate: null,
+});
+
 beforeEach(() => {
   service = new CreateExperimentService(
-    new InMemoryExperimentsRepository([], {}, {}, [], ["p1"]),
+    new InMemoryExperimentsRepository(
+      [seedExperiment("prev", "p1"), seedExperiment("other-project", "p2")],
+      {},
+      {},
+      [],
+      ["p1", "p2"],
+    ),
   );
 });
 
@@ -23,5 +40,26 @@ describe("CreateExperimentService", () => {
     await expect(service.execute({ title: "Exp One", projectId: "nope" })).rejects.toBeInstanceOf(
       ValidationError,
     );
+  });
+
+  it("should create a follow-up that points at an experiment in the same project", async () => {
+    const result = await service.execute({
+      title: "Replication",
+      projectId: "p1",
+      previousExperimentId: "prev",
+    });
+    expect(result.previousExperimentId).toBe("prev");
+  });
+
+  it("should reject a follow-up whose previous experiment does not exist", async () => {
+    await expect(
+      service.execute({ title: "x", projectId: "p1", previousExperimentId: "missing" }),
+    ).rejects.toBeInstanceOf(ValidationError);
+  });
+
+  it("should reject a follow-up pointing at an experiment in another project", async () => {
+    await expect(
+      service.execute({ title: "x", projectId: "p1", previousExperimentId: "other-project" }),
+    ).rejects.toBeInstanceOf(ValidationError);
   });
 });

@@ -36,6 +36,7 @@ export class PrismaExperimentsRepository implements ExperimentsRepository {
         hypothesis: input.hypothesis ?? null,
         projectId: input.projectId,
         status: (input.status as Prisma.ExperimentCreateInput["status"]) ?? null,
+        previousExperimentId: input.previousExperimentId ?? null,
         startDate: input.startDate ? new Date(input.startDate) : null,
         endDate: input.endDate ? new Date(input.endDate) : null,
       },
@@ -61,6 +62,9 @@ export class PrismaExperimentsRepository implements ExperimentsRepository {
         ...(input.projectId !== undefined ? { projectId: input.projectId } : {}),
         ...(input.status !== undefined
           ? { status: input.status as Prisma.ExperimentUpdateInput["status"] }
+          : {}),
+        ...(input.previousExperimentId !== undefined
+          ? { previousExperimentId: input.previousExperimentId ?? null }
           : {}),
         ...(input.startDate !== undefined
           ? { startDate: input.startDate ? new Date(input.startDate) : null }

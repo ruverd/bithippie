@@ -41,7 +41,7 @@ export class InMemoryExperimentsRepository implements ExperimentsRepository {
       hypothesis: input.hypothesis ?? null,
       status: input.status ?? null,
       projectId: input.projectId,
-      previousExperimentId: null,
+      previousExperimentId: input.previousExperimentId ?? null,
       startDate: input.startDate ?? null,
       endDate: input.endDate ?? null,
     };
@@ -55,6 +55,8 @@ export class InMemoryExperimentsRepository implements ExperimentsRepository {
     if (input.hypothesis !== undefined) e.hypothesis = input.hypothesis ?? null;
     if (input.projectId !== undefined) e.projectId = input.projectId;
     if (input.status !== undefined) e.status = input.status ?? null;
+    if (input.previousExperimentId !== undefined)
+      e.previousExperimentId = input.previousExperimentId ?? null;
     if (input.startDate !== undefined) e.startDate = input.startDate ?? null;
     if (input.endDate !== undefined) e.endDate = input.endDate ?? null;
     return e;

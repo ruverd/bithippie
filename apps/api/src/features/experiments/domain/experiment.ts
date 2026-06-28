@@ -16,6 +16,7 @@ export interface CreateExperimentInput {
   hypothesis?: string | null;
   projectId: string;
   status?: string | null;
+  previousExperimentId?: string | null;
   startDate?: string | null;
   endDate?: string | null;
 }
@@ -25,6 +26,7 @@ export interface UpdateExperimentInput {
   hypothesis?: string | null;
   projectId?: string;
   status?: string | null;
+  previousExperimentId?: string | null;
   startDate?: string | null;
   endDate?: string | null;
 }
