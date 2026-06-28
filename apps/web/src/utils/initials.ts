@@ -6,11 +6,3 @@ export function initials(name: string): string {
     .map((w) => w[0]?.toUpperCase() ?? "")
     .join("");
 }
-
-export function titleInitials(title: string): string[] {
-  return title
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 3)
-    .map((w) => w[0]?.toUpperCase() ?? "");
-}

@@ -67,9 +67,7 @@ export function ExperimentDetailPage() {
         <MetaChip label="End date" value={formatDate(e.endDate)} />
         <MetaChip
           label="Follow-up of"
-          value={
-            e.previousExperimentId ? (previous?.title ?? e.previousExperimentId) : "—"
-          }
+          value={previous?.title ?? e.previousExperimentId ?? "—"}
         />
         <MetaChip label="Measurements" value={String(measurementRows.length)} />
       </div>

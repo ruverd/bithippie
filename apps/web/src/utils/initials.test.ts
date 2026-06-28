@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { initials, titleInitials } from "./initials";
+import { initials } from "./initials";
 
 describe("initials", () => {
   it("should takes the first letter of the first two words", () => {
@@ -28,15 +28,5 @@ describe("initials", () => {
 
   it("should returns an empty string for an empty name", () => {
     expect(initials("")).toBe("");
-  });
-});
-
-describe("titleInitials", () => {
-  it("should uppercases the first letter of up to three words", () => {
-    expect(titleInitials("Municipal Water Quality")).toEqual(["M", "W", "Q"]);
-  });
-
-  it("should caps at three words", () => {
-    expect(titleInitials("a b c d")).toEqual(["A", "B", "C"]);
   });
 });

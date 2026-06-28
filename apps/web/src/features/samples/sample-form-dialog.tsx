@@ -4,8 +4,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "sonner";
-import { X } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -37,6 +35,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Field } from "@/components/form-field";
 import { DatePicker } from "@/components/date-picker";
+import { ChipMultiSelect } from "@/components/chip-multi-select";
+import { invalidateByUrl } from "@/lib/invalidate-queries";
 import { usePostSamples } from "@/generated/hooks/samples/usePostSamples";
 import { usePatchSamplesBySampleId } from "@/generated/hooks/samples/usePatchSamplesBySampleId";
 import { useDeleteSamplesBySampleId } from "@/generated/hooks/samples/useDeleteSamplesBySampleId";
@@ -138,18 +138,7 @@ export function SampleFormDialog({
   }, [open, sample, reset]);
 
   const invalidate = () =>
-    queryClient.invalidateQueries({
-      refetchType: "all",
-      predicate: (q) => {
-        const k = q.queryKey?.[0] as { url?: string } | undefined;
-        return (
-          typeof k?.url === "string" &&
-          (k.url.includes("/samples") ||
-            k.url.includes("/experiments") ||
-            k.url.includes("/projects"))
-        );
-      },
-    });
+    invalidateByUrl(queryClient, "/samples", "/experiments", "/projects");
 
   const syncExperiments = async (sampleId: string, previous: string[]) => {
     if (!showExperiments) return;
@@ -282,46 +271,12 @@ export function SampleFormDialog({
                   This project has no experiments yet.
                 </p>
               ) : (
-                <div className="flex flex-wrap items-center gap-2 rounded-md border border-input bg-background p-2">
-                  {selectedExperiments.map((id) => {
-                    const title = availableExperiments.find((e) => e.id === id)?.title ?? id;
-                    return (
-                      <Badge key={id} variant="secondary" className="gap-1">
-                        {title}
-                        <button
-                          type="button"
-                          aria-label={`Remove ${title}`}
-                          onClick={() =>
-                            setSelectedExperiments((prev) => prev.filter((x) => x !== id))
-                          }
-                        >
-                          <X className="size-3" />
-                        </button>
-                      </Badge>
-                    );
-                  })}
-                  {availableExperiments.some((e) => !selectedExperiments.includes(e.id)) && (
-                    <Select
-                      value=""
-                      onValueChange={(v) =>
-                        v && setSelectedExperiments((prev) => [...prev, v])
-                      }
-                    >
-                      <SelectTrigger className="h-7 w-auto gap-1 border-0 bg-transparent px-1 text-[13px] text-muted-foreground shadow-none">
-                        <SelectValue placeholder="+ Add experiment" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {availableExperiments
-                          .filter((e) => !selectedExperiments.includes(e.id))
-                          .map((e) => (
-                            <SelectItem key={e.id} value={e.id}>
-                              {e.title}
-                            </SelectItem>
-                          ))}
-                      </SelectContent>
-                    </Select>
-                  )}
-                </div>
+                <ChipMultiSelect
+                  value={selectedExperiments}
+                  onChange={setSelectedExperiments}
+                  options={availableExperiments.map((e) => ({ id: e.id, label: e.title }))}
+                  addPlaceholder="+ Add experiment"
+                />
               )}
             </Field>
           )}

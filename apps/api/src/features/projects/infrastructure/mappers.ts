@@ -12,7 +12,8 @@ export const toProjectListItem = (row: PrismaProjectListRow): ProjectListItem =>
   ...toProject(row),
   experimentCount: row._count.experiments,
   updatedAt: row.updatedAt.toISOString(),
-  team: [...row.researchers]
-    .sort((a, b) => (a.projectRole === "LEAD" ? -1 : b.projectRole === "LEAD" ? 1 : 0))
-    .map((m) => ({ name: m.researcher.name, projectRole: m.projectRole })),
+  team: [
+    ...row.researchers.filter((m) => m.projectRole === "LEAD"),
+    ...row.researchers.filter((m) => m.projectRole !== "LEAD"),
+  ].map((m) => ({ name: m.researcher.name, projectRole: m.projectRole })),
 });

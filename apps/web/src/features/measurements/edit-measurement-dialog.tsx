@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Field } from "@/components/form-field";
+import { invalidateByUrl } from "@/lib/invalidate-queries";
 import { useGetMeasurementDefinitions } from "@/generated/hooks/measurementDefinitions/useGetMeasurementDefinitions";
 import { useGetResearchers } from "@/generated/hooks/researchers/useGetResearchers";
 import { usePatchMeasurementsByMeasurementId } from "@/generated/hooks/measurements/usePatchMeasurementsByMeasurementId";
@@ -77,14 +78,7 @@ export function EditMeasurementDialog({ open, onOpenChange, measurement }: EditM
   const def = (definitions.data ?? []).find((d) => d.id === measurement.measurementDefinitionId);
   const allowedCategories = def?.allowedCategories ?? [];
 
-  const invalidate = () =>
-    queryClient.invalidateQueries({
-      refetchType: "all",
-      predicate: (q) => {
-        const k = q.queryKey?.[0] as { url?: string } | undefined;
-        return typeof k?.url === "string" && k.url.includes("measurements");
-      },
-    });
+  const invalidate = () => invalidateByUrl(queryClient, "measurements");
 
   const onDelete = () => {
     remove.mutate(

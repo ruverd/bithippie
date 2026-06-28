@@ -104,6 +104,7 @@ export class PrismaProjectsRepository implements ProjectsRepository {
     const rows = await this.prisma.projectResearcher.findMany({
       where: { projectId },
       include: { researcher: true },
+      orderBy: { researcher: { name: "asc" } },
     });
     return rows.map((r) => ({
       researcherId: r.researcherId,
@@ -116,7 +117,7 @@ export class PrismaProjectsRepository implements ProjectsRepository {
 
   async listExperiments(projectId: string) {
     return (
-      await this.prisma.experiment.findMany({ where: { projectId }, orderBy: { createdAt: "asc" } })
+      await this.prisma.experiment.findMany({ where: { projectId }, orderBy: { title: "asc" } })
     ).map((e) => ({
       id: e.id,
       title: e.title,

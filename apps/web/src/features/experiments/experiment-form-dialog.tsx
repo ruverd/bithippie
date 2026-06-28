@@ -43,6 +43,7 @@ import { usePatchExperimentsByExperimentId } from "@/generated/hooks/experiments
 import { useDeleteExperimentsByExperimentId } from "@/generated/hooks/experiments/useDeleteExperimentsByExperimentId";
 import { useGetExperimentsByExperimentId } from "@/generated/hooks/experiments/useGetExperimentsByExperimentId";
 import { emptyToUndefined } from "@/utils/empty-to-undefined";
+import { invalidateByUrl } from "@/lib/invalidate-queries";
 
 type ExperimentRef = { id: string; title: string };
 
@@ -85,7 +86,7 @@ export function ExperimentFormDialog({
   const isEdit = Boolean(experiment);
   const queryClient = useQueryClient();
   const projects = useGetProjects();
-  const experiments = useGetExperiments();
+  const experiments = useGetExperiments({ query: { enabled: open } });
   const create = usePostExperiments();
   const update = usePatchExperimentsByExperimentId();
   const remove = useDeleteExperimentsByExperimentId();
@@ -129,17 +130,7 @@ export function ExperimentFormDialog({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, isEdit, detail.data]);
 
-  const invalidate = () =>
-    queryClient.invalidateQueries({
-      refetchType: "all",
-      predicate: (q) => {
-        const k = q.queryKey?.[0] as { url?: string } | undefined;
-        return (
-          typeof k?.url === "string" &&
-          (k.url.includes("/experiments") || k.url.includes("/projects"))
-        );
-      },
-    });
+  const invalidate = () => invalidateByUrl(queryClient, "/experiments", "/projects");
 
   const onSubmit = handleSubmit((values) => {
     const data = {
@@ -147,7 +138,7 @@ export function ExperimentFormDialog({
       projectId: values.projectId,
       hypothesis: emptyToUndefined(values.hypothesis),
       status: values.status,
-      previousExperimentId: values.previousExperimentId ? values.previousExperimentId : null,
+      previousExperimentId: values.previousExperimentId || null,
       startDate: emptyToUndefined(values.startDate),
       endDate: emptyToUndefined(values.endDate),
     };
@@ -283,10 +274,6 @@ export function ExperimentFormDialog({
               name="previousExperimentId"
               render={({ field }) => (
                 <Select
-                  items={{
-                    [NONE]: "None",
-                    ...Object.fromEntries(followUpOptions.map((e) => [e.id, e.title])),
-                  }}
                   value={field.value || NONE}
                   onValueChange={(v) => field.onChange(v === NONE ? "" : (v ?? ""))}
                   disabled={!selectedProjectId}

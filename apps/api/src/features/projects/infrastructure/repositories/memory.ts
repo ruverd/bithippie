@@ -90,11 +90,11 @@ export class InMemoryProjectsRepository implements ProjectsRepository {
   }
 
   async listResearchers(projectId: string) {
-    return this.researchers[projectId] ?? [];
+    return [...(this.researchers[projectId] ?? [])].sort((a, b) => a.name.localeCompare(b.name));
   }
 
   async listExperiments(projectId: string) {
-    return this.experiments[projectId] ?? [];
+    return [...(this.experiments[projectId] ?? [])].sort((a, b) => a.title.localeCompare(b.title));
   }
 
   async listSamples(projectId: string) {
