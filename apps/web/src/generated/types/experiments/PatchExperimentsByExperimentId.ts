@@ -77,6 +77,10 @@ export type PatchExperimentsByExperimentIdMutationRequest = {
     /**
      * @type string,null
     */
+    previousExperimentId?: string | null;
+    /**
+     * @type string,null
+    */
     startDate?: string | null;
     /**
      * @type string,null

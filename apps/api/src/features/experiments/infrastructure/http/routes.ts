@@ -66,5 +66,24 @@ export function experimentsRouter(services: ExperimentsServices) {
         detail: { tags: ["Experiments"] },
         response: experimentSampleListSchema,
       },
+    )
+    .post(
+      "/:experimentId/samples",
+      ({ params, body, set }) =>
+        controller.attachExperimentSample(params.experimentId, body.sampleId, set),
+      {
+        params: t.Object({ experimentId: t.String() }),
+        body: t.Object({ sampleId: t.String() }),
+        detail: { tags: ["Experiments"], summary: "Attach a sample to an experiment" },
+      },
+    )
+    .delete(
+      "/:experimentId/samples/:sampleId",
+      ({ params, set }) =>
+        controller.detachExperimentSample(params.experimentId, params.sampleId, set),
+      {
+        params: t.Object({ experimentId: t.String(), sampleId: t.String() }),
+        detail: { tags: ["Experiments"], summary: "Detach a sample from an experiment" },
+      },
     );
 }

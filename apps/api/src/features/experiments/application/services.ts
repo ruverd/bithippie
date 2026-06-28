@@ -1,6 +1,8 @@
 import type { ExperimentsRepository } from "../domain/experiments.repository";
+import { AttachExperimentSampleService } from "./attach-experiment-sample.service";
 import { CreateExperimentService } from "./create-experiment.service";
 import { DeleteExperimentService } from "./delete-experiment.service";
+import { DetachExperimentSampleService } from "./detach-experiment-sample.service";
 import { GetExperimentService } from "./get-experiment.service";
 import { GetExperimentMeasurementsService } from "./get-experiment-measurements.service";
 import { GetExperimentSamplesService } from "./get-experiment-samples.service";
@@ -15,6 +17,8 @@ export interface ExperimentsServices {
   getExperiment: GetExperimentService;
   getExperimentMeasurements: GetExperimentMeasurementsService;
   getExperimentSamples: GetExperimentSamplesService;
+  attachExperimentSample: AttachExperimentSampleService;
+  detachExperimentSample: DetachExperimentSampleService;
 }
 
 export function buildExperimentsServices(repo: ExperimentsRepository): ExperimentsServices {
@@ -26,5 +30,7 @@ export function buildExperimentsServices(repo: ExperimentsRepository): Experimen
     getExperiment: new GetExperimentService(repo),
     getExperimentMeasurements: new GetExperimentMeasurementsService(repo),
     getExperimentSamples: new GetExperimentSamplesService(repo),
+    attachExperimentSample: new AttachExperimentSampleService(repo),
+    detachExperimentSample: new DetachExperimentSampleService(repo),
   };
 }

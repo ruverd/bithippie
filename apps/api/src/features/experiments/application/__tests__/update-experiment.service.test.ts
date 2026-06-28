@@ -19,6 +19,26 @@ beforeEach(() => {
           startDate: null,
           endDate: null,
         },
+        {
+          id: "e2",
+          title: "Exp Two",
+          hypothesis: null,
+          status: "PLANNING",
+          projectId: "p1",
+          previousExperimentId: null,
+          startDate: null,
+          endDate: null,
+        },
+        {
+          id: "e3",
+          title: "Exp Three",
+          hypothesis: null,
+          status: "PLANNING",
+          projectId: "p2",
+          previousExperimentId: null,
+          startDate: null,
+          endDate: null,
+        },
       ],
       {},
       {},
@@ -41,6 +61,29 @@ describe("UpdateExperimentService", () => {
 
   it("should throw ValidationError when the target project does not exist", async () => {
     await expect(service.execute("e1", { projectId: "nope" })).rejects.toBeInstanceOf(
+      ValidationError,
+    );
+  });
+
+  it("should set a follow-up to an experiment in the same project", async () => {
+    const result = await service.execute("e1", { previousExperimentId: "e2" });
+    expect(result.previousExperimentId).toBe("e2");
+  });
+
+  it("should reject an experiment that is a follow-up of itself", async () => {
+    await expect(service.execute("e1", { previousExperimentId: "e1" })).rejects.toBeInstanceOf(
+      ValidationError,
+    );
+  });
+
+  it("should reject a follow-up pointing at a missing experiment", async () => {
+    await expect(
+      service.execute("e1", { previousExperimentId: "missing" }),
+    ).rejects.toBeInstanceOf(ValidationError);
+  });
+
+  it("should reject a follow-up pointing at an experiment in another project", async () => {
+    await expect(service.execute("e1", { previousExperimentId: "e3" })).rejects.toBeInstanceOf(
       ValidationError,
     );
   });

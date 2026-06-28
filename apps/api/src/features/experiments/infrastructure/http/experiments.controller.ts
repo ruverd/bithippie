@@ -36,4 +36,14 @@ export class ExperimentsController {
   getExperimentSamples(id: string) {
     return this.services.getExperimentSamples.execute(id);
   }
+
+  async attachExperimentSample(experimentId: string, sampleId: string, set: ResponseSet) {
+    await this.services.attachExperimentSample.execute(experimentId, sampleId);
+    set.status = 204;
+  }
+
+  async detachExperimentSample(experimentId: string, sampleId: string, set: ResponseSet) {
+    await this.services.detachExperimentSample.execute(experimentId, sampleId);
+    set.status = 204;
+  }
 }

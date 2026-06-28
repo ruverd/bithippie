@@ -4,6 +4,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "sonner";
+import { X } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -38,6 +40,8 @@ import { DatePicker } from "@/components/date-picker";
 import { usePostSamples } from "@/generated/hooks/samples/usePostSamples";
 import { usePatchSamplesBySampleId } from "@/generated/hooks/samples/usePatchSamplesBySampleId";
 import { useDeleteSamplesBySampleId } from "@/generated/hooks/samples/useDeleteSamplesBySampleId";
+import { usePostExperimentsByExperimentIdSamples } from "@/generated/hooks/experiments/usePostExperimentsByExperimentIdSamples";
+import { useDeleteExperimentsByExperimentIdSamplesBySampleId } from "@/generated/hooks/experiments/useDeleteExperimentsByExperimentIdSamplesBySampleId";
 import { emptyToUndefined } from "@/utils/empty-to-undefined";
 
 type SampleRef = {
@@ -46,7 +50,13 @@ type SampleRef = {
   specimenType: string;
   collectedAt: string | null;
   storageLocation: string | null;
+  experimentIds?: string[];
 };
+
+export interface ExperimentOption {
+  id: string;
+  title: string;
+}
 
 const specimenTypes = [
   "Blood plasma",
@@ -81,16 +91,28 @@ export interface SampleFormDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   sample?: SampleRef | null;
+  /** When provided, the dialog shows an experiment picker scoped to these options. */
+  availableExperiments?: ExperimentOption[];
 }
 
-export function SampleFormDialog({ open, onOpenChange, sample }: SampleFormDialogProps) {
+export function SampleFormDialog({
+  open,
+  onOpenChange,
+  sample,
+  availableExperiments,
+}: SampleFormDialogProps) {
   const isEdit = Boolean(sample);
   const queryClient = useQueryClient();
   const create = usePostSamples();
   const update = usePatchSamplesBySampleId();
   const remove = useDeleteSamplesBySampleId();
+  const attach = usePostExperimentsByExperimentIdSamples();
+  const detach = useDeleteExperimentsByExperimentIdSamplesBySampleId();
   const [confirmOpen, setConfirmOpen] = useState(false);
-  const pending = create.isPending || update.isPending;
+  const [selectedExperiments, setSelectedExperiments] = useState<string[]>([]);
+  const pending =
+    create.isPending || update.isPending || attach.isPending || detach.isPending;
+  const showExperiments = availableExperiments !== undefined;
 
   const {
     control,
@@ -102,6 +124,7 @@ export function SampleFormDialog({ open, onOpenChange, sample }: SampleFormDialo
 
   useEffect(() => {
     if (!open) return;
+    setSelectedExperiments(sample?.experimentIds ?? []);
     if (!sample) {
       reset(BLANK);
       return;
@@ -119,39 +142,48 @@ export function SampleFormDialog({ open, onOpenChange, sample }: SampleFormDialo
       refetchType: "all",
       predicate: (q) => {
         const k = q.queryKey?.[0] as { url?: string } | undefined;
-        return typeof k?.url === "string" && k.url.includes("/samples");
+        return (
+          typeof k?.url === "string" &&
+          (k.url.includes("/samples") ||
+            k.url.includes("/experiments") ||
+            k.url.includes("/projects"))
+        );
       },
     });
 
-  const onSubmit = handleSubmit((values) => {
+  const syncExperiments = async (sampleId: string, previous: string[]) => {
+    if (!showExperiments) return;
+    const added = selectedExperiments.filter((id) => !previous.includes(id));
+    const removed = previous.filter((id) => !selectedExperiments.includes(id));
+    for (const experimentId of added) {
+      await attach.mutateAsync({ experimentId, data: { sampleId } });
+    }
+    for (const experimentId of removed) {
+      await detach.mutateAsync({ experimentId, sampleId });
+    }
+  };
+
+  const onSubmit = handleSubmit(async (values) => {
     const data = {
       code: values.code,
       specimenType: values.specimenType,
       collectedAt: emptyToUndefined(values.collectedAt),
       storageLocation: emptyToUndefined(values.storageLocation),
     };
-    if (sample) {
-      update.mutate(
-        { sampleId: sample.id, data },
-        {
-          onSuccess: () => {
-            invalidate();
-            toast.success("Sample updated");
-            onOpenChange(false);
-          },
-        },
-      );
-    } else {
-      create.mutate(
-        { data },
-        {
-          onSuccess: () => {
-            invalidate();
-            toast.success("Sample registered");
-            onOpenChange(false);
-          },
-        },
-      );
+    try {
+      if (sample) {
+        await update.mutateAsync({ sampleId: sample.id, data });
+        await syncExperiments(sample.id, sample.experimentIds ?? []);
+        toast.success("Sample updated");
+      } else {
+        const created = await create.mutateAsync({ data });
+        await syncExperiments(created.id, []);
+        toast.success("Sample registered");
+      }
+      invalidate();
+      onOpenChange(false);
+    } catch {
+      toast.error("Could not save the sample");
     }
   });
 
@@ -242,6 +274,57 @@ export function SampleFormDialog({ open, onOpenChange, sample }: SampleFormDialo
               {...register("storageLocation")}
             />
           </Field>
+
+          {showExperiments && (
+            <Field label="Experiments">
+              {availableExperiments.length === 0 ? (
+                <p className="text-[13px] text-muted-foreground">
+                  This project has no experiments yet.
+                </p>
+              ) : (
+                <div className="flex flex-wrap items-center gap-2 rounded-md border border-input bg-background p-2">
+                  {selectedExperiments.map((id) => {
+                    const title = availableExperiments.find((e) => e.id === id)?.title ?? id;
+                    return (
+                      <Badge key={id} variant="secondary" className="gap-1">
+                        {title}
+                        <button
+                          type="button"
+                          aria-label={`Remove ${title}`}
+                          onClick={() =>
+                            setSelectedExperiments((prev) => prev.filter((x) => x !== id))
+                          }
+                        >
+                          <X className="size-3" />
+                        </button>
+                      </Badge>
+                    );
+                  })}
+                  {availableExperiments.some((e) => !selectedExperiments.includes(e.id)) && (
+                    <Select
+                      value=""
+                      onValueChange={(v) =>
+                        v && setSelectedExperiments((prev) => [...prev, v])
+                      }
+                    >
+                      <SelectTrigger className="h-7 w-auto gap-1 border-0 bg-transparent px-1 text-[13px] text-muted-foreground shadow-none">
+                        <SelectValue placeholder="+ Add experiment" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {availableExperiments
+                          .filter((e) => !selectedExperiments.includes(e.id))
+                          .map((e) => (
+                            <SelectItem key={e.id} value={e.id}>
+                              {e.title}
+                            </SelectItem>
+                          ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+                </div>
+              )}
+            </Field>
+          )}
 
           <DialogFooter>
             {isEdit && (

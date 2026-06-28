@@ -14,6 +14,21 @@ export class PrismaExperimentsRepository implements ExperimentsRepository {
     return (await this.prisma.project.count({ where: { id: projectId } })) > 0;
   }
 
+  async sampleExists(sampleId: string) {
+    return (await this.prisma.sample.count({ where: { id: sampleId } })) > 0;
+  }
+
+  async attachSample(experimentId: string, sampleId: string): Promise<void> {
+    await this.prisma.experimentSample.createMany({
+      data: [{ experimentId, sampleId }],
+      skipDuplicates: true,
+    });
+  }
+
+  async detachSample(experimentId: string, sampleId: string): Promise<void> {
+    await this.prisma.experimentSample.deleteMany({ where: { experimentId, sampleId } });
+  }
+
   async create(input: CreateExperimentInput): Promise<Experiment> {
     const e = await this.prisma.experiment.create({
       data: {
@@ -21,6 +36,7 @@ export class PrismaExperimentsRepository implements ExperimentsRepository {
         hypothesis: input.hypothesis ?? null,
         projectId: input.projectId,
         status: (input.status as Prisma.ExperimentCreateInput["status"]) ?? null,
+        previousExperimentId: input.previousExperimentId ?? null,
         startDate: input.startDate ? new Date(input.startDate) : null,
         endDate: input.endDate ? new Date(input.endDate) : null,
       },
@@ -46,6 +62,9 @@ export class PrismaExperimentsRepository implements ExperimentsRepository {
         ...(input.projectId !== undefined ? { projectId: input.projectId } : {}),
         ...(input.status !== undefined
           ? { status: input.status as Prisma.ExperimentUpdateInput["status"] }
+          : {}),
+        ...(input.previousExperimentId !== undefined
+          ? { previousExperimentId: input.previousExperimentId ?? null }
           : {}),
         ...(input.startDate !== undefined
           ? { startDate: input.startDate ? new Date(input.startDate) : null }

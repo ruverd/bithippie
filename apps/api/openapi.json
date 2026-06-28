@@ -759,6 +759,12 @@
                           "string",
                           "null"
                         ]
+                      },
+                      "experimentIds": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
                       }
                     },
                     "required": [
@@ -766,7 +772,8 @@
                       "code",
                       "specimenType",
                       "collectedAt",
-                      "storageLocation"
+                      "storageLocation",
+                      "experimentIds"
                     ],
                     "additionalProperties": false
                   },
@@ -1008,6 +1015,12 @@
                       }
                     ]
                   },
+                  "previousExperimentId": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
                   "startDate": {
                     "type": [
                       "string",
@@ -1063,6 +1076,12 @@
                       }
                     ]
                   },
+                  "previousExperimentId": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
                   "startDate": {
                     "type": [
                       "string",
@@ -1116,6 +1135,12 @@
                       {
                         "type": "null"
                       }
+                    ]
+                  },
+                  "previousExperimentId": {
+                    "type": [
+                      "string",
+                      "null"
                     ]
                   },
                   "startDate": {
@@ -1343,6 +1368,12 @@
                       }
                     ]
                   },
+                  "previousExperimentId": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
                   "startDate": {
                     "type": [
                       "string",
@@ -1394,6 +1425,12 @@
                       }
                     ]
                   },
+                  "previousExperimentId": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
                   "startDate": {
                     "type": [
                       "string",
@@ -1443,6 +1480,12 @@
                       {
                         "type": "null"
                       }
+                    ]
+                  },
+                  "previousExperimentId": {
+                    "type": [
+                      "string",
+                      "null"
                     ]
                   },
                   "startDate": {
@@ -2023,6 +2066,94 @@
           }
         },
         "operationId": "getExperimentsByExperimentIdSamples"
+      },
+      "post": {
+        "tags": [
+          "Experiments"
+        ],
+        "summary": "Attach a sample to an experiment",
+        "parameters": [
+          {
+            "name": "experimentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "sampleId"
+                ],
+                "properties": {
+                  "sampleId": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "sampleId"
+                ],
+                "properties": {
+                  "sampleId": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "sampleId"
+                ],
+                "properties": {
+                  "sampleId": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "postExperimentsByExperimentIdSamples"
+      }
+    },
+    "/experiments/{experimentId}/samples/{sampleId}": {
+      "delete": {
+        "tags": [
+          "Experiments"
+        ],
+        "summary": "Detach a sample from an experiment",
+        "parameters": [
+          {
+            "name": "experimentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sampleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "deleteExperimentsByExperimentIdSamplesBySampleId"
       }
     },
     "/samples/": {

@@ -1,10 +1,12 @@
 export type { DeleteExperimentsByExperimentIdMutation, DeleteExperimentsByExperimentIdMutationResponse, DeleteExperimentsByExperimentIdPathParams } from "./DeleteExperimentsByExperimentId.ts";
+export type { DeleteExperimentsByExperimentIdSamplesBySampleIdMutation, DeleteExperimentsByExperimentIdSamplesBySampleIdMutationResponse, DeleteExperimentsByExperimentIdSamplesBySampleIdPathParams } from "./DeleteExperimentsByExperimentIdSamplesBySampleId.ts";
 export type { GetExperiments200, GetExperimentsQuery, GetExperimentsQueryResponse } from "./GetExperiments.ts";
 export type { GetExperimentsByExperimentId200, GetExperimentsByExperimentIdPathParams, GetExperimentsByExperimentIdQuery, GetExperimentsByExperimentIdQueryResponse } from "./GetExperimentsByExperimentId.ts";
 export type { GetExperimentsByExperimentIdMeasurements200, GetExperimentsByExperimentIdMeasurements200ValueTypeEnumKey, GetExperimentsByExperimentIdMeasurementsPathParams, GetExperimentsByExperimentIdMeasurementsQuery, GetExperimentsByExperimentIdMeasurementsQueryResponse } from "./GetExperimentsByExperimentIdMeasurements.ts";
 export type { GetExperimentsByExperimentIdSamples200, GetExperimentsByExperimentIdSamplesPathParams, GetExperimentsByExperimentIdSamplesQuery, GetExperimentsByExperimentIdSamplesQueryResponse } from "./GetExperimentsByExperimentIdSamples.ts";
 export type { PatchExperimentsByExperimentId200, PatchExperimentsByExperimentIdMutation, PatchExperimentsByExperimentIdMutationRequest, PatchExperimentsByExperimentIdMutationRequestStatusEnumKey, PatchExperimentsByExperimentIdMutationResponse, PatchExperimentsByExperimentIdPathParams } from "./PatchExperimentsByExperimentId.ts";
 export type { PostExperiments201, PostExperimentsMutation, PostExperimentsMutationRequest, PostExperimentsMutationRequestStatusEnumKey, PostExperimentsMutationResponse } from "./PostExperiments.ts";
+export type { PostExperimentsByExperimentIdSamplesMutation, PostExperimentsByExperimentIdSamplesMutationRequest, PostExperimentsByExperimentIdSamplesMutationResponse, PostExperimentsByExperimentIdSamplesPathParams } from "./PostExperimentsByExperimentIdSamples.ts";
 export { getExperimentsByExperimentIdMeasurements200ValueTypeEnum } from "./GetExperimentsByExperimentIdMeasurements.ts";
 export { patchExperimentsByExperimentIdMutationRequestStatusEnum } from "./PatchExperimentsByExperimentId.ts";
 export { postExperimentsMutationRequestStatusEnum } from "./PostExperiments.ts";

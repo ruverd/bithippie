@@ -37,6 +37,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Field } from "@/components/form-field";
 import { DatePicker } from "@/components/date-picker";
 import { useGetProjects } from "@/generated/hooks/projects/useGetProjects";
+import { useGetExperiments } from "@/generated/hooks/experiments/useGetExperiments";
 import { usePostExperiments } from "@/generated/hooks/experiments/usePostExperiments";
 import { usePatchExperimentsByExperimentId } from "@/generated/hooks/experiments/usePatchExperimentsByExperimentId";
 import { useDeleteExperimentsByExperimentId } from "@/generated/hooks/experiments/useDeleteExperimentsByExperimentId";
@@ -50,16 +51,20 @@ const schema = z.object({
   hypothesis: z.string().optional(),
   projectId: z.string().min(1, "Required"),
   status: z.enum(["PLANNING", "ACTIVE", "COMPLETED", "CANCELLED"]).optional(),
+  previousExperimentId: z.string().optional(),
   startDate: z.string().optional(),
   endDate: z.string().optional(),
 });
 
 type FormValues = z.infer<typeof schema>;
 
+const NONE = "__none__";
+
 const BLANK: FormValues = {
   title: "",
   hypothesis: "",
   projectId: "",
+  previousExperimentId: "",
   startDate: "",
   endDate: "",
 };
@@ -80,6 +85,7 @@ export function ExperimentFormDialog({
   const isEdit = Boolean(experiment);
   const queryClient = useQueryClient();
   const projects = useGetProjects();
+  const experiments = useGetExperiments();
   const create = usePostExperiments();
   const update = usePatchExperimentsByExperimentId();
   const remove = useDeleteExperimentsByExperimentId();
@@ -94,8 +100,14 @@ export function ExperimentFormDialog({
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
   } = useForm<FormValues>({ resolver: zodResolver(schema), defaultValues: BLANK });
+
+  const selectedProjectId = watch("projectId");
+  const followUpOptions = (experiments.data ?? []).filter(
+    (e) => e.projectId === selectedProjectId && e.id !== experiment?.id,
+  );
 
   useEffect(() => {
     if (!open) return;
@@ -110,6 +122,7 @@ export function ExperimentFormDialog({
       hypothesis: d.hypothesis ?? "",
       projectId: d.projectId,
       status: (d.status as FormValues["status"]) ?? undefined,
+      previousExperimentId: d.previousExperimentId ?? "",
       startDate: d.startDate ? d.startDate.slice(0, 10) : "",
       endDate: d.endDate ? d.endDate.slice(0, 10) : "",
     });
@@ -131,6 +144,7 @@ export function ExperimentFormDialog({
       projectId: values.projectId,
       hypothesis: emptyToUndefined(values.hypothesis),
       status: values.status,
+      previousExperimentId: values.previousExperimentId ? values.previousExperimentId : null,
       startDate: emptyToUndefined(values.startDate),
       endDate: emptyToUndefined(values.endDate),
     };
@@ -259,6 +273,40 @@ export function ExperimentFormDialog({
               />
             </Field>
           </div>
+
+          <Field label="Follow-up of" error={errors.previousExperimentId?.message}>
+            <Controller
+              control={control}
+              name="previousExperimentId"
+              render={({ field }) => (
+                <Select
+                  items={{
+                    [NONE]: "None",
+                    ...Object.fromEntries(followUpOptions.map((e) => [e.id, e.title])),
+                  }}
+                  value={field.value || NONE}
+                  onValueChange={(v) => field.onChange(v === NONE ? "" : (v ?? ""))}
+                  disabled={!selectedProjectId}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue
+                      placeholder={
+                        selectedProjectId ? "Not a follow-up" : "Select a project first"
+                      }
+                    />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value={NONE}>None</SelectItem>
+                    {followUpOptions.map((e) => (
+                      <SelectItem key={e.id} value={e.id}>
+                        {e.title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          </Field>
 
           <DialogFooter>
             {isEdit && (

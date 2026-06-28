@@ -7,13 +7,18 @@ import type { z } from "zod";
 import { useGetMeasurementDefinitions } from "@/generated/hooks/measurementDefinitions/useGetMeasurementDefinitions";
 import { usePostExperimentsByExperimentIdMeasurements } from "@/generated/hooks/measurements/usePostExperimentsByExperimentIdMeasurements";
 import { getExperimentsByExperimentIdMeasurementsQueryKey } from "@/generated/hooks/experiments/useGetExperimentsByExperimentIdMeasurements";
+import { useGetExperimentsByExperimentIdSamples } from "@/generated/hooks/experiments/useGetExperimentsByExperimentIdSamples";
 import { MeasurementValueField } from "./MeasurementValueField";
+import { SampleMultiSelect } from "./sample-multi-select";
 
 type FormValues = z.infer<typeof measurementValueInputSchema>;
 
 export function CreateMeasurementForm({ experimentId }: { experimentId: string }) {
   const queryClient = useQueryClient();
   const definitions = useGetMeasurementDefinitions();
+  const samples = useGetExperimentsByExperimentIdSamples(experimentId, {
+    query: { enabled: Boolean(experimentId) },
+  });
   const create = usePostExperimentsByExperimentIdMeasurements();
   const { control, handleSubmit, watch, register } = useForm<FormValues>({
     resolver: zodResolver(measurementValueInputSchema),
@@ -82,6 +87,22 @@ export function CreateMeasurementForm({ experimentId }: { experimentId: string }
           )}
         />
       )}
+
+      <Controller
+        control={control}
+        name="sampleIds"
+        render={({ field }) => (
+          <label className="flex flex-col gap-1">
+            <span>Samples</span>
+            <SampleMultiSelect
+              value={field.value ?? []}
+              onChange={field.onChange}
+              options={samples.data ?? []}
+              disabled={!experimentId}
+            />
+          </label>
+        )}
+      />
 
       <button
         type="submit"

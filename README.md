@@ -1,8 +1,13 @@
-# Laboratory Experiment Tracking System — Data Model
+# Laboratory Experiment Tracking System
 
-A PostgreSQL data model for tracking lab researchers, projects, experiments,
-samples, and measurements. Schema and migrations are managed with Prisma; seed
-data demonstrates the modeled scenarios.
+A system for tracking lab researchers, projects, experiments, samples, and
+measurements. The **PostgreSQL data model and the design reasoning in this
+README are the primary deliverable**; a REST API and a React web app are built
+on top to demonstrate the schema end to end.
+
+- **Data model** — PostgreSQL, with schema and migrations managed by Prisma; seed data demonstrates the modeled scenarios.
+- **API** — Bun + Elysia + Prisma, contract-published as OpenAPI (`apps/api`).
+- **Web** — React + Vite SPA built from a purpose-made design system (`apps/web`). See [`docs/bithippie-design-system.pdf`](docs/bithippie-design-system.pdf).
 
 ## Getting started
 
@@ -106,16 +111,25 @@ OpenAPI JSON schema: `http://localhost:3000/openapi/json`
 | `GET` | `/experiments` | List all experiments |
 | `POST` | `/experiments` | Create an experiment (201) |
 | `GET` | `/experiments/:experimentId` | Get a single experiment |
+| `PATCH` | `/experiments/:experimentId` | Update an experiment |
+| `DELETE` | `/experiments/:experimentId` | Delete an experiment |
 | `GET` | `/experiments/:experimentId/measurements` | List measurements for an experiment |
+| `POST` | `/experiments/:experimentId/measurements` | Record a measurement (201 on success, 404 unknown experiment, 422 validation failure) |
 | `GET` | `/experiments/:experimentId/samples` | List samples for an experiment |
-| `POST` | `/experiments/:experimentId/measurements` | Create a measurement (201 on success, 404 unknown experiment, 422 validation failure) |
+| `POST` | `/experiments/:experimentId/samples` | Attach an existing sample to an experiment |
+| `DELETE` | `/experiments/:experimentId/samples/:sampleId` | Detach a sample from an experiment |
 | `GET` | `/samples` | List all samples |
 | `POST` | `/samples` | Register a sample (201) |
 | `GET` | `/samples/:sampleId` | Get a single sample |
+| `PATCH` | `/samples/:sampleId` | Update a sample |
+| `DELETE` | `/samples/:sampleId` | Delete a sample |
 | `GET` | `/measurements` | List all measurements |
+| `PATCH` | `/measurements/:measurementId` | Update a measurement |
+| `DELETE` | `/measurements/:measurementId` | Delete a measurement |
 | `GET` | `/measurement-definitions` | List all measurement definitions |
 | `GET` | `/researchers` | List all researchers |
 | `POST` | `/researchers` | Create / invite a researcher (201) |
+| `PATCH` | `/researchers/:researcherId` | Update a researcher |
 
 ### POST /experiments/:experimentId/measurements
 
@@ -161,6 +175,89 @@ bun run web:test:e2e    # Web end-to-end tests
 
 - **API unit + e2e tests** use in-memory repositories — **no database, no Docker, no running server**. Just `bun install` then run them.
 - **API `test:db`** runs the schema-level tests (`prisma/__tests__` — the `measurements_exactly_one_value` CHECK and the seed) against a real Postgres. Start it first (`docker compose up -d db`) and make sure `apps/api/.env` exists (`cp apps/api/.env.example apps/api/.env`). It runs `prisma migrate reset` (destructive).
+
+---
+
+## Technical decisions
+
+The data-model assumptions and tradeoffs below are the core of the brief. This
+section records the implementation-level decisions made to build the API and web
+app around that model, and the tradeoffs each one carries.
+
+### Monorepo with Bun workspaces
+
+One repo holds `apps/api`, `apps/web`, and `packages/shared`. The shared package
+(`@lab/shared`) owns the pure measurement-value validation rules so the same
+logic can run in the API today and the web forms later, with no duplication and
+no drift. Bun is the single runtime for installing, running, and testing both
+apps. **Tradeoff:** a monorepo couples the apps' tooling and CI; for two apps
+that share a contract and validation rules, that coupling is the point.
+
+### Clean architecture in the API
+
+Each API feature is split into `domain` (entities + repository interfaces, no
+framework imports), `application` (use cases that throw `NotFoundError` → 404 or
+`ValidationError` → 422), and `infrastructure` (Elysia routes, Prisma/in-memory
+repositories, integration tests). The dependency arrow only ever points inward:
+
+```
+HTTP route → application use case → domain port ← repository (prisma | memory)
+```
+
+**Why:** business rules stay independent of Elysia and Prisma, and every use
+case can be tested against an in-memory repository with no database. **Tradeoff:**
+more files and ceremony per feature than a route-and-query-it approach — accepted
+for testability and for keeping cross-row invariants in one explicit place.
+
+### Validation in layers, not all in the database
+
+Request shape is validated at the HTTP edge (Elysia `t` / Zod → 400); business
+rules that need a lookup live in the use case (→ 404/422); the only invariant
+pushed all the way to the database is the in-row `measurements_exactly_one_value`
+CHECK. Cross-row rules (type match, allowed categories, sample subset, follow-up
+project) are deliberately application-layer. See **Key tradeoffs** for the full
+rationale.
+
+### Contract-first: OpenAPI → generated web client
+
+The API publishes an OpenAPI document (`apps/api/openapi.json`,
+`/openapi/json`). The web app does **not** hand-write API types or fetchers —
+[Kubb](https://kubb.dev) reads that document and generates the TypeScript types,
+fetch clients, and TanStack Query hooks into `apps/web/src/generated/`
+(`bun run web` consumers call `bun run codegen` to refresh). **Why:** the API is
+the single source of truth for the wire contract, so the client cannot silently
+drift from the server. **Tradeoff:** generated code is committed and must be
+regenerated after API changes; in exchange there is no manually maintained client
+layer to keep in sync.
+
+### Design-system-first web UI
+
+The web app was built from a design system created for this project —
+[`docs/bithippie-design-system.pdf`](docs/bithippie-design-system.pdf). It
+defines the visual language (color, typography, spacing) and the component set;
+the React components under `apps/web/src/components/ui/` (shadcn on `@base-ui/react`,
+Tailwind v4) implement that system rather than being assembled ad hoc. The
+dashboard, tables, and forms are composed from those primitives. **Why:** a UI
+spec up front keeps the interface consistent and makes component work mechanical.
+
+### Server state via TanStack Query; client-side dashboard aggregation
+
+Server state is owned by TanStack Query (the generated hooks); forms use React
+Hook Form + Zod. The dashboard fetches the list endpoints and aggregates them on
+the client (`apps/web/src/features/dashboard/aggregate.ts`) rather than calling a
+dedicated analytics endpoint. **Tradeoff:** simpler API surface and no
+reporting endpoints to maintain, at the cost of doing aggregation in the browser
+over the full lists — fine at demo scale, and the first thing to revisit if the
+data grows.
+
+### Testing without a database where possible
+
+API unit and end-to-end tests run against in-memory repositories, so they need
+no Postgres, no Docker, and no running server. Only the schema-level tests
+(`test:db`) hit a real database to exercise the CHECK constraint and the seed.
+The web app is covered by Vitest (unit), Storybook (component), and Playwright
+(e2e). **Why:** fast, deterministic feedback for the bulk of the suite, with the
+database reserved for the things only a database can prove.
 
 ---
 

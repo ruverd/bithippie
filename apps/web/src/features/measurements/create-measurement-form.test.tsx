@@ -33,6 +33,13 @@ vi.mock(
   }),
 );
 
+vi.mock(
+  "@/generated/hooks/experiments/useGetExperimentsByExperimentIdSamples",
+  () => ({
+    useGetExperimentsByExperimentIdSamples: () => ({ data: [], isLoading: false }),
+  }),
+);
+
 import { CreateMeasurementForm } from "./create-measurement-form";
 
 describe("CreateMeasurementForm", () => {

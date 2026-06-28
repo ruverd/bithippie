@@ -35,6 +35,10 @@ export type GetProjectsByProjectIdSamples200 = {
      * @type string,null
     */
     storageLocation: string | null;
+    /**
+     * @type array
+    */
+    experimentIds: string[];
 }[];
 
 export type GetProjectsByProjectIdSamplesQueryResponse = GetProjectsByProjectIdSamples200;

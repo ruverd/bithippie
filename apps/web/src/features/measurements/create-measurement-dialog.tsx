@@ -28,11 +28,13 @@ import { Input } from "@/components/ui/input";
 import { Field } from "@/components/form-field";
 import { useGetMeasurementDefinitions } from "@/generated/hooks/measurementDefinitions/useGetMeasurementDefinitions";
 import { useGetExperiments } from "@/generated/hooks/experiments/useGetExperiments";
+import { useGetExperimentsByExperimentIdSamples } from "@/generated/hooks/experiments/useGetExperimentsByExperimentIdSamples";
 import { useGetResearchers } from "@/generated/hooks/researchers/useGetResearchers";
 import { usePostExperimentsByExperimentIdMeasurements } from "@/generated/hooks/measurements/usePostExperimentsByExperimentIdMeasurements";
 import { getExperimentsByExperimentIdMeasurementsQueryKey } from "@/generated/hooks/experiments/useGetExperimentsByExperimentIdMeasurements";
 import { getMeasurementsQueryKey } from "@/generated/hooks/measurements/useGetMeasurements";
 import { MeasurementValueField } from "./MeasurementValueField";
+import { SampleMultiSelect } from "./sample-multi-select";
 
 const schema = z
   .object({ experimentId: z.string().min(1, "Required") })
@@ -54,6 +56,7 @@ export function CreateMeasurementDialog() {
     handleSubmit,
     watch,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -65,6 +68,10 @@ export function CreateMeasurementDialog() {
 
   const selectedId = watch("measurementDefinitionId");
   const def = (definitions.data ?? []).find((d) => d.id === selectedId);
+  const selectedExperimentId = watch("experimentId");
+  const experimentSamples = useGetExperimentsByExperimentIdSamples(selectedExperimentId, {
+    query: { enabled: Boolean(selectedExperimentId) },
+  });
 
   const onSubmit = handleSubmit(({ experimentId, ...data }) => {
     create.mutate(
@@ -139,7 +146,10 @@ export function CreateMeasurementDialog() {
                 <Select
                   items={Object.fromEntries((experiments.data ?? []).map((e) => [e.id, e.title]))}
                   value={field.value || undefined}
-                  onValueChange={(v) => field.onChange(v ?? "")}
+                  onValueChange={(v) => {
+                    field.onChange(v ?? "");
+                    setValue("sampleIds", []);
+                  }}
                 >
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select experiment" />
@@ -152,6 +162,21 @@ export function CreateMeasurementDialog() {
                     ))}
                   </SelectContent>
                 </Select>
+              )}
+            />
+          </Field>
+
+          <Field label="Samples" error={errors.sampleIds?.message}>
+            <Controller
+              control={control}
+              name="sampleIds"
+              render={({ field }) => (
+                <SampleMultiSelect
+                  value={field.value ?? []}
+                  onChange={field.onChange}
+                  options={experimentSamples.data ?? []}
+                  disabled={!selectedExperimentId}
+                />
               )}
             />
           </Field>

@@ -13,7 +13,7 @@ beforeEach(() => {
       [],
       {
         p1: [
-          { id: "s1", code: "BLOOD-001", specimenType: "blood", collectedAt: null, storageLocation: "-80C" },
+          { id: "s1", code: "BLOOD-001", specimenType: "blood", collectedAt: null, storageLocation: "-80C", experimentIds: [] },
         ],
       },
     ),
