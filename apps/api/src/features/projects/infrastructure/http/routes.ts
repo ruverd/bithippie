@@ -1,35 +1,66 @@
 import { Elysia, t } from "elysia";
-import type { ProjectsRepository } from "../../domain/projects.repository";
-import { getProjects } from "../../application/get-projects";
-import { getProject } from "../../application/get-project";
-import { getProjectResearchers } from "../../application/get-project-researchers";
-import { getProjectExperiments } from "../../application/get-project-experiments";
+import type { ProjectsServices } from "../../application/services";
 import {
-  projectListSchema,
-  projectSchema,
-  researcherMembershipListSchema,
+  createProjectSchema,
+  projectDetailSchema,
   projectExperimentListSchema,
+  projectListSchema,
+  projectMeasurementListSchema,
+  projectSampleListSchema,
+  researcherMembershipListSchema,
+  updateProjectSchema,
 } from "../../application/schemas";
+import { ProjectsController } from "./projects.controller";
 
-export function projectsRouter(repo: ProjectsRepository) {
+export function projectsRouter(services: ProjectsServices) {
+  const controller = new ProjectsController(services);
   return new Elysia({ prefix: "/projects" })
-    .get("/", () => getProjects(repo), {
+    .get("/", () => controller.getProjects(), {
       detail: { tags: ["Projects"] },
       response: projectListSchema,
     })
-    .get("/:projectId", ({ params }) => getProject(repo, params.projectId), {
+    .post(
+      "/",
+      ({ body, set }) => controller.createProject(body, set),
+      {
+        body: createProjectSchema,
+        response: { 201: projectDetailSchema },
+        detail: { tags: ["Projects"], summary: "Create a project" },
+      },
+    )
+    .get("/:projectId", ({ params }) => controller.getProject(params.projectId), {
       params: t.Object({ projectId: t.String() }),
       detail: { tags: ["Projects"] },
-      response: projectSchema,
+      response: projectDetailSchema,
     })
-    .get("/:projectId/researchers", ({ params }) => getProjectResearchers(repo, params.projectId), {
+    .patch(
+      "/:projectId",
+      ({ params, body }) => controller.updateProject(params.projectId, body),
+      {
+        params: t.Object({ projectId: t.String() }),
+        body: updateProjectSchema,
+        response: projectDetailSchema,
+        detail: { tags: ["Projects"], summary: "Update a project" },
+      },
+    )
+    .get("/:projectId/researchers", ({ params }) => controller.getProjectResearchers(params.projectId), {
       params: t.Object({ projectId: t.String() }),
       detail: { tags: ["Projects"] },
       response: researcherMembershipListSchema,
     })
-    .get("/:projectId/experiments", ({ params }) => getProjectExperiments(repo, params.projectId), {
+    .get("/:projectId/experiments", ({ params }) => controller.getProjectExperiments(params.projectId), {
       params: t.Object({ projectId: t.String() }),
       detail: { tags: ["Projects"] },
       response: projectExperimentListSchema,
+    })
+    .get("/:projectId/samples", ({ params }) => controller.getProjectSamples(params.projectId), {
+      params: t.Object({ projectId: t.String() }),
+      detail: { tags: ["Projects"] },
+      response: projectSampleListSchema,
+    })
+    .get("/:projectId/measurements", ({ params }) => controller.getProjectMeasurements(params.projectId), {
+      params: t.Object({ projectId: t.String() }),
+      detail: { tags: ["Projects"] },
+      response: projectMeasurementListSchema,
     });
 }

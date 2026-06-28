@@ -21,14 +21,14 @@ const data: Row[] = [
 ];
 
 describe("DataTable", () => {
-  it("renders a row per data item", () => {
+  it("should renders a row per data item", () => {
     render(<DataTable columns={columns} data={data} noun="samples" />);
     expect(screen.getByText("Beta")).toBeInTheDocument();
     expect(screen.getByText("Alpha")).toBeInTheDocument();
     expect(screen.getByText("Gamma")).toBeInTheDocument();
   });
 
-  it("renders skeletons while loading", () => {
+  it("should renders skeletons while loading", () => {
     const { container } = render(
       <DataTable columns={columns} data={[]} noun="samples" isLoading />,
     );
@@ -37,18 +37,18 @@ describe("DataTable", () => {
     ).toBeGreaterThan(0);
   });
 
-  it("renders an error state", () => {
+  it("should renders an error state", () => {
     render(<DataTable columns={columns} data={[]} noun="samples" isError />);
     expect(screen.getByRole("alert")).toHaveTextContent("Failed to load samples.");
   });
 
-  it("renders an empty state", () => {
+  it("should renders an empty state", () => {
     render(<DataTable columns={columns} data={[]} noun="samples" />);
     expect(screen.getByText("No samples.")).toBeInTheDocument();
     expect(screen.getByText("No samples")).toBeInTheDocument();
   });
 
-  it("paginates and disables the boundary buttons", async () => {
+  it("should paginates and disables the boundary buttons", async () => {
     render(
       <DataTable columns={columns} data={data} noun="samples" pageSize={2} />,
     );
@@ -65,7 +65,7 @@ describe("DataTable", () => {
     expect(next).toBeDisabled();
   });
 
-  it("sorts when a sortable header is clicked", async () => {
+  it("should sorts when a sortable header is clicked", async () => {
     render(<DataTable columns={columns} data={data} noun="samples" />);
     await userEvent.click(screen.getByRole("button", { name: "Name" }));
 

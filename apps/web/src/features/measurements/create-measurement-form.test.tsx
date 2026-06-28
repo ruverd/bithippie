@@ -6,7 +6,7 @@ import { renderWithProviders } from "@/test/render";
 const mutate = vi.fn();
 
 vi.mock(
-  "@/generated/hooks/measurementDefinitionsController/useGetMeasurementDefinitions",
+  "@/generated/hooks/measurementDefinitions/useGetMeasurementDefinitions",
   () => ({
     useGetMeasurementDefinitions: () => ({
       data: [
@@ -24,7 +24,7 @@ vi.mock(
 );
 
 vi.mock(
-  "@/generated/hooks/measurementsController/usePostExperimentsByExperimentIdMeasurements",
+  "@/generated/hooks/measurements/usePostExperimentsByExperimentIdMeasurements",
   () => ({
     usePostExperimentsByExperimentIdMeasurements: () => ({
       mutate,
@@ -36,7 +36,7 @@ vi.mock(
 import { CreateMeasurementForm } from "./create-measurement-form";
 
 describe("CreateMeasurementForm", () => {
-  it("shows the categorical field after selecting a categorical definition", async () => {
+  it("should shows the categorical field after selecting a categorical definition", async () => {
     renderWithProviders(<CreateMeasurementForm experimentId="e1" />);
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: /definition/i }),
@@ -45,7 +45,7 @@ describe("CreateMeasurementForm", () => {
     expect(screen.getByRole("option", { name: "positive" })).toBeInTheDocument();
   });
 
-  it("submits the measurement via the generated mutation", async () => {
+  it("should submits the measurement via the generated mutation", async () => {
     renderWithProviders(<CreateMeasurementForm experimentId="e1" />);
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: /definition/i }),

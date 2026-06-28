@@ -8,7 +8,7 @@ import {
 } from "./tooltip";
 
 describe("Tooltip", () => {
-  it("renders the trigger", () => {
+  it("should renders the trigger", () => {
     render(
       <TooltipProvider>
         <Tooltip>
@@ -20,7 +20,7 @@ describe("Tooltip", () => {
     expect(screen.getByRole("button", { name: "Hover" })).toBeInTheDocument();
   });
 
-  it("renders the content when open by default", () => {
+  it("should renders the content when open by default", () => {
     render(
       <TooltipProvider>
         <Tooltip defaultOpen>

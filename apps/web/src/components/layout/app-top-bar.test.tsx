@@ -10,7 +10,7 @@ describe("AppTopBar", () => {
     ["/", "Dashboard"],
     ["/projects", "Projects"],
     ["/my-experiments", "My Experiments"],
-  ])("derives the page title %s -> %s", (route, title) => {
+  ])("should derives the page title %s -> %s", (route, title) => {
     renderWithProviders(
       <SidebarProvider>
         <AppTopBar />
@@ -20,7 +20,7 @@ describe("AppTopBar", () => {
     expect(screen.getByText(title)).toBeInTheDocument();
   });
 
-  it("links Home to the root", () => {
+  it("should links Home to the root", () => {
     renderWithProviders(
       <SidebarProvider>
         <AppTopBar />
@@ -32,7 +32,7 @@ describe("AppTopBar", () => {
     );
   });
 
-  it("renders the search field", () => {
+  it("should renders the search field", () => {
     renderWithProviders(
       <SidebarProvider>
         <AppTopBar />
@@ -41,7 +41,7 @@ describe("AppTopBar", () => {
     expect(screen.getByPlaceholderText("Search…")).toBeInTheDocument();
   });
 
-  it("toggles the sidebar from the menu button", async () => {
+  it("should toggles the sidebar from the menu button", async () => {
     const onOpenChange = vi.fn();
     renderWithProviders(
       <SidebarProvider open onOpenChange={onOpenChange}>

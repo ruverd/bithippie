@@ -38,6 +38,7 @@ interface DataTableProps<TData> {
   isError?: boolean;
   pageSize?: number;
   cellClassName?: string;
+  onRowClick?: (row: TData) => void;
 }
 
 export function DataTable<TData>({
@@ -48,6 +49,7 @@ export function DataTable<TData>({
   isError = false,
   pageSize = 8,
   cellClassName = "py-3.5 px-4",
+  onRowClick,
 }: DataTableProps<TData>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable({
@@ -143,7 +145,11 @@ export function DataTable<TData>({
               </TableRow>
             ) : (
               rows.map((row) => (
-                <TableRow key={row.id} className="hover:bg-muted/40">
+                <TableRow
+                  key={row.id}
+                  className={cn("hover:bg-muted/40", onRowClick && "cursor-pointer")}
+                  onClick={onRowClick ? () => onRowClick(row.original) : undefined}
+                >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}

@@ -23,7 +23,7 @@ prisma/
 src/
   main.ts              entrypoint (PORT default 3000)
   app.ts               Elysia app + route mounting
-  container.ts         DI wiring (Prisma repos)
+  container.ts         DI wiring (Prisma repos → feature services)
   infrastructure/      prisma client, error handler
   shared/domain/       NotFoundError, ValidationError
   features/<name>/
@@ -41,7 +41,9 @@ Run from `apps/api/` unless noted.
 ```bash
 bun run dev                 # hot reload
 bun run start               # no watch
-bun run test                # migrate reset + vitest (needs DATABASE_URL)
+bun run test                # vitest unit tests (src/**) — in-memory, no DB
+bun run test:db             # prisma migrate reset + vitest prisma/__tests__ (needs DATABASE_URL)
+bun run test:e2e            # Playwright API e2e — REPO=memory, no DB, boots server, hits HTTP
 bun run db:migrate:dev      # prisma migrate dev
 bun run db:migrate          # prisma migrate deploy
 bun run db:seed
@@ -62,17 +64,30 @@ Docker injects `db:5432` internally; do not change compose URLs to `5433`.
 ## Architecture
 
 ```
-HTTP route → application use case → domain port ← repository (prisma | memory)
+HTTP route → controller → application service → domain port ← repository (prisma | memory)
 ```
 
 - **Domain** — no Elysia/Prisma imports
-- **Application** — use cases; throw `NotFoundError` (404) or `ValidationError` (422)
-- **Infrastructure** — routes, Prisma/memory repos, integration tests
+- **Application** — one service class per use case in `<verb-noun>.service.ts`; throw `NotFoundError` (404) or `ValidationError` (422)
+- **Infrastructure** — routes (declarative wiring), controllers (HTTP adapters), Prisma/memory repos, e2e tests
+
+### Service classes
+
+Each use case is a class with a constructor taking its repository and a **single public `execute(...)`** method; any helpers are `private`.
+
+```ts
+export class CreateSampleService {
+  constructor(private readonly repo: SamplesRepository) {}
+  async execute(input: CreateSampleInput): Promise<Sample> { ... }
+}
+```
+
+Each feature exposes `application/services.ts` with a `<Feature>Services` interface and a `build<Feature>Services(repo)` factory (object keys = camelCase use-case names). `container.ts` builds repos → services; routers receive the `<Feature>Services` object and call `services.<key>.execute(...)`.
 
 New feature checklist:
 
-1. Add `features/<name>/` with domain, application, infrastructure
-2. Register repo in `container.ts`
+1. Add `features/<name>/` with domain, application (service classes + `services.ts`), infrastructure
+2. Wire `build<Name>Services(new Prisma<Name>Repository(prisma))` in `container.ts`
 3. Mount router in `app.ts`
 
 ## Validation
@@ -93,24 +108,31 @@ Hand-edited migration SQL (CHECK, comments) is intentional — edit before commi
 | Method | Path |
 |--------|------|
 | GET | `/health` |
-| GET | `/projects`, `/projects/:id`, `/projects/:id/researchers`, `/projects/:id/experiments` |
-| GET | `/experiments/:id`, `/experiments/:id/measurements`, `/experiments/:id/samples` |
-| GET | `/samples`, `/samples/:id` |
+| GET | `/projects`, `/projects/:id`, `/projects/:id/researchers`, `/projects/:id/experiments`, `/projects/:id/samples`, `/projects/:id/measurements` |
+| POST | `/projects` → 201 · PATCH `/projects/:id` |
+| GET | `/experiments`, `/experiments/:id`, `/experiments/:id/measurements`, `/experiments/:id/samples` |
+| POST | `/experiments` → 201 |
+| GET | `/samples`, `/samples/:id` · POST `/samples` → 201 |
 | GET | `/measurement-definitions` |
-| POST | `/experiments/:experimentId/measurements` → 201 |
+| GET | `/measurements` · POST `/measurements` → 201 |
+| GET | `/researchers` · POST `/researchers` → 201 |
 
-Only write endpoint today. Route delegates to `createMeasurement` use case.
+Each route delegates to a service: `services.<key>.execute(...)`.
 
 ## Testing
 
-- **Unit:** `application/__tests__/` with `InMemory*Repository`
-- **Integration:** `infrastructure/__tests__/` with real Prisma; seed in `beforeAll` via `prisma/seed.ts`
+- **Unit (Vitest):** one file per service in `application/__tests__/<verb-noun>.service.test.ts`, driving the service class with an `InMemory*Repository`. One file per service — do not group multiple services in one file.
+- **E2E (Playwright):** one file per endpoint in `infrastructure/__tests__/<verb-noun>.e2e.ts`, hitting the real server over HTTP via the `request` fixture (relative URLs; `baseURL` from `playwright.config.ts`).
 
-Test script resets DB (`--skip-seed`); integration tests re-seed. Seed IDs for assertions: `seed-exp-1`, `seed-def-lead`, `seed-sample-blood`, etc.
+Vitest matches only `*.test.ts`; Playwright matches only `*.e2e.ts` — the suites never overlap.
 
-Integration tests call `app.handle(new Request(...))` — no HTTP server needed.
+E2E run **DB-less**: `playwright.config.ts` `webServer` boots the API on `E2E_PORT` (default 3100) with **`REPO=memory`**, so `buildContainer` wires in-memory repositories instead of Prisma. The fixture in `src/infrastructure/memory/fixture.ts` mirrors the anchored `seed-*` rows (IDs `seed-exp-1`, `seed-def-lead`, `seed-sample-blood`, …) as pre-shaped read models. No Postgres, no migrate/seed. POST/PATCH payloads use `E2E-` prefixes so they don't collide with the fixture. The memory `samples`/`researchers` repos enforce unique `code`/`email` so the 422 cases pass.
 
-Agent safety: set `PRISMA_USER_CONSENT_FOR_DANGEROUS_AI_ACTION=1` before `db:reset` or `test` in automated runs.
+`REPO=memory` is read in `container.ts`; unset = Prisma (production/dev).
+
+Test scripts: `test` (vitest `src/**`) and `test:e2e` (Playwright) are both **DB-less** — service/controller unit tests and e2e all use in-memory repos. Only `test:db` needs Postgres: it runs `prisma migrate reset` + the `prisma/__tests__` schema/seed tests.
+
+Agent safety: `test:db` resets the DB; set `PRISMA_USER_CONSENT_FOR_DANGEROUS_AI_ACTION=1` in automated runs.
 
 ## Conventions
 

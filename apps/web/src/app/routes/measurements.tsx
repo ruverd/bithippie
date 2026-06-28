@@ -1,10 +1,9 @@
 import { useState } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
-import { Plus, Search } from "lucide-react";
-import { useGetMeasurements } from "@/generated/hooks/measurementsController/useGetMeasurements";
-import type { GetMeasurements200 } from "@/generated/types/measurementsController/GetMeasurements";
+import { Search } from "lucide-react";
+import { useGetMeasurements } from "@/generated/hooks/measurements/useGetMeasurements";
+import type { GetMeasurements200 } from "@/generated/types/measurements/GetMeasurements";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -14,49 +13,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { DataTable } from "@/components/data-table";
+import { CreateMeasurementDialog } from "@/features/measurements/create-measurement-dialog";
+import { EditMeasurementDialog } from "@/features/measurements/edit-measurement-dialog";
+import { measurementValue } from "@/utils/measurement-value";
+import { initials } from "@/utils/initials";
+import { relativeTime } from "@/utils/relative-time";
 
 type Measurement = GetMeasurements200[number];
-
-function formatValue(m: Measurement): string {
-  switch (m.valueType) {
-    case "NUMERIC":
-      return m.numericValue == null
-        ? "—"
-        : `${m.numericValue}${m.unit ? ` ${m.unit}` : ""}`;
-    case "CATEGORICAL":
-      return m.categoricalValue ?? "—";
-    case "TEXT":
-      return m.textValue ? `“${m.textValue}”` : "—";
-    default: {
-      const _exhaustive: never = m.valueType;
-      return _exhaustive;
-    }
-  }
-}
-
-function initials(name: string): string {
-  return name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((word) => word[0]?.toUpperCase() ?? "")
-    .join("");
-}
-
-function relativeTime(iso: string): string {
-  const then = new Date(iso).getTime();
-  if (Number.isNaN(then)) return "—";
-  const diffMs = Date.now() - then;
-  const minutes = Math.floor(diffMs / 60_000);
-  if (minutes < 1) return "Just now";
-  if (minutes < 60) return `${minutes}m ago`;
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
-  const days = Math.floor(hours / 24);
-  if (days === 1) return "Yesterday";
-  if (days < 7) return `${days}d ago`;
-  return new Date(iso).toLocaleDateString();
-}
 
 const columns: ColumnDef<Measurement>[] = [
   {
@@ -74,10 +37,10 @@ const columns: ColumnDef<Measurement>[] = [
   },
   {
     id: "value",
-    accessorFn: (m) => formatValue(m),
+    accessorFn: (m) => measurementValue(m),
     header: "Value",
     meta: { headClassName: "w-[130px]", cellClassName: "text-sm font-semibold" },
-    cell: ({ row }) => formatValue(row.original),
+    cell: ({ row }) => measurementValue(row.original),
   },
   {
     id: "experiment",
@@ -117,6 +80,8 @@ export function MeasurementsPage() {
   const { data, isLoading, isError } = useGetMeasurements();
   const [search, setSearch] = useState("");
   const [definitionFilter, setDefinitionFilter] = useState("all");
+  const [experimentFilter, setExperimentFilter] = useState("all");
+  const [editing, setEditing] = useState<Measurement | null>(null);
 
   const allMeasurements = data ?? [];
 
@@ -124,16 +89,22 @@ export function MeasurementsPage() {
     new Set(allMeasurements.map((m) => m.definitionName)),
   ).sort();
 
+  const experiments = Array.from(
+    new Map(allMeasurements.map((m) => [m.experimentId, m.experimentName])).entries(),
+  ).sort((a, b) => a[1].localeCompare(b[1]));
+
   const filtered = allMeasurements.filter((m) => {
     const term = search.toLowerCase();
     const matchesSearch =
       m.definitionName.toLowerCase().includes(term) ||
       m.experimentName.toLowerCase().includes(term) ||
-      formatValue(m).toLowerCase().includes(term) ||
+      measurementValue(m).toLowerCase().includes(term) ||
       (m.recordedByName?.toLowerCase().includes(term) ?? false);
     const matchesDefinition =
       definitionFilter === "all" || m.definitionName === definitionFilter;
-    return matchesSearch && matchesDefinition;
+    const matchesExperiment =
+      experimentFilter === "all" || m.experimentId === experimentFilter;
+    return matchesSearch && matchesDefinition && matchesExperiment;
   });
 
   return (
@@ -145,10 +116,7 @@ export function MeasurementsPage() {
             Recorded data points across all experiments
           </p>
         </div>
-        <Button>
-          <Plus size={16} />
-          New Measurement
-        </Button>
+        <CreateMeasurementDialog />
       </div>
 
       <div className="flex items-center gap-3">
@@ -164,6 +132,23 @@ export function MeasurementsPage() {
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
+        <Select
+          items={Object.fromEntries(experiments)}
+          value={experimentFilter === "all" ? undefined : experimentFilter}
+          onValueChange={(v) => setExperimentFilter(v ?? "all")}
+        >
+          <SelectTrigger className="w-[200px]">
+            <SelectValue placeholder="All experiments" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All experiments</SelectItem>
+            {experiments.map(([id, name]) => (
+              <SelectItem key={id} value={id}>
+                {name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
         <Select
           value={definitionFilter === "all" ? undefined : definitionFilter}
           onValueChange={(v) => setDefinitionFilter(v ?? "all")}
@@ -188,6 +173,15 @@ export function MeasurementsPage() {
         noun="measurements"
         isLoading={isLoading}
         isError={isError}
+        onRowClick={(m) => setEditing(m)}
+      />
+
+      <EditMeasurementDialog
+        open={editing !== null}
+        onOpenChange={(o) => {
+          if (!o) setEditing(null);
+        }}
+        measurement={editing}
       />
     </div>
   );

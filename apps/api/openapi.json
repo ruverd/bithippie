@@ -47,13 +47,21 @@
                           "string",
                           "null"
                         ]
+                      },
+                      "experimentCount": {
+                        "type": "number"
+                      },
+                      "updatedAt": {
+                        "type": "string"
                       }
                     },
                     "required": [
                       "id",
                       "title",
                       "description",
-                      "status"
+                      "status",
+                      "experimentCount",
+                      "updatedAt"
                     ],
                     "additionalProperties": false
                   },
@@ -64,6 +72,227 @@
           }
         },
         "operationId": "getProjects"
+      },
+      "post": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Create a project",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "description": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "status": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "PLANNING",
+                          "ACTIVE",
+                          "COMPLETED",
+                          "CANCELLED"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "leadResearcherId": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "collaboratorIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "title"
+                ],
+                "additionalProperties": false,
+                "$schema": "http://json-schema.org/draft-07/schema#"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "description": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "status": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "PLANNING",
+                          "ACTIVE",
+                          "COMPLETED",
+                          "CANCELLED"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "leadResearcherId": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "collaboratorIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "title"
+                ],
+                "additionalProperties": false,
+                "$schema": "http://json-schema.org/draft-07/schema#"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "description": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "status": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "PLANNING",
+                          "ACTIVE",
+                          "COMPLETED",
+                          "CANCELLED"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "leadResearcherId": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "collaboratorIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "title"
+                ],
+                "additionalProperties": false,
+                "$schema": "http://json-schema.org/draft-07/schema#"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Response for status 201",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "status": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "leadName": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "experimentCount": {
+                      "type": "number"
+                    },
+                    "sampleCount": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "title",
+                    "description",
+                    "status",
+                    "createdAt",
+                    "leadName",
+                    "experimentCount",
+                    "sampleCount"
+                  ],
+                  "additionalProperties": false,
+                  "$schema": "http://json-schema.org/draft-07/schema#"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "postProjects"
       }
     },
     "/projects/{projectId}": {
@@ -106,13 +335,32 @@
                         "string",
                         "null"
                       ]
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "leadName": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "experimentCount": {
+                      "type": "number"
+                    },
+                    "sampleCount": {
+                      "type": "number"
                     }
                   },
                   "required": [
                     "id",
                     "title",
                     "description",
-                    "status"
+                    "status",
+                    "createdAt",
+                    "leadName",
+                    "experimentCount",
+                    "sampleCount"
                   ],
                   "additionalProperties": false,
                   "$schema": "http://json-schema.org/draft-07/schema#"
@@ -122,6 +370,228 @@
           }
         },
         "operationId": "getProjectsByProjectId"
+      },
+      "patch": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Update a project",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "description": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "status": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "PLANNING",
+                          "ACTIVE",
+                          "COMPLETED",
+                          "CANCELLED"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "leadResearcherId": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "collaboratorIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "additionalProperties": false,
+                "$schema": "http://json-schema.org/draft-07/schema#"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "description": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "status": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "PLANNING",
+                          "ACTIVE",
+                          "COMPLETED",
+                          "CANCELLED"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "leadResearcherId": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "collaboratorIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "additionalProperties": false,
+                "$schema": "http://json-schema.org/draft-07/schema#"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "description": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "status": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "PLANNING",
+                          "ACTIVE",
+                          "COMPLETED",
+                          "CANCELLED"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "leadResearcherId": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "collaboratorIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "additionalProperties": false,
+                "$schema": "http://json-schema.org/draft-07/schema#"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "status": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "leadName": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "experimentCount": {
+                      "type": "number"
+                    },
+                    "sampleCount": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "title",
+                    "description",
+                    "status",
+                    "createdAt",
+                    "leadName",
+                    "experimentCount",
+                    "sampleCount"
+                  ],
+                  "additionalProperties": false,
+                  "$schema": "http://json-schema.org/draft-07/schema#"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "patchProjectsByProjectId"
       }
     },
     "/projects/{projectId}/researchers": {
@@ -244,6 +714,181 @@
         "operationId": "getProjectsByProjectIdExperiments"
       }
     },
+    "/projects/{projectId}/samples": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "specimenType": {
+                        "type": "string"
+                      },
+                      "collectedAt": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "storageLocation": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "code",
+                      "specimenType",
+                      "collectedAt",
+                      "storageLocation"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "$schema": "http://json-schema.org/draft-07/schema#"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "getProjectsByProjectIdSamples"
+      }
+    },
+    "/projects/{projectId}/measurements": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "definitionName": {
+                        "type": "string"
+                      },
+                      "valueType": {
+                        "type": "string",
+                        "enum": [
+                          "NUMERIC",
+                          "CATEGORICAL",
+                          "TEXT"
+                        ]
+                      },
+                      "numericValue": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "unit": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "categoricalValue": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "textValue": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "experimentId": {
+                        "type": "string"
+                      },
+                      "experimentName": {
+                        "type": "string"
+                      },
+                      "recordedAt": {
+                        "type": "string"
+                      },
+                      "recordedById": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "recordedByName": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "definitionName",
+                      "valueType",
+                      "numericValue",
+                      "unit",
+                      "categoricalValue",
+                      "textValue",
+                      "experimentId",
+                      "experimentName",
+                      "recordedAt",
+                      "recordedById",
+                      "recordedByName"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "$schema": "http://json-schema.org/draft-07/schema#"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "getProjectsByProjectIdMeasurements"
+      }
+    },
     "/experiments/": {
       "get": {
         "tags": [
@@ -320,6 +965,248 @@
           }
         },
         "operationId": "getExperiments"
+      },
+      "post": {
+        "tags": [
+          "Experiments"
+        ],
+        "summary": "Create an experiment",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "hypothesis": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "projectId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "status": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "PLANNING",
+                          "ACTIVE",
+                          "COMPLETED",
+                          "CANCELLED"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "startDate": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "endDate": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "title",
+                  "projectId"
+                ],
+                "additionalProperties": false,
+                "$schema": "http://json-schema.org/draft-07/schema#"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "hypothesis": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "projectId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "status": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "PLANNING",
+                          "ACTIVE",
+                          "COMPLETED",
+                          "CANCELLED"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "startDate": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "endDate": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "title",
+                  "projectId"
+                ],
+                "additionalProperties": false,
+                "$schema": "http://json-schema.org/draft-07/schema#"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "hypothesis": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "projectId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "status": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "PLANNING",
+                          "ACTIVE",
+                          "COMPLETED",
+                          "CANCELLED"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "startDate": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "endDate": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "title",
+                  "projectId"
+                ],
+                "additionalProperties": false,
+                "$schema": "http://json-schema.org/draft-07/schema#"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Response for status 201",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "hypothesis": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "status": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "projectId": {
+                      "type": "string"
+                    },
+                    "previousExperimentId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "startDate": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "endDate": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "title",
+                    "hypothesis",
+                    "status",
+                    "projectId",
+                    "previousExperimentId",
+                    "startDate",
+                    "endDate"
+                  ],
+                  "additionalProperties": false,
+                  "$schema": "http://json-schema.org/draft-07/schema#"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "postExperiments"
       }
     },
     "/experiments/{experimentId}": {
@@ -403,6 +1290,263 @@
           }
         },
         "operationId": "getExperimentsByExperimentId"
+      },
+      "patch": {
+        "tags": [
+          "Experiments"
+        ],
+        "summary": "Update an experiment",
+        "parameters": [
+          {
+            "name": "experimentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "hypothesis": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "projectId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "status": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "PLANNING",
+                          "ACTIVE",
+                          "COMPLETED",
+                          "CANCELLED"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "startDate": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "endDate": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "additionalProperties": false,
+                "$schema": "http://json-schema.org/draft-07/schema#"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "hypothesis": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "projectId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "status": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "PLANNING",
+                          "ACTIVE",
+                          "COMPLETED",
+                          "CANCELLED"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "startDate": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "endDate": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "additionalProperties": false,
+                "$schema": "http://json-schema.org/draft-07/schema#"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "hypothesis": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "projectId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "status": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "PLANNING",
+                          "ACTIVE",
+                          "COMPLETED",
+                          "CANCELLED"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "startDate": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "endDate": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "additionalProperties": false,
+                "$schema": "http://json-schema.org/draft-07/schema#"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "hypothesis": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "status": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "projectId": {
+                      "type": "string"
+                    },
+                    "previousExperimentId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "startDate": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "endDate": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "title",
+                    "hypothesis",
+                    "status",
+                    "projectId",
+                    "previousExperimentId",
+                    "startDate",
+                    "endDate"
+                  ],
+                  "additionalProperties": false,
+                  "$schema": "http://json-schema.org/draft-07/schema#"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "patchExperimentsByExperimentId"
+      },
+      "delete": {
+        "tags": [
+          "Experiments"
+        ],
+        "summary": "Delete an experiment",
+        "parameters": [
+          {
+            "name": "experimentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "deleteExperimentsByExperimentId"
       }
     },
     "/experiments/{experimentId}/measurements": {
@@ -938,6 +2082,165 @@
           }
         },
         "operationId": "getSamples"
+      },
+      "post": {
+        "tags": [
+          "Samples"
+        ],
+        "summary": "Register a sample",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "specimenType": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "collectedAt": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "storageLocation": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "code",
+                  "specimenType"
+                ],
+                "additionalProperties": false,
+                "$schema": "http://json-schema.org/draft-07/schema#"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "specimenType": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "collectedAt": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "storageLocation": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "code",
+                  "specimenType"
+                ],
+                "additionalProperties": false,
+                "$schema": "http://json-schema.org/draft-07/schema#"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "specimenType": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "collectedAt": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "storageLocation": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "code",
+                  "specimenType"
+                ],
+                "additionalProperties": false,
+                "$schema": "http://json-schema.org/draft-07/schema#"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Response for status 201",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "specimenType": {
+                      "type": "string"
+                    },
+                    "collectedAt": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "storageLocation": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "experimentCount": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "code",
+                    "specimenType",
+                    "collectedAt",
+                    "storageLocation",
+                    "experimentCount"
+                  ],
+                  "additionalProperties": false,
+                  "$schema": "http://json-schema.org/draft-07/schema#"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "postSamples"
       }
     },
     "/samples/{sampleId}": {
@@ -1185,6 +2488,299 @@
         "operationId": "getMeasurements"
       }
     },
+    "/measurements/{measurementId}": {
+      "patch": {
+        "tags": [
+          "Measurements"
+        ],
+        "summary": "Update a measurement",
+        "parameters": [
+          {
+            "name": "measurementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "numericValue": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "categoricalValue": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "textValue": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "unit": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "notes": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "recordedAt": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "recordedById": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "sampleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "additionalProperties": false,
+                "$schema": "http://json-schema.org/draft-07/schema#"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "numericValue": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "categoricalValue": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "textValue": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "unit": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "notes": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "recordedAt": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "recordedById": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "sampleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "additionalProperties": false,
+                "$schema": "http://json-schema.org/draft-07/schema#"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "numericValue": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "categoricalValue": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "textValue": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "unit": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "notes": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "recordedAt": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "recordedById": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "sampleIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "additionalProperties": false,
+                "$schema": "http://json-schema.org/draft-07/schema#"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "experimentId": {
+                      "type": "string"
+                    },
+                    "measurementDefinitionId": {
+                      "type": "string"
+                    },
+                    "numericValue": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "unit": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "categoricalValue": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "textValue": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "notes": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "recordedAt": {
+                      "type": "string"
+                    },
+                    "recordedById": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "sampleIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "experimentId",
+                    "measurementDefinitionId",
+                    "numericValue",
+                    "unit",
+                    "categoricalValue",
+                    "textValue",
+                    "notes",
+                    "recordedAt",
+                    "recordedById",
+                    "sampleIds"
+                  ],
+                  "additionalProperties": false,
+                  "$schema": "http://json-schema.org/draft-07/schema#"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "patchMeasurementsByMeasurementId"
+      }
+    },
     "/researchers/": {
       "get": {
         "tags": [
@@ -1243,6 +2839,372 @@
           }
         },
         "operationId": "getResearchers"
+      },
+      "post": {
+        "tags": [
+          "Researchers"
+        ],
+        "summary": "Invite a researcher",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "globalRole": {
+                    "type": "string",
+                    "enum": [
+                      "PRINCIPAL_INVESTIGATOR",
+                      "POSTDOC",
+                      "GRADUATE_STUDENT",
+                      "LAB_TECHNICIAN"
+                    ]
+                  },
+                  "projectId": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "projectRole": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "LEAD",
+                          "COLLABORATOR",
+                          "CONTRIBUTOR"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "name",
+                  "email",
+                  "globalRole"
+                ],
+                "additionalProperties": false,
+                "$schema": "http://json-schema.org/draft-07/schema#"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "globalRole": {
+                    "type": "string",
+                    "enum": [
+                      "PRINCIPAL_INVESTIGATOR",
+                      "POSTDOC",
+                      "GRADUATE_STUDENT",
+                      "LAB_TECHNICIAN"
+                    ]
+                  },
+                  "projectId": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "projectRole": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "LEAD",
+                          "COLLABORATOR",
+                          "CONTRIBUTOR"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "name",
+                  "email",
+                  "globalRole"
+                ],
+                "additionalProperties": false,
+                "$schema": "http://json-schema.org/draft-07/schema#"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "globalRole": {
+                    "type": "string",
+                    "enum": [
+                      "PRINCIPAL_INVESTIGATOR",
+                      "POSTDOC",
+                      "GRADUATE_STUDENT",
+                      "LAB_TECHNICIAN"
+                    ]
+                  },
+                  "projectId": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "projectRole": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "LEAD",
+                          "COLLABORATOR",
+                          "CONTRIBUTOR"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "name",
+                  "email",
+                  "globalRole"
+                ],
+                "additionalProperties": false,
+                "$schema": "http://json-schema.org/draft-07/schema#"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Response for status 201",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "globalRole": {
+                      "type": "string",
+                      "enum": [
+                        "PRINCIPAL_INVESTIGATOR",
+                        "POSTDOC",
+                        "GRADUATE_STUDENT",
+                        "LAB_TECHNICIAN"
+                      ]
+                    },
+                    "projectCount": {
+                      "type": "number"
+                    },
+                    "measurementCount": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "email",
+                    "globalRole",
+                    "projectCount",
+                    "measurementCount"
+                  ],
+                  "additionalProperties": false,
+                  "$schema": "http://json-schema.org/draft-07/schema#"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "postResearchers"
+      }
+    },
+    "/researchers/{researcherId}": {
+      "patch": {
+        "tags": [
+          "Researchers"
+        ],
+        "summary": "Update a researcher",
+        "parameters": [
+          {
+            "name": "researcherId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "globalRole": {
+                    "type": "string",
+                    "enum": [
+                      "PRINCIPAL_INVESTIGATOR",
+                      "POSTDOC",
+                      "GRADUATE_STUDENT",
+                      "LAB_TECHNICIAN"
+                    ]
+                  }
+                },
+                "additionalProperties": false,
+                "$schema": "http://json-schema.org/draft-07/schema#"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "globalRole": {
+                    "type": "string",
+                    "enum": [
+                      "PRINCIPAL_INVESTIGATOR",
+                      "POSTDOC",
+                      "GRADUATE_STUDENT",
+                      "LAB_TECHNICIAN"
+                    ]
+                  }
+                },
+                "additionalProperties": false,
+                "$schema": "http://json-schema.org/draft-07/schema#"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "globalRole": {
+                    "type": "string",
+                    "enum": [
+                      "PRINCIPAL_INVESTIGATOR",
+                      "POSTDOC",
+                      "GRADUATE_STUDENT",
+                      "LAB_TECHNICIAN"
+                    ]
+                  }
+                },
+                "additionalProperties": false,
+                "$schema": "http://json-schema.org/draft-07/schema#"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "globalRole": {
+                      "type": "string",
+                      "enum": [
+                        "PRINCIPAL_INVESTIGATOR",
+                        "POSTDOC",
+                        "GRADUATE_STUDENT",
+                        "LAB_TECHNICIAN"
+                      ]
+                    },
+                    "projectCount": {
+                      "type": "number"
+                    },
+                    "measurementCount": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "email",
+                    "globalRole",
+                    "projectCount",
+                    "measurementCount"
+                  ],
+                  "additionalProperties": false,
+                  "$schema": "http://json-schema.org/draft-07/schema#"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "patchResearchersByResearcherId"
       }
     }
   },

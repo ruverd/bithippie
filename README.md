@@ -6,17 +6,82 @@ data demonstrates the modeled scenarios.
 
 ## Getting started
 
-Requirements: Docker.
+This repo has two apps that share one PostgreSQL database:
+
+- **API** — `apps/api` (Bun + Elysia + Prisma), served at `http://localhost:3000`
+- **Web** — `apps/web` (React + Vite), served at `http://localhost:5173`
+
+### What you need
+
+- **[Docker Desktop](https://www.docker.com/products/docker-desktop/)** — runs the database for you (and, optionally, the whole API). See "About the container" if Docker is new to you.
+- **[Bun](https://bun.sh)** — runs the apps locally. Install with `curl -fsSL https://bun.sh/install | bash`.
+
+### About the container (read this if Docker is new to you)
+
+The app needs a PostgreSQL database. Instead of installing Postgres on your
+machine, we run it inside a **container** — a small, isolated, pre-configured box
+that already has Postgres set up. You don't install or configure the database
+yourself.
+
+- `docker-compose.yml` (repo root) lists the services. The important one is `db` (PostgreSQL).
+- `docker compose up -d db` starts the database in the background. `-d` = detached (keeps running, frees your terminal).
+- `docker compose down` stops it. Your data survives restarts (it lives in a Docker volume); add `-v` to wipe it.
+- The first run downloads the Postgres image (needs internet); after that it's cached.
+
+You only strictly need the **database** container — the API and web run with Bun.
+
+### Option A — quickest look (everything in Docker, API only)
+
+Only needs Docker. From the repo root:
 
 ```bash
 docker compose up --build
 ```
 
-This starts PostgreSQL, applies all migrations, seeds the database, and starts
-the API. The API is ready once you see `API listening on http://localhost:3000`
-in the output (press Ctrl-C to stop, or pass `-d` to detach).
+This starts PostgreSQL → applies migrations → seeds demo data → starts the API.
+It's ready when you see `API listening on http://localhost:3000`. Stop with
+Ctrl-C. This runs the API but **not** the web UI — for the full app use Option B.
 
-Connect to the database directly with: `postgresql://lab:lab@localhost:5433/lab`
+### Option B — run the full app locally (API + Web)
+
+```bash
+docker compose up -d db                 # 1. start just the database container (background)
+bun install                             # 2. install dependencies (once)
+cp apps/api/.env.example apps/api/.env  # 3. point the API at the database (skip if .env exists)
+bun run db:migrate                      # 4. create the tables (once, or after schema changes)
+bun run db:seed                         # 5. load demo data (once)
+bun run start                           # 6. start API (:3000) + Web (:5173) together
+```
+
+Then open the web app at **http://localhost:5173**. Stop the apps with Ctrl-C;
+stop the database with `docker compose down`.
+
+### Ports
+
+| What | URL |
+|------|-----|
+| Web app | http://localhost:5173 |
+| API | http://localhost:3000 |
+| API docs (Swagger UI) | http://localhost:3000/openapi |
+| Storybook | http://localhost:6006 |
+| PostgreSQL (from your machine) | `postgresql://lab:lab@localhost:5433/lab` |
+
+### Handy scripts (run from the repo root)
+
+| Command | What it does |
+|---------|--------------|
+| `bun run start` | Run API + Web together |
+| `bun run api` | Run only the API (hot reload) |
+| `bun run web` | Run only the web app |
+| `bun run web:storybook` | Run Storybook (component explorer) |
+| `bun run api:test` | API unit tests — in-memory, no database |
+| `bun run api:test:db` | API Postgres schema + seed tests (needs the database) |
+| `bun run api:test:e2e` | API end-to-end tests (no database needed) |
+| `bun run web:test` | Web unit tests |
+| `bun run web:test:e2e` | Web end-to-end tests |
+| `bun run db:migrate` | Apply database migrations |
+| `bun run db:seed` | Load demo data |
+| `bun run db:reset` | Wipe and recreate the database (destructive) |
 
 ## API
 
@@ -31,16 +96,26 @@ OpenAPI JSON schema: `http://localhost:3000/openapi/json`
 |--------|------|-------------|
 | `GET` | `/health` | Health check — returns `{"status":"ok"}` |
 | `GET` | `/projects` | List all projects |
+| `POST` | `/projects` | Create a project (201) |
 | `GET` | `/projects/:projectId` | Get a single project |
+| `PATCH` | `/projects/:projectId` | Update a project |
 | `GET` | `/projects/:projectId/researchers` | List researchers on a project |
 | `GET` | `/projects/:projectId/experiments` | List experiments in a project |
+| `GET` | `/projects/:projectId/samples` | List samples used in a project |
+| `GET` | `/projects/:projectId/measurements` | List measurements in a project |
+| `GET` | `/experiments` | List all experiments |
+| `POST` | `/experiments` | Create an experiment (201) |
 | `GET` | `/experiments/:experimentId` | Get a single experiment |
 | `GET` | `/experiments/:experimentId/measurements` | List measurements for an experiment |
 | `GET` | `/experiments/:experimentId/samples` | List samples for an experiment |
-| `GET` | `/samples` | List all samples |
-| `GET` | `/samples/:sampleId` | Get a single sample |
-| `GET` | `/measurement-definitions` | List all measurement definitions |
 | `POST` | `/experiments/:experimentId/measurements` | Create a measurement (201 on success, 404 unknown experiment, 422 validation failure) |
+| `GET` | `/samples` | List all samples |
+| `POST` | `/samples` | Register a sample (201) |
+| `GET` | `/samples/:sampleId` | Get a single sample |
+| `GET` | `/measurements` | List all measurements |
+| `GET` | `/measurement-definitions` | List all measurement definitions |
+| `GET` | `/researchers` | List all researchers |
+| `POST` | `/researchers` | Create / invite a researcher (201) |
 
 ### POST /experiments/:experimentId/measurements
 
@@ -74,13 +149,18 @@ curl -X POST http://localhost:3000/experiments/seed-exp-1/measurements \
 
 ## Running the tests
 
-With a Postgres reachable at `DATABASE_URL` (e.g. `docker compose up db`):
+From the repo root:
 
 ```bash
-bun install
-cp apps/api/.env.example apps/api/.env   # populate DATABASE_URL (skip if already set)
-cd apps/api && bun run test
+bun run api:test        # API unit tests (in-memory, no database)
+bun run api:test:e2e    # API end-to-end tests (in-memory, no database)
+bun run api:test:db     # API Postgres schema + seed tests (needs the database)
+bun run web:test        # Web unit tests
+bun run web:test:e2e    # Web end-to-end tests
 ```
+
+- **API unit + e2e tests** use in-memory repositories — **no database, no Docker, no running server**. Just `bun install` then run them.
+- **API `test:db`** runs the schema-level tests (`prisma/__tests__` — the `measurements_exactly_one_value` CHECK and the seed) against a real Postgres. Start it first (`docker compose up -d db`) and make sure `apps/api/.env` exists (`cp apps/api/.env.example apps/api/.env`). It runs `prisma migrate reset` (destructive).
 
 ---
 

@@ -4,14 +4,14 @@ import userEvent from "@testing-library/user-event";
 import { Button } from "./button";
 
 describe("Button", () => {
-  it("calls onClick when clicked", async () => {
+  it("should calls onClick when clicked", async () => {
     const onClick = vi.fn();
     render(<Button onClick={onClick}>Click</Button>);
     await userEvent.click(screen.getByRole("button", { name: "Click" }));
     expect(onClick).toHaveBeenCalledOnce();
   });
 
-  it("applies variant and size classes", () => {
+  it("should applies variant and size classes", () => {
     render(
       <Button variant="destructive" size="sm">
         Danger
@@ -22,7 +22,7 @@ describe("Button", () => {
     expect(button).toHaveClass("text-destructive");
   });
 
-  it("is not clickable when disabled", async () => {
+  it("should is not clickable when disabled", async () => {
     const onClick = vi.fn();
     render(
       <Button disabled onClick={onClick}>

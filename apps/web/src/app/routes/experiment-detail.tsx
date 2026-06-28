@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
-import { useGetExperimentsByExperimentId } from "@/generated/hooks/experimentsController/useGetExperimentsByExperimentId";
-import { useGetExperimentsByExperimentIdMeasurements } from "@/generated/hooks/experimentsController/useGetExperimentsByExperimentIdMeasurements";
-import { useGetExperimentsByExperimentIdSamples } from "@/generated/hooks/experimentsController/useGetExperimentsByExperimentIdSamples";
+import { useGetExperimentsByExperimentId } from "@/generated/hooks/experiments/useGetExperimentsByExperimentId";
+import { useGetExperimentsByExperimentIdMeasurements } from "@/generated/hooks/experiments/useGetExperimentsByExperimentIdMeasurements";
+import { useGetExperimentsByExperimentIdSamples } from "@/generated/hooks/experiments/useGetExperimentsByExperimentIdSamples";
 import { CreateMeasurementForm } from "@/features/measurements/create-measurement-form";
 
 export function ExperimentDetailPage() {

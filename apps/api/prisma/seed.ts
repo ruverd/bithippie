@@ -29,6 +29,12 @@ export async function seed(prisma: PrismaClient): Promise<void> {
     update: {},
     create: { id: "seed-researcher-carol", name: "Carol Tan", email: "carol@lab.test", globalRole: ResearcherRole.LAB_TECHNICIAN },
   });
+  // Matches the signed-in user shown in the web sidebar.
+  const jason = await prisma.researcher.upsert({
+    where: { id: "seed-researcher-jason" },
+    update: {},
+    create: { id: "seed-researcher-jason", name: "Jason Davis-Cooke", email: "jason@lab.test", globalRole: ResearcherRole.PRINCIPAL_INVESTIGATOR },
+  });
 
   // --- Projects ---
   const water = await prisma.project.upsert({
@@ -172,7 +178,7 @@ export async function seed(prisma: PrismaClient): Promise<void> {
     };
   });
   await prisma.researcher.createMany({ data: fakerResearchers, skipDuplicates: true });
-  const researcherIds = [alice.id, bob.id, carol.id, ...fakerResearchers.map((r) => r.id)];
+  const researcherIds = [alice.id, bob.id, carol.id, jason.id, ...fakerResearchers.map((r) => r.id)];
 
   // --- Measurement definitions ---
   const NUMERIC_DEFS = [

@@ -3,6 +3,7 @@ import type {
   CreatedMeasurement,
   DefinitionRuleRow,
   MeasurementListItem,
+  UpdateMeasurementInput,
 } from "./measurement";
 
 export interface MeasurementsRepository {
@@ -11,5 +12,7 @@ export interface MeasurementsRepository {
   experimentSampleIds(experimentId: string): Promise<string[]>;
   researcherExists(id: string): Promise<boolean>;
   create(input: CreateMeasurementInput): Promise<CreatedMeasurement>;
+  findById(id: string): Promise<CreatedMeasurement | null>;
+  update(id: string, input: UpdateMeasurementInput): Promise<CreatedMeasurement>;
   list(): Promise<MeasurementListItem[]>;
 }

@@ -9,7 +9,7 @@ import {
 } from "./sidebar";
 
 describe("Sidebar", () => {
-  it("renders its content within a provider", () => {
+  it("should renders its content within a provider", () => {
     render(
       <SidebarProvider>
         <Sidebar>
@@ -20,7 +20,7 @@ describe("Sidebar", () => {
     expect(screen.getByText("Navigation")).toBeInTheDocument();
   });
 
-  it("toggles the open state from the trigger", async () => {
+  it("should toggles the open state from the trigger", async () => {
     const onOpenChange = vi.fn();
     render(
       <SidebarProvider open onOpenChange={onOpenChange}>

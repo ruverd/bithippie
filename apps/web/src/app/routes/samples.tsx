@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import type { ColumnDef } from "@tanstack/react-table";
-import { Plus, Search } from "lucide-react";
-import { useGetSamples } from "@/generated/hooks/samplesController/useGetSamples";
-import type { GetSamples200 } from "@/generated/types/samplesController/GetSamples";
-import { Button } from "@/components/ui/button";
+import { Search } from "lucide-react";
+import { useGetSamples } from "@/generated/hooks/samples/useGetSamples";
+import { RegisterSampleDialog } from "@/features/samples/register-sample-dialog";
+import type { GetSamples200 } from "@/generated/types/samples/GetSamples";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -14,19 +14,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { DataTable } from "@/components/data-table";
+import { formatDate } from "@/utils/format-date";
 
 type Sample = GetSamples200[number];
-
-function formatDate(iso: string | null): string {
-  if (!iso) return "—";
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return "—";
-  return d.toLocaleDateString("en-US", {
-    month: "short",
-    day: "2-digit",
-    year: "numeric",
-  });
-}
 
 const columns: ColumnDef<Sample>[] = [
   {
@@ -104,10 +94,7 @@ export function SamplesPage() {
             Specimens tracked across experiments
           </p>
         </div>
-        <Button>
-          <Plus size={16} />
-          Register Sample
-        </Button>
+        <RegisterSampleDialog />
       </div>
 
       <div className="flex items-center gap-3">

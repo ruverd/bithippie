@@ -9,3 +9,10 @@ export const sampleSchema = z.object({
   experimentCount: z.number(),
 });
 export const sampleListSchema = z.array(sampleSchema);
+
+export const createSampleSchema = z.object({
+  code: z.string().min(1),
+  specimenType: z.string().min(1),
+  collectedAt: z.string().nullish(),
+  storageLocation: z.string().nullish(),
+});

@@ -9,7 +9,7 @@ import {
 } from "./dialog";
 
 describe("Dialog", () => {
-  it("keeps the content closed until triggered", () => {
+  it("should keeps the content closed until triggered", () => {
     render(
       <Dialog>
         <DialogTrigger>Open</DialogTrigger>
@@ -22,7 +22,7 @@ describe("Dialog", () => {
     expect(screen.queryByText("Heading")).not.toBeInTheDocument();
   });
 
-  it("renders the content when open by default", () => {
+  it("should renders the content when open by default", () => {
     render(
       <Dialog defaultOpen>
         <DialogContent>

@@ -1,3 +1,5 @@
+import type { MeasurementValueType } from "@lab/shared";
+
 export interface Experiment {
   id: string;
   title: string;
@@ -7,6 +9,24 @@ export interface Experiment {
   previousExperimentId: string | null;
   startDate: string | null;
   endDate: string | null;
+}
+
+export interface CreateExperimentInput {
+  title: string;
+  hypothesis?: string | null;
+  projectId: string;
+  status?: string | null;
+  startDate?: string | null;
+  endDate?: string | null;
+}
+
+export interface UpdateExperimentInput {
+  title?: string;
+  hypothesis?: string | null;
+  projectId?: string;
+  status?: string | null;
+  startDate?: string | null;
+  endDate?: string | null;
 }
 
 export interface ExperimentListItem {
@@ -25,7 +45,7 @@ export interface ExperimentMeasurement {
   id: string;
   measurementDefinitionId: string;
   definitionName: string;
-  valueType: string;
+  valueType: MeasurementValueType;
   numericValue: number | null;
   unit: string | null;
   categoricalValue: string | null;

@@ -8,7 +8,7 @@ const config = {
 } satisfies ChartConfig;
 
 describe("ChartContainer", () => {
-  it("renders the chart wrapper and provides config", () => {
+  it("should renders the chart wrapper and provides config", () => {
     const { container } = render(
       <ChartContainer config={config}>
         <BarChart data={[{ name: "a", value: 1 }]}>

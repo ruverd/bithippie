@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import { Avatar, AvatarFallback } from "./avatar";
 
 describe("Avatar", () => {
-  it("renders the fallback content", () => {
+  it("should renders the fallback content", () => {
     render(
       <Avatar>
         <AvatarFallback>AB</AvatarFallback>
@@ -12,7 +12,7 @@ describe("Avatar", () => {
     expect(screen.getByText("AB")).toBeInTheDocument();
   });
 
-  it("exposes the size as a data attribute", () => {
+  it("should exposes the size as a data attribute", () => {
     const { container } = render(
       <Avatar size="lg">
         <AvatarFallback>AB</AvatarFallback>

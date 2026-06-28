@@ -135,4 +135,9 @@
   html {
     @apply font-sans;
     }
+  button:not(:disabled),
+  [role="tab"]:not([aria-disabled="true"]),
+  [role="button"]:not([aria-disabled="true"]) {
+    cursor: pointer;
+    }
 }

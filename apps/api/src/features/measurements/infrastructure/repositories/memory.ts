@@ -3,8 +3,10 @@ import type {
   CreatedMeasurement,
   DefinitionRuleRow,
   MeasurementListItem,
+  UpdateMeasurementInput,
 } from "../../domain/measurement";
 import type { MeasurementsRepository } from "../../domain/measurements.repository";
+import { NotFoundError } from "../../../../shared/domain/errors";
 
 interface Seed {
   experiments: string[];
@@ -47,6 +49,49 @@ export class InMemoryMeasurementsRepository implements MeasurementsRepository {
       notes: input.notes ?? null,
       recordedAt: input.recordedAt ?? new Date(0).toISOString(),
       recordedById: input.recordedById ?? null,
+      sampleIds: input.sampleIds ?? [],
+    };
+  }
+
+  async findById(id: string): Promise<CreatedMeasurement | null> {
+    const m = (this.data.list ?? []).find((x) => x.id === id);
+    return m
+      ? {
+          id: m.id,
+          experimentId: m.experimentId,
+          measurementDefinitionId: m.measurementDefinitionId,
+          numericValue: m.numericValue,
+          unit: m.unit,
+          categoricalValue: m.categoricalValue,
+          textValue: m.textValue,
+          notes: m.notes,
+          recordedAt: m.recordedAt,
+          recordedById: m.recordedById,
+          sampleIds: [],
+        }
+      : null;
+  }
+
+  async update(id: string, input: UpdateMeasurementInput): Promise<CreatedMeasurement> {
+    const m = (this.data.list ?? []).find((x) => x.id === id);
+    if (!m) throw new NotFoundError(`Measurement ${id} not found`);
+    m.numericValue = input.numericValue ?? null;
+    m.categoricalValue = input.categoricalValue ?? null;
+    m.textValue = input.textValue ?? null;
+    if (input.unit !== undefined) m.unit = input.unit ?? null;
+    if (input.notes !== undefined) m.notes = input.notes ?? null;
+    if (input.recordedById !== undefined) m.recordedById = input.recordedById ?? null;
+    return {
+      id: m.id,
+      experimentId: m.experimentId,
+      measurementDefinitionId: m.measurementDefinitionId,
+      numericValue: m.numericValue,
+      unit: m.unit,
+      categoricalValue: m.categoricalValue,
+      textValue: m.textValue,
+      notes: m.notes,
+      recordedAt: m.recordedAt,
+      recordedById: m.recordedById,
       sampleIds: input.sampleIds ?? [],
     };
   }

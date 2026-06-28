@@ -1,2 +1,0 @@
-export type { GetResearchers200, GetResearchers200GlobalRoleEnumKey, GetResearchersQuery, GetResearchersQueryResponse } from "./GetResearchers.ts";
-export { getResearchers200GlobalRoleEnum } from "./GetResearchers.ts";

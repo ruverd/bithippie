@@ -1,4 +1,4 @@
-import { useGetMeasurementDefinitions } from "@/generated/hooks/measurementDefinitionsController/useGetMeasurementDefinitions";
+import { useGetMeasurementDefinitions } from "@/generated/hooks/measurementDefinitions/useGetMeasurementDefinitions";
 
 export function MeasurementDefinitionsPage() {
   const { data, isLoading, isError } = useGetMeasurementDefinitions();

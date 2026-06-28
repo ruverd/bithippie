@@ -28,7 +28,7 @@ afterAll(async () => {
 });
 
 describe("measurements_exactly_one_value CHECK", () => {
-  it("accepts exactly one value column", async () => {
+  it("should accepts exactly one value column", async () => {
     const m = await prisma.measurement.create({
       data: { experimentId: EXPERIMENT_ID, measurementDefinitionId: DEFINITION_ID, numericValue: 12.4, unit: "mg/L" },
     });
@@ -36,7 +36,7 @@ describe("measurements_exactly_one_value CHECK", () => {
     await prisma.measurement.delete({ where: { id: m.id } });
   });
 
-  it("rejects two value columns", async () => {
+  it("should rejects two value columns", async () => {
     await expect(
       prisma.measurement.create({
         data: { experimentId: EXPERIMENT_ID, measurementDefinitionId: DEFINITION_ID, numericValue: 1, textValue: "x" },
@@ -44,7 +44,7 @@ describe("measurements_exactly_one_value CHECK", () => {
     ).rejects.toThrow(/measurements_exactly_one_value/);
   });
 
-  it("rejects zero value columns", async () => {
+  it("should rejects zero value columns", async () => {
     await expect(
       prisma.measurement.create({
         data: { experimentId: EXPERIMENT_ID, measurementDefinitionId: DEFINITION_ID },

@@ -14,6 +14,17 @@ export const createdMeasurementSchema = z.object({
   sampleIds: z.array(z.string()),
 });
 
+export const updateMeasurementSchema = z.object({
+  numericValue: z.number().nullish(),
+  categoricalValue: z.string().nullish(),
+  textValue: z.string().nullish(),
+  unit: z.string().nullish(),
+  notes: z.string().nullish(),
+  recordedAt: z.string().datetime().nullish(),
+  recordedById: z.string().nullish(),
+  sampleIds: z.array(z.string()).optional(),
+});
+
 export const measurementListItemSchema = z.object({
   id: z.string(),
   experimentId: z.string(),

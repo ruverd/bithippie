@@ -10,7 +10,7 @@ import {
 } from "./breadcrumb";
 
 describe("Breadcrumb", () => {
-  it("renders a labelled navigation with a link and current page", () => {
+  it("should renders a labelled navigation with a link and current page", () => {
     render(
       <Breadcrumb>
         <BreadcrumbList>

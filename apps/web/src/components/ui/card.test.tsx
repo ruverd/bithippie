@@ -9,7 +9,7 @@ import {
 } from "./card";
 
 describe("Card", () => {
-  it("renders its composed sections", () => {
+  it("should renders its composed sections", () => {
     render(
       <Card>
         <CardHeader>

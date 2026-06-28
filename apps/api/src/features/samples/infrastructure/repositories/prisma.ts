@@ -1,8 +1,22 @@
 import type { PrismaClient } from "@prisma/client";
+import type { CreateSampleInput } from "../../domain/sample";
 import type { SamplesRepository } from "../../domain/samples.repository";
 
 export class PrismaSamplesRepository implements SamplesRepository {
   constructor(private prisma: PrismaClient) {}
+
+  async create(input: CreateSampleInput) {
+    const s = await this.prisma.sample.create({
+      data: {
+        code: input.code,
+        specimenType: input.specimenType,
+        collectedAt: input.collectedAt ? new Date(input.collectedAt) : null,
+        storageLocation: input.storageLocation ?? null,
+      },
+      include: { _count: { select: { experiments: true } } },
+    });
+    return this.toDto(s);
+  }
 
   async list() {
     return (

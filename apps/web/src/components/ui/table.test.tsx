@@ -10,7 +10,7 @@ import {
 } from "./table";
 
 describe("Table", () => {
-  it("renders headers and cells with the right roles", () => {
+  it("should renders headers and cells with the right roles", () => {
     render(
       <Table>
         <TableHeader>

@@ -9,7 +9,7 @@ import {
 } from "./sheet";
 
 describe("Sheet", () => {
-  it("keeps the content closed until triggered", () => {
+  it("should keeps the content closed until triggered", () => {
     render(
       <Sheet>
         <SheetTrigger>Open</SheetTrigger>
@@ -22,7 +22,7 @@ describe("Sheet", () => {
     expect(screen.queryByText("Panel")).not.toBeInTheDocument();
   });
 
-  it("renders the content when open by default", () => {
+  it("should renders the content when open by default", () => {
     render(
       <Sheet defaultOpen>
         <SheetContent>

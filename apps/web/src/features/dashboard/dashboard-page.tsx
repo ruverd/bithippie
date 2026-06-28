@@ -4,7 +4,6 @@ import { MeasurementsBarChart } from "./measurements-bar-chart";
 import { ExperimentsStatusDonut } from "./experiments-status-donut";
 import { RecentMeasurementsTable } from "./recent-measurements-table";
 import { ActiveExperimentsList } from "./active-experiments-list";
-import { CreateExperimentDialog } from "@/features/experiments/create-experiment-dialog";
 import { useGetProjects } from "@/generated/hooks/projects/useGetProjects";
 import { useGetExperiments } from "@/generated/hooks/experiments/useGetExperiments";
 import { useGetSamples } from "@/generated/hooks/samples/useGetSamples";
@@ -41,12 +40,9 @@ export function DashboardPage() {
 
   return (
     <div className="flex flex-col gap-5 p-8">
-      <div className="flex items-center justify-between">
-        <div className="flex flex-col gap-1">
-          <h1 className="text-[28px] font-bold leading-tight">Dashboard</h1>
-          <p className="text-sm text-muted-foreground">Lab activity overview · {today}</p>
-        </div>
-        <CreateExperimentDialog />
+      <div className="flex flex-col gap-1">
+        <h1 className="text-[28px] font-bold leading-tight">Dashboard</h1>
+        <p className="text-sm text-muted-foreground">Lab activity overview · {today}</p>
       </div>
 
       {isLoading ? (

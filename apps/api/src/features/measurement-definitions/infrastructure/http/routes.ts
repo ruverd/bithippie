@@ -1,11 +1,12 @@
 import { Elysia } from "elysia";
-import type { MeasurementDefinitionsRepository } from "../../domain/measurement-definitions.repository";
-import { getMeasurementDefinitions } from "../../application/get-measurement-definitions";
+import type { MeasurementDefinitionsServices } from "../../application/services";
 import { measurementDefinitionListSchema } from "../../application/schemas";
+import { MeasurementDefinitionsController } from "./measurement-definitions.controller";
 
-export function measurementDefinitionsRouter(repo: MeasurementDefinitionsRepository) {
+export function measurementDefinitionsRouter(services: MeasurementDefinitionsServices) {
+  const controller = new MeasurementDefinitionsController(services);
   return new Elysia({ prefix: "/measurement-definitions" })
-    .get("/", () => getMeasurementDefinitions(repo), {
+    .get("/", () => controller.getMeasurementDefinitions(), {
       detail: { tags: ["MeasurementDefinitions"] },
       response: measurementDefinitionListSchema,
     });

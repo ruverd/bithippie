@@ -9,7 +9,7 @@ import {
 } from "./select";
 
 describe("Select", () => {
-  it("renders the trigger with its placeholder", () => {
+  it("should renders the trigger with its placeholder", () => {
     render(
       <Select>
         <SelectTrigger aria-label="Fruit">
@@ -25,7 +25,7 @@ describe("Select", () => {
     expect(screen.getByText("Pick one")).toBeInTheDocument();
   });
 
-  it("reflects the selected value in the trigger", () => {
+  it("should reflects the selected value in the trigger", () => {
     render(
       <Select defaultValue="apple">
         <SelectTrigger aria-label="Fruit">

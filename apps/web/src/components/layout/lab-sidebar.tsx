@@ -20,6 +20,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 
 const NAV_ITEMS = [
@@ -38,6 +39,7 @@ function isActivePath(pathname: string, to: string, end: boolean): boolean {
 
 export function LabSidebar() {
   const { pathname } = useLocation();
+  const { isMobile, setOpenMobile } = useSidebar();
 
   return (
     <Sidebar>
@@ -64,6 +66,9 @@ export function LabSidebar() {
                 <SidebarMenuItem key={to}>
                   <SidebarMenuButton
                     isActive={isActivePath(pathname, to, end)}
+                    onClick={() => {
+                      if (isMobile) setOpenMobile(false);
+                    }}
                     render={<NavLink to={to} end={end} />}
                   >
                     <Icon />
@@ -80,11 +85,11 @@ export function LabSidebar() {
         <div className="flex items-center gap-2.5 px-2 py-2">
           <Avatar className="size-[34px] bg-muted">
             <AvatarFallback className="bg-muted text-xs font-semibold">
-              AM
+              JD
             </AvatarFallback>
           </Avatar>
           <div className="flex flex-col">
-            <span className="text-[13px] font-semibold">Dr. Anya Mehta</span>
+            <span className="text-[13px] font-semibold">Jason Davis-Cooke</span>
             <span className="text-[11px] text-muted-foreground">
               Principal Investigator
             </span>

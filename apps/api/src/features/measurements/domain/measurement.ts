@@ -13,6 +13,17 @@ export interface CreateMeasurementInput {
   sampleIds?: string[];
 }
 
+export interface UpdateMeasurementInput {
+  numericValue?: number | null;
+  unit?: string | null;
+  categoricalValue?: string | null;
+  textValue?: string | null;
+  notes?: string | null;
+  recordedAt?: string | null;
+  recordedById?: string | null;
+  sampleIds?: string[];
+}
+
 export interface CreatedMeasurement {
   id: string;
   experimentId: string;
@@ -39,7 +50,7 @@ export interface MeasurementListItem {
   experimentName: string;
   measurementDefinitionId: string;
   definitionName: string;
-  valueType: string;
+  valueType: MeasurementValueType;
   numericValue: number | null;
   unit: string | null;
   categoricalValue: string | null;

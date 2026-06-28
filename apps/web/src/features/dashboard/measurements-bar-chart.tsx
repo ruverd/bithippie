@@ -1,6 +1,12 @@
+import { useState } from "react";
 import { Bar, BarChart, XAxis } from "recharts";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { ChartContainer, type ChartConfig } from "@/components/ui/chart";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from "@/components/ui/chart";
 
 interface MonthlyCount {
   m: string;
@@ -19,6 +25,7 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export function MeasurementsBarChart({ data }: MeasurementsBarChartProps) {
+  const [hovering, setHovering] = useState(false);
   return (
     <Card className="flex flex-1 flex-col p-5">
       <CardHeader className="flex flex-row items-center justify-between p-0 pb-4">
@@ -32,7 +39,12 @@ export function MeasurementsBarChart({ data }: MeasurementsBarChartProps) {
         </div>
       </CardHeader>
       <CardContent className="flex-1 p-0">
-        <ChartContainer config={chartConfig} className="h-full w-full">
+        <ChartContainer
+          config={chartConfig}
+          className="h-full w-full"
+          onMouseEnter={() => setHovering(true)}
+          onMouseLeave={() => setHovering(false)}
+        >
           <BarChart data={data} margin={{ top: 4, right: 0, bottom: 0, left: 0 }}>
             <XAxis
               dataKey="m"
@@ -40,8 +52,15 @@ export function MeasurementsBarChart({ data }: MeasurementsBarChartProps) {
               tickLine={false}
               tick={{ fontSize: 12, fill: "var(--muted-foreground)" }}
             />
+            <ChartTooltip
+              cursor={false}
+              isAnimationActive={false}
+              active={hovering ? undefined : false}
+              content={<ChartTooltipContent />}
+            />
             <Bar
               dataKey="v"
+              name="measurements"
               fill="var(--color-measurements)"
               radius={[5, 5, 0, 0]}
             />

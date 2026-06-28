@@ -2,10 +2,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { measurementValueInputSchema } from "@lab/shared";
 import { useQueryClient } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import type { z } from "zod";
-import { useGetMeasurementDefinitions } from "@/generated/hooks/measurementDefinitionsController/useGetMeasurementDefinitions";
-import { usePostExperimentsByExperimentIdMeasurements } from "@/generated/hooks/measurementsController/usePostExperimentsByExperimentIdMeasurements";
-import { getExperimentsByExperimentIdMeasurementsQueryKey } from "@/generated/hooks/experimentsController/useGetExperimentsByExperimentIdMeasurements";
+import { useGetMeasurementDefinitions } from "@/generated/hooks/measurementDefinitions/useGetMeasurementDefinitions";
+import { usePostExperimentsByExperimentIdMeasurements } from "@/generated/hooks/measurements/usePostExperimentsByExperimentIdMeasurements";
+import { getExperimentsByExperimentIdMeasurementsQueryKey } from "@/generated/hooks/experiments/useGetExperimentsByExperimentIdMeasurements";
 import { MeasurementValueField } from "./MeasurementValueField";
 
 type FormValues = z.infer<typeof measurementValueInputSchema>;
@@ -26,10 +27,12 @@ export function CreateMeasurementForm({ experimentId }: { experimentId: string }
     create.mutate(
       { experimentId, data: values },
       {
-        onSuccess: () =>
+        onSuccess: () => {
           queryClient.invalidateQueries({
             queryKey: getExperimentsByExperimentIdMeasurementsQueryKey(experimentId),
-          }),
+          });
+          toast.success("Measurement recorded");
+        },
       },
     );
   });

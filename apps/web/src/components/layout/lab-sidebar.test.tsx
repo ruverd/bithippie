@@ -23,14 +23,14 @@ function renderSidebar(route = "/") {
 }
 
 describe("LabSidebar", () => {
-  it("renders every nav item as a link", () => {
+  it("should renders every nav item as a link", () => {
     renderSidebar();
     for (const label of NAV_LABELS) {
       expect(screen.getByRole("link", { name: label })).toBeInTheDocument();
     }
   });
 
-  it("marks the current route as active", () => {
+  it("should marks the current route as active", () => {
     renderSidebar("/projects");
     expect(screen.getByRole("link", { name: "Projects" })).toHaveAttribute(
       "aria-current",
@@ -41,7 +41,7 @@ describe("LabSidebar", () => {
     ).not.toHaveAttribute("aria-current", "page");
   });
 
-  it("treats nested routes as active for non-end items", () => {
+  it("should treats nested routes as active for non-end items", () => {
     renderSidebar("/projects/123");
     expect(screen.getByRole("link", { name: "Projects" })).toHaveAttribute(
       "aria-current",
@@ -49,9 +49,9 @@ describe("LabSidebar", () => {
     );
   });
 
-  it("shows the researcher in the footer", () => {
+  it("should shows the researcher in the footer", () => {
     renderSidebar();
-    expect(screen.getByText("Dr. Anya Mehta")).toBeInTheDocument();
+    expect(screen.getByText("Jason Davis-Cooke")).toBeInTheDocument();
     expect(screen.getByText("Principal Investigator")).toBeInTheDocument();
   });
 });

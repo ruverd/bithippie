@@ -1,15 +1,8 @@
 import { Avatar, AvatarFallback, AvatarGroup } from "@/components/ui/avatar";
+import { titleInitials } from "@/utils/initials";
 
 interface TeamAvatarsProps {
   title: string;
-}
-
-function titleInitials(title: string): string[] {
-  return title
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 3)
-    .map((word) => word[0].toUpperCase());
 }
 
 export function TeamAvatars({ title }: TeamAvatarsProps) {

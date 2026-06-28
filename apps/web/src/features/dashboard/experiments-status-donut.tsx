@@ -1,6 +1,11 @@
 import { Cell, Pie, PieChart } from "recharts";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { ChartContainer, type ChartConfig } from "@/components/ui/chart";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from "@/components/ui/chart";
 
 interface ExperimentStatusItem {
   status: string;
@@ -28,8 +33,16 @@ export function ExperimentsStatusDonut({ data, total }: ExperimentsStatusDonutPr
       </CardHeader>
       <CardContent className="flex flex-1 items-center gap-5 p-0">
         <div className="relative">
-          <ChartContainer config={chartConfig} className="size-[160px]">
+          <div className="pointer-events-none absolute inset-0 z-0 flex flex-col items-center justify-center">
+            <span className="text-2xl font-bold">{total}</span>
+            <span className="text-xs text-muted-foreground">Total</span>
+          </div>
+          <ChartContainer config={chartConfig} className="relative z-10 size-[160px]">
             <PieChart>
+              <ChartTooltip
+                isAnimationActive={false}
+                content={<ChartTooltipContent nameKey="status" hideLabel />}
+              />
               <Pie
                 data={data}
                 dataKey="count"
@@ -44,10 +57,6 @@ export function ExperimentsStatusDonut({ data, total }: ExperimentsStatusDonutPr
               </Pie>
             </PieChart>
           </ChartContainer>
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-2xl font-bold">{total}</span>
-            <span className="text-xs text-muted-foreground">Total</span>
-          </div>
         </div>
 
         <div className="flex flex-1 flex-col gap-3">

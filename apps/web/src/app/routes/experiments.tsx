@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Plus, Search } from "lucide-react";
-import { useGetExperiments } from "@/generated/hooks/experimentsController/useGetExperiments";
-import type { GetExperiments200 } from "@/generated/types/experimentsController/GetExperiments";
+import { useGetExperiments } from "@/generated/hooks/experiments/useGetExperiments";
+import { useGetProjects } from "@/generated/hooks/projects/useGetProjects";
+import type { GetExperiments200 } from "@/generated/types/experiments/GetExperiments";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -15,21 +15,12 @@ import {
 } from "@/components/ui/select";
 import { StatusBadge } from "@/components/status-badge";
 import { DataTable } from "@/components/data-table";
+import { ExperimentFormDialog } from "@/features/experiments/experiment-form-dialog";
+import { formatDate } from "@/utils/format-date";
 
 type Experiment = GetExperiments200[number];
 
 type StatusFilter = "all" | "ACTIVE" | "PLANNING" | "COMPLETED" | "CANCELLED";
-
-function formatDate(iso: string | null): string {
-  if (!iso) return "—";
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return "—";
-  return d.toLocaleDateString("en-US", {
-    month: "short",
-    day: "2-digit",
-    year: "numeric",
-  });
-}
 
 const columns: ColumnDef<Experiment>[] = [
   {
@@ -38,12 +29,7 @@ const columns: ColumnDef<Experiment>[] = [
     header: "Name",
     cell: ({ row }) => (
       <>
-        <Link
-          to={`/experiments/${row.original.id}`}
-          className="text-sm font-semibold hover:underline"
-        >
-          {row.original.title}
-        </Link>
+        <span className="text-sm font-semibold">{row.original.title}</span>
         {row.original.hypothesis && (
           <p className="text-xs text-muted-foreground mt-0.5">
             {row.original.hypothesis}
@@ -95,10 +81,16 @@ const columns: ColumnDef<Experiment>[] = [
 
 export function ExperimentsPage() {
   const { data, isLoading, isError } = useGetExperiments();
+  const projects = useGetProjects();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
+  const [projectFilter, setProjectFilter] = useState("all");
+  const [dialog, setDialog] = useState<
+    { mode: "create" } | { mode: "edit"; experiment: Experiment } | null
+  >(null);
 
   const allExperiments = data ?? [];
+  const projectList = projects.data ?? [];
 
   const filtered = allExperiments.filter((e) => {
     const term = search.toLowerCase();
@@ -109,8 +101,16 @@ export function ExperimentsPage() {
       (e.hypothesis?.toLowerCase().includes(term) ?? false);
     const matchesStatus =
       statusFilter === "all" || (e.status?.toUpperCase() ?? "") === statusFilter;
-    return matchesSearch && matchesStatus;
+    const matchesProject = projectFilter === "all" || e.projectId === projectFilter;
+    return matchesSearch && matchesStatus && matchesProject;
   });
+
+  const hasFilters = search !== "" || statusFilter !== "all" || projectFilter !== "all";
+  const clearFilters = () => {
+    setSearch("");
+    setStatusFilter("all");
+    setProjectFilter("all");
+  };
 
   return (
     <div className="flex flex-col gap-5 p-8">
@@ -121,7 +121,7 @@ export function ExperimentsPage() {
             Assays and trials tracked across projects
           </p>
         </div>
-        <Button>
+        <Button onClick={() => setDialog({ mode: "create" })}>
           <Plus size={16} />
           New Experiment
         </Button>
@@ -141,6 +141,24 @@ export function ExperimentsPage() {
           />
         </div>
         <Select
+          items={Object.fromEntries(projectList.map((p) => [p.id, p.title]))}
+          value={projectFilter === "all" ? undefined : projectFilter}
+          onValueChange={(v) => setProjectFilter(v ?? "all")}
+        >
+          <SelectTrigger className="w-[200px]">
+            <SelectValue placeholder="All projects" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All projects</SelectItem>
+            {projectList.map((p) => (
+              <SelectItem key={p.id} value={p.id}>
+                {p.title}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <Select
+          items={{ ACTIVE: "Active", PLANNING: "Planning", COMPLETED: "Completed", CANCELLED: "Cancelled" }}
           value={statusFilter === "all" ? undefined : statusFilter}
           onValueChange={(v) => setStatusFilter((v ?? "all") as StatusFilter)}
         >
@@ -155,6 +173,11 @@ export function ExperimentsPage() {
             <SelectItem value="CANCELLED">Cancelled</SelectItem>
           </SelectContent>
         </Select>
+        {hasFilters && (
+          <Button variant="ghost" onClick={clearFilters}>
+            Clear
+          </Button>
+        )}
       </div>
 
       <DataTable
@@ -163,6 +186,15 @@ export function ExperimentsPage() {
         noun="experiments"
         isLoading={isLoading}
         isError={isError}
+        onRowClick={(e) => setDialog({ mode: "edit", experiment: e })}
+      />
+
+      <ExperimentFormDialog
+        open={dialog !== null}
+        onOpenChange={(o) => {
+          if (!o) setDialog(null);
+        }}
+        experiment={dialog?.mode === "edit" ? dialog.experiment : null}
       />
     </div>
   );

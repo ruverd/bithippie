@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useGetSamplesBySampleId } from "@/generated/hooks/samplesController/useGetSamplesBySampleId";
+import { useGetSamplesBySampleId } from "@/generated/hooks/samples/useGetSamplesBySampleId";
 
 export function SampleDetailPage() {
   const { sampleId = "" } = useParams();

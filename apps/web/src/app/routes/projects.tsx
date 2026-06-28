@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Plus, Search } from "lucide-react";
-import { useGetProjects } from "@/generated/hooks/projectsController/useGetProjects";
-import type { GetProjects200 } from "@/generated/types/projectsController/GetProjects";
+import { ProjectFormDialog } from "@/features/projects/project-form-dialog";
+import { useGetProjects } from "@/generated/hooks/projects/useGetProjects";
+import type { GetProjects200 } from "@/generated/types/projects/GetProjects";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -16,8 +17,9 @@ import {
 import { StatusBadge } from "@/components/status-badge";
 import { TeamAvatars } from "@/features/projects/team-avatars";
 import { DataTable } from "@/components/data-table";
+import { relativeTime } from "@/utils/relative-time";
 
-// TODO: team / experiment count / updated date are not in the projects list endpoint — placeholders
+// TODO: team membership is not in the projects list endpoint — placeholder
 
 type Project = GetProjects200[number];
 
@@ -30,12 +32,7 @@ const columns: ColumnDef<Project>[] = [
     header: "Project Title",
     cell: ({ row }) => (
       <>
-        <Link
-          to={`/projects/${row.original.id}`}
-          className="text-sm font-semibold hover:underline"
-        >
-          {row.original.title}
-        </Link>
+        <span className="text-sm font-semibold">{row.original.title}</span>
         {row.original.description && (
           <p className="text-xs text-muted-foreground mt-0.5">
             {row.original.description}
@@ -68,18 +65,19 @@ const columns: ColumnDef<Project>[] = [
     header: "Experiments",
     enableSorting: false,
     meta: { headClassName: "w-[120px]", cellClassName: "text-sm text-muted-foreground" },
-    cell: () => "—",
+    cell: ({ row }) => row.original.experimentCount,
   },
   {
     id: "updated",
     header: "Updated",
     enableSorting: false,
     meta: { headClassName: "w-[120px]", cellClassName: "text-sm text-muted-foreground" },
-    cell: () => "—",
+    cell: ({ row }) => relativeTime(row.original.updatedAt),
   },
 ];
 
 export function ProjectsPage() {
+  const navigate = useNavigate();
   const { data, isLoading, isError } = useGetProjects();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
@@ -104,10 +102,14 @@ export function ProjectsPage() {
             Manage research projects and their experiments
           </p>
         </div>
-        <Button>
-          <Plus size={16} />
-          New Project
-        </Button>
+        <ProjectFormDialog
+          trigger={
+            <Button>
+              <Plus size={16} />
+              New Project
+            </Button>
+          }
+        />
       </div>
 
       <div className="flex items-center gap-3">
@@ -124,6 +126,7 @@ export function ProjectsPage() {
           />
         </div>
         <Select
+          items={{ ACTIVE: "Active", PLANNING: "Planning", COMPLETED: "Completed", CANCELLED: "Cancelled" }}
           value={statusFilter === "all" ? undefined : statusFilter}
           onValueChange={(v) => setStatusFilter((v ?? "all") as StatusFilter)}
         >
@@ -146,6 +149,7 @@ export function ProjectsPage() {
         noun="projects"
         isLoading={isLoading}
         isError={isError}
+        onRowClick={(p) => navigate(`/projects/${p.id}`)}
       />
     </div>
   );

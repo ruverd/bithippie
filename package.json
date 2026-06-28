@@ -3,12 +3,23 @@
   "private": true,
   "workspaces": ["apps/*", "packages/*"],
   "scripts": {
+    "start": "concurrently -k -n api,web -c blue,green \"bun run api\" \"bun run web\"",
+    "dev": "bun run start",
+    "api": "cd apps/api && bun run dev",
+    "api:start": "cd apps/api && bun run start",
+    "api:test": "cd apps/api && bun run test",
+    "api:test:db": "cd apps/api && bun run test:db",
+    "api:test:e2e": "cd apps/api && bun run test:e2e",
+    "web": "cd apps/web && bun run dev",
+    "web:test": "cd apps/web && bun run test:unit",
+    "web:test:e2e": "cd apps/web && bun run test:e2e",
+    "web:storybook": "cd apps/web && bun run storybook",
+    "test": "cd apps/api && bun run test",
     "db:migrate": "cd apps/api && bun run db:migrate:dev",
     "db:seed": "cd apps/api && bun run db:seed",
-    "db:reset": "cd apps/api && bun run db:reset",
-    "test": "cd apps/api && bun run test",
-    "test:api": "cd apps/api && bun run test",
-    "test:web": "cd apps/web && bun run test:unit",
-    "dev:web": "cd apps/web && bun run dev"
+    "db:reset": "cd apps/api && bun run db:reset"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.3"
   }
 }

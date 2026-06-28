@@ -1,8 +1,8 @@
 import { useState } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Plus, Search } from "lucide-react";
-import { useGetResearchers } from "@/generated/hooks/researchersController/useGetResearchers";
-import type { GetResearchers200 } from "@/generated/types/researchersController/GetResearchers";
+import { useGetResearchers } from "@/generated/hooks/researchers/useGetResearchers";
+import type { GetResearchers200 } from "@/generated/types/researchers/GetResearchers";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,6 +14,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { DataTable } from "@/components/data-table";
+import { ResearcherFormDialog } from "@/features/researchers/researcher-form-dialog";
+import { initials } from "@/utils/initials";
+import { formatRole } from "@/utils/format-role";
 
 type Researcher = GetResearchers200[number];
 
@@ -23,23 +26,6 @@ const ROLES = [
   "GRADUATE_STUDENT",
   "LAB_TECHNICIAN",
 ] as const;
-
-function formatRole(role: string): string {
-  return role
-    .toLowerCase()
-    .split("_")
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(" ");
-}
-
-function initials(name: string): string {
-  return name
-    .split(/\s+/)
-    .filter((w) => w && !w.endsWith("."))
-    .slice(0, 2)
-    .map((w) => w[0]?.toUpperCase() ?? "")
-    .join("");
-}
 
 const columns: ColumnDef<Researcher>[] = [
   {
@@ -88,6 +74,9 @@ export function ResearchersPage() {
   const { data, isLoading, isError } = useGetResearchers();
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
+  const [dialog, setDialog] = useState<
+    { mode: "create" } | { mode: "edit"; researcher: Researcher } | null
+  >(null);
 
   const allResearchers = data ?? [];
 
@@ -110,9 +99,9 @@ export function ResearchersPage() {
             Lab members and their activity
           </p>
         </div>
-        <Button>
+        <Button onClick={() => setDialog({ mode: "create" })}>
           <Plus size={16} />
-          Invite Researcher
+          New Researcher
         </Button>
       </div>
 
@@ -130,6 +119,7 @@ export function ResearchersPage() {
           />
         </div>
         <Select
+          items={Object.fromEntries(ROLES.map((r) => [r, formatRole(r)]))}
           value={roleFilter === "all" ? undefined : roleFilter}
           onValueChange={(v) => setRoleFilter(v ?? "all")}
         >
@@ -154,6 +144,15 @@ export function ResearchersPage() {
         isLoading={isLoading}
         isError={isError}
         cellClassName="py-3 px-4"
+        onRowClick={(r) => setDialog({ mode: "edit", researcher: r })}
+      />
+
+      <ResearcherFormDialog
+        open={dialog !== null}
+        onOpenChange={(o) => {
+          if (!o) setDialog(null);
+        }}
+        researcher={dialog?.mode === "edit" ? dialog.researcher : null}
       />
     </div>
   );

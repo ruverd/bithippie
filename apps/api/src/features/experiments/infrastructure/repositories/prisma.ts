@@ -1,9 +1,75 @@
-import { ProjectRole, type PrismaClient } from "@prisma/client";
-import type { ExperimentListItem } from "../../domain/experiment";
+import { ProjectRole, type Prisma, type PrismaClient } from "@prisma/client";
+import type {
+  CreateExperimentInput,
+  Experiment,
+  ExperimentListItem,
+  UpdateExperimentInput,
+} from "../../domain/experiment";
 import type { ExperimentsRepository } from "../../domain/experiments.repository";
 
 export class PrismaExperimentsRepository implements ExperimentsRepository {
   constructor(private prisma: PrismaClient) {}
+
+  async projectExists(projectId: string) {
+    return (await this.prisma.project.count({ where: { id: projectId } })) > 0;
+  }
+
+  async create(input: CreateExperimentInput): Promise<Experiment> {
+    const e = await this.prisma.experiment.create({
+      data: {
+        title: input.title,
+        hypothesis: input.hypothesis ?? null,
+        projectId: input.projectId,
+        status: (input.status as Prisma.ExperimentCreateInput["status"]) ?? null,
+        startDate: input.startDate ? new Date(input.startDate) : null,
+        endDate: input.endDate ? new Date(input.endDate) : null,
+      },
+    });
+    return {
+      id: e.id,
+      title: e.title,
+      hypothesis: e.hypothesis ?? null,
+      status: e.status,
+      projectId: e.projectId,
+      previousExperimentId: e.previousExperimentId,
+      startDate: e.startDate?.toISOString() ?? null,
+      endDate: e.endDate?.toISOString() ?? null,
+    };
+  }
+
+  async update(id: string, input: UpdateExperimentInput): Promise<Experiment> {
+    const e = await this.prisma.experiment.update({
+      where: { id },
+      data: {
+        ...(input.title !== undefined ? { title: input.title } : {}),
+        ...(input.hypothesis !== undefined ? { hypothesis: input.hypothesis } : {}),
+        ...(input.projectId !== undefined ? { projectId: input.projectId } : {}),
+        ...(input.status !== undefined
+          ? { status: input.status as Prisma.ExperimentUpdateInput["status"] }
+          : {}),
+        ...(input.startDate !== undefined
+          ? { startDate: input.startDate ? new Date(input.startDate) : null }
+          : {}),
+        ...(input.endDate !== undefined
+          ? { endDate: input.endDate ? new Date(input.endDate) : null }
+          : {}),
+      },
+    });
+    return {
+      id: e.id,
+      title: e.title,
+      hypothesis: e.hypothesis ?? null,
+      status: e.status,
+      projectId: e.projectId,
+      previousExperimentId: e.previousExperimentId,
+      startDate: e.startDate?.toISOString() ?? null,
+      endDate: e.endDate?.toISOString() ?? null,
+    };
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.prisma.experiment.delete({ where: { id } });
+  }
 
   async list(): Promise<ExperimentListItem[]> {
     const rows = await this.prisma.experiment.findMany({

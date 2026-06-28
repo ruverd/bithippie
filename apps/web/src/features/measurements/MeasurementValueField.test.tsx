@@ -4,14 +4,14 @@ import { renderWithProviders } from "@/test/render";
 import { MeasurementValueField } from "./MeasurementValueField";
 
 describe("MeasurementValueField", () => {
-  it("renders a number input for a NUMERIC definition", () => {
+  it("should renders a number input for a NUMERIC definition", () => {
     renderWithProviders(
       <MeasurementValueField valueType="NUMERIC" value="" onChange={vi.fn()} />,
     );
     expect(screen.getByRole("spinbutton")).toBeInTheDocument();
   });
 
-  it("renders a select of allowedCategories for a CATEGORICAL definition", () => {
+  it("should renders a select of allowedCategories for a CATEGORICAL definition", () => {
     renderWithProviders(
       <MeasurementValueField
         valueType="CATEGORICAL"
@@ -26,7 +26,7 @@ describe("MeasurementValueField", () => {
     expect(screen.getByRole("option", { name: "negative" })).toBeInTheDocument();
   });
 
-  it("renders a textarea for a TEXT definition", () => {
+  it("should renders a textarea for a TEXT definition", () => {
     renderWithProviders(
       <MeasurementValueField valueType="TEXT" value="" onChange={vi.fn()} />,
     );

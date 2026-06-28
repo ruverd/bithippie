@@ -1,4 +1,0 @@
-export type { GetProjects200, GetProjectsQuery, GetProjectsQueryResponse } from "./GetProjects.ts";
-export type { GetProjectsByProjectId200, GetProjectsByProjectIdPathParams, GetProjectsByProjectIdQuery, GetProjectsByProjectIdQueryResponse } from "./GetProjectsByProjectId.ts";
-export type { GetProjectsByProjectIdExperiments200, GetProjectsByProjectIdExperimentsPathParams, GetProjectsByProjectIdExperimentsQuery, GetProjectsByProjectIdExperimentsQueryResponse } from "./GetProjectsByProjectIdExperiments.ts";
-export type { GetProjectsByProjectIdResearchers200, GetProjectsByProjectIdResearchersPathParams, GetProjectsByProjectIdResearchersQuery, GetProjectsByProjectIdResearchersQueryResponse } from "./GetProjectsByProjectIdResearchers.ts";
