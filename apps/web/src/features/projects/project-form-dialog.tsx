@@ -51,14 +51,27 @@ const schema = z.object({
 type Values = z.infer<typeof schema>;
 
 export interface ProjectFormDialogProps {
-  trigger: ReactNode;
+  trigger?: ReactNode;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
   projectId?: string;
   initial?: Partial<Values>;
 }
 
-export function ProjectFormDialog({ trigger, projectId, initial }: ProjectFormDialogProps) {
+export function ProjectFormDialog({
+  trigger,
+  open: openProp,
+  onOpenChange,
+  projectId,
+  initial,
+}: ProjectFormDialogProps) {
   const isEdit = Boolean(projectId);
-  const [open, setOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
+  const open = openProp ?? internalOpen;
+  const setOpen = (next: boolean) => {
+    if (openProp === undefined) setInternalOpen(next);
+    onOpenChange?.(next);
+  };
   const queryClient = useQueryClient();
   const researchers = useGetResearchers();
   const create = usePostProjects();
@@ -116,7 +129,7 @@ export function ProjectFormDialog({ trigger, projectId, initial }: ProjectFormDi
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger render={trigger as React.ReactElement} />
+      {trigger && <DialogTrigger render={trigger as React.ReactElement} />}
       <DialogContent className="sm:max-w-[540px]">
         <form onSubmit={onSubmit} className="flex flex-col gap-5">
           <DialogHeader>

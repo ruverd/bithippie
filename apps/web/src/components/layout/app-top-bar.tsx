@@ -9,8 +9,8 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useSidebar } from "@/components/ui/sidebar";
+import { useCommandPalette } from "@/components/command-palette/command-palette-context";
 
 function derivePageTitle(pathname: string): string {
   if (pathname === "/") return "Dashboard";
@@ -22,10 +22,15 @@ function derivePageTitle(pathname: string): string {
     .join(" ");
 }
 
+const isMac =
+  typeof navigator !== "undefined" &&
+  /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
+
 export function AppTopBar() {
   const { pathname } = useLocation();
   const pageTitle = derivePageTitle(pathname);
   const { toggleSidebar } = useSidebar();
+  const { setOpen } = useCommandPalette();
 
   return (
     <header className="flex h-16 shrink-0 items-center justify-between border-b border-border bg-card px-4 sm:px-7">
@@ -54,13 +59,18 @@ export function AppTopBar() {
         </Breadcrumb>
       </div>
 
-      <div className="relative w-[280px]">
-        <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-        <Input
-          placeholder="Search…"
-          className="bg-background pl-9"
-        />
-      </div>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        aria-label="Search"
+        className="flex h-9 w-[280px] items-center gap-2 rounded-md border border-input bg-background px-3 text-sm text-muted-foreground transition-colors hover:bg-accent/50"
+      >
+        <Search className="size-4 shrink-0" />
+        <span className="flex-1 text-left">Search…</span>
+        <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-0.5 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium">
+          {isMac ? "⌘" : "Ctrl"} K
+        </kbd>
+      </button>
     </header>
   );
 }

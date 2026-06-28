@@ -42,8 +42,21 @@ const schema = z
 
 type FormValues = z.infer<typeof schema>;
 
-export function CreateMeasurementDialog() {
-  const [open, setOpen] = useState(false);
+export interface CreateMeasurementDialogProps {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}
+
+export function CreateMeasurementDialog({
+  open: openProp,
+  onOpenChange,
+}: CreateMeasurementDialogProps = {}) {
+  const [internalOpen, setInternalOpen] = useState(false);
+  const open = openProp ?? internalOpen;
+  const setOpen = (next: boolean) => {
+    if (openProp === undefined) setInternalOpen(next);
+    onOpenChange?.(next);
+  };
   const queryClient = useQueryClient();
   const definitions = useGetMeasurementDefinitions();
   const experiments = useGetExperiments();
@@ -92,14 +105,16 @@ export function CreateMeasurementDialog() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger
-        render={
-          <Button>
-            <Plus size={16} />
-            New Measurement
-          </Button>
-        }
-      />
+      {openProp === undefined && (
+        <DialogTrigger
+          render={
+            <Button>
+              <Plus size={16} />
+              New Measurement
+            </Button>
+          }
+        />
+      )}
       <DialogContent>
         <form onSubmit={onSubmit} className="flex flex-col gap-4">
           <DialogHeader>

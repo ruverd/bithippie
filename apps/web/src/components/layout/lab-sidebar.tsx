@@ -1,12 +1,4 @@
 import { NavLink, useLocation } from "react-router-dom";
-import {
-  LayoutDashboard,
-  FolderKanban,
-  FlaskConical,
-  TestTube,
-  Activity,
-  Users,
-} from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import logo from "@/assets/logo.jpeg";
 import {
@@ -22,15 +14,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-
-const NAV_ITEMS = [
-  { label: "Dashboard", icon: LayoutDashboard, to: "/", end: true },
-  { label: "Projects", icon: FolderKanban, to: "/projects", end: false },
-  { label: "Experiments", icon: FlaskConical, to: "/experiments", end: false },
-  { label: "Samples", icon: TestTube, to: "/samples", end: false },
-  { label: "Measurements", icon: Activity, to: "/measurements", end: false },
-  { label: "Researchers", icon: Users, to: "/researchers", end: false },
-] as const;
+import { NAV_ITEMS } from "@/components/layout/nav-items";
 
 function isActivePath(pathname: string, to: string, end: boolean): boolean {
   if (end) return pathname === to;
