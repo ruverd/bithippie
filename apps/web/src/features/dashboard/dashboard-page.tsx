@@ -4,6 +4,7 @@ import { MeasurementsBarChart } from "./measurements-bar-chart";
 import { ExperimentsStatusDonut } from "./experiments-status-donut";
 import { RecentMeasurementsTable } from "./recent-measurements-table";
 import { ActiveExperimentsList } from "./active-experiments-list";
+import { DashboardSkeleton } from "./dashboard-skeleton";
 import { useGetProjects } from "@/generated/hooks/projects/useGetProjects";
 import { useGetExperiments } from "@/generated/hooks/experiments/useGetExperiments";
 import { useGetSamples } from "@/generated/hooks/samples/useGetSamples";
@@ -46,7 +47,7 @@ export function DashboardPage() {
       </div>
 
       {isLoading ? (
-        <p className="text-sm text-muted-foreground">Loading…</p>
+        <DashboardSkeleton />
       ) : isError ? (
         <p className="text-sm text-muted-foreground" role="alert">
           Failed to load dashboard data.
