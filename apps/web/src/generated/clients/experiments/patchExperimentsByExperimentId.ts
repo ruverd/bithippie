@@ -3,9 +3,9 @@
 * Do not edit manually.
 */
 
-import fetch from "@kubb/plugin-client/clients/fetch";
+import fetch from "@/lib/api-client";
 import type { PatchExperimentsByExperimentIdMutationRequest, PatchExperimentsByExperimentIdMutationResponse, PatchExperimentsByExperimentIdPathParams } from "../../types/experiments/PatchExperimentsByExperimentId.ts";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/fetch";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@/lib/api-client";
 
 function getPatchExperimentsByExperimentIdUrl(experimentId: PatchExperimentsByExperimentIdPathParams["experimentId"]) {
   const res = { method: 'PATCH', url: `/experiments/${experimentId}` as const }

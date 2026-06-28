@@ -4,7 +4,7 @@
 */
 
 import type { PostExperimentsByExperimentIdSamplesMutationRequest, PostExperimentsByExperimentIdSamplesMutationResponse, PostExperimentsByExperimentIdSamplesPathParams } from "../../types/experiments/PostExperimentsByExperimentIdSamples.ts";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/fetch";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@/lib/api-client";
 import type { UseMutationOptions, UseMutationResult, QueryClient } from "@tanstack/react-query";
 import { postExperimentsByExperimentIdSamples } from "../../clients/experiments/postExperimentsByExperimentIdSamples.ts";
 import { mutationOptions, useMutation } from "@tanstack/react-query";

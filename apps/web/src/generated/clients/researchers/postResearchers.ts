@@ -3,9 +3,9 @@
 * Do not edit manually.
 */
 
-import fetch from "@kubb/plugin-client/clients/fetch";
+import fetch from "@/lib/api-client";
 import type { PostResearchersMutationRequest, PostResearchersMutationResponse } from "../../types/researchers/PostResearchers.ts";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/fetch";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@/lib/api-client";
 
 function getPostResearchersUrl() {
   const res = { method: 'POST', url: `/researchers/` as const }

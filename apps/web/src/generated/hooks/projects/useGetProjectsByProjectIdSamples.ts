@@ -4,7 +4,7 @@
 */
 
 import type { GetProjectsByProjectIdSamplesQueryResponse, GetProjectsByProjectIdSamplesPathParams } from "../../types/projects/GetProjectsByProjectIdSamples.ts";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/fetch";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@/lib/api-client";
 import type { QueryKey, QueryClient, QueryObserverOptions, UseQueryResult } from "@tanstack/react-query";
 import { getProjectsByProjectIdSamples } from "../../clients/projects/getProjectsByProjectIdSamples.ts";
 import { queryOptions, useQuery } from "@tanstack/react-query";

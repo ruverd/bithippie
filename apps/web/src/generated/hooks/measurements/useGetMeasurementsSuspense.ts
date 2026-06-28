@@ -4,7 +4,7 @@
 */
 
 import type { GetMeasurementsQueryResponse } from "../../types/measurements/GetMeasurements.ts";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/fetch";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@/lib/api-client";
 import type { QueryKey, QueryClient, UseSuspenseQueryOptions, UseSuspenseQueryResult } from "@tanstack/react-query";
 import { getMeasurements } from "../../clients/measurements/getMeasurements.ts";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";

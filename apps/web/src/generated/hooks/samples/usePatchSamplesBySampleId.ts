@@ -4,7 +4,7 @@
 */
 
 import type { PatchSamplesBySampleIdMutationRequest, PatchSamplesBySampleIdMutationResponse, PatchSamplesBySampleIdPathParams } from "../../types/samples/PatchSamplesBySampleId.ts";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/fetch";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@/lib/api-client";
 import type { UseMutationOptions, UseMutationResult, QueryClient } from "@tanstack/react-query";
 import { patchSamplesBySampleId } from "../../clients/samples/patchSamplesBySampleId.ts";
 import { mutationOptions, useMutation } from "@tanstack/react-query";

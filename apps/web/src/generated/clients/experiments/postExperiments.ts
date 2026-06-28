@@ -3,9 +3,9 @@
 * Do not edit manually.
 */
 
-import fetch from "@kubb/plugin-client/clients/fetch";
+import fetch from "@/lib/api-client";
 import type { PostExperimentsMutationRequest, PostExperimentsMutationResponse } from "../../types/experiments/PostExperiments.ts";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/fetch";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@/lib/api-client";
 
 function getPostExperimentsUrl() {
   const res = { method: 'POST', url: `/experiments/` as const }

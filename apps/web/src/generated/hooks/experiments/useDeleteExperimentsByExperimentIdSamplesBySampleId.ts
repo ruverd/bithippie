@@ -4,7 +4,7 @@
 */
 
 import type { DeleteExperimentsByExperimentIdSamplesBySampleIdMutationResponse, DeleteExperimentsByExperimentIdSamplesBySampleIdPathParams } from "../../types/experiments/DeleteExperimentsByExperimentIdSamplesBySampleId.ts";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/fetch";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@/lib/api-client";
 import type { UseMutationOptions, UseMutationResult, QueryClient } from "@tanstack/react-query";
 import { deleteExperimentsByExperimentIdSamplesBySampleId } from "../../clients/experiments/deleteExperimentsByExperimentIdSamplesBySampleId.ts";
 import { mutationOptions, useMutation } from "@tanstack/react-query";

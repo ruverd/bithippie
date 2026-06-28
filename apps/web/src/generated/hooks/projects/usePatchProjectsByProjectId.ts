@@ -4,7 +4,7 @@
 */
 
 import type { PatchProjectsByProjectIdMutationRequest, PatchProjectsByProjectIdMutationResponse, PatchProjectsByProjectIdPathParams } from "../../types/projects/PatchProjectsByProjectId.ts";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/fetch";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@/lib/api-client";
 import type { UseMutationOptions, UseMutationResult, QueryClient } from "@tanstack/react-query";
 import { patchProjectsByProjectId } from "../../clients/projects/patchProjectsByProjectId.ts";
 import { mutationOptions, useMutation } from "@tanstack/react-query";

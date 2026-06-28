@@ -3,9 +3,9 @@
 * Do not edit manually.
 */
 
-import fetch from "@kubb/plugin-client/clients/fetch";
+import fetch from "@/lib/api-client";
 import type { PatchResearchersByResearcherIdMutationRequest, PatchResearchersByResearcherIdMutationResponse, PatchResearchersByResearcherIdPathParams } from "../../types/researchers/PatchResearchersByResearcherId.ts";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/fetch";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@/lib/api-client";
 
 function getPatchResearchersByResearcherIdUrl(researcherId: PatchResearchersByResearcherIdPathParams["researcherId"]) {
   const res = { method: 'PATCH', url: `/researchers/${researcherId}` as const }

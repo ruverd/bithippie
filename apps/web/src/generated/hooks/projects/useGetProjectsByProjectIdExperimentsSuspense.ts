@@ -4,7 +4,7 @@
 */
 
 import type { GetProjectsByProjectIdExperimentsQueryResponse, GetProjectsByProjectIdExperimentsPathParams } from "../../types/projects/GetProjectsByProjectIdExperiments.ts";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/fetch";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@/lib/api-client";
 import type { QueryKey, QueryClient, UseSuspenseQueryOptions, UseSuspenseQueryResult } from "@tanstack/react-query";
 import { getProjectsByProjectIdExperiments } from "../../clients/projects/getProjectsByProjectIdExperiments.ts";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";

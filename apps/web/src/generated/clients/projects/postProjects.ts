@@ -3,9 +3,9 @@
 * Do not edit manually.
 */
 
-import fetch from "@kubb/plugin-client/clients/fetch";
+import fetch from "@/lib/api-client";
 import type { PostProjectsMutationRequest, PostProjectsMutationResponse } from "../../types/projects/PostProjects.ts";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/fetch";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@/lib/api-client";
 
 function getPostProjectsUrl() {
   const res = { method: 'POST', url: `/projects/` as const }

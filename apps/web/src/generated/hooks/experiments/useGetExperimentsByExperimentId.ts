@@ -4,7 +4,7 @@
 */
 
 import type { GetExperimentsByExperimentIdQueryResponse, GetExperimentsByExperimentIdPathParams } from "../../types/experiments/GetExperimentsByExperimentId.ts";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/fetch";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@/lib/api-client";
 import type { QueryKey, QueryClient, QueryObserverOptions, UseQueryResult } from "@tanstack/react-query";
 import { getExperimentsByExperimentId } from "../../clients/experiments/getExperimentsByExperimentId.ts";
 import { queryOptions, useQuery } from "@tanstack/react-query";

@@ -4,7 +4,7 @@
 */
 
 import type { GetResearchersQueryResponse } from "../../types/researchers/GetResearchers.ts";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/fetch";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@/lib/api-client";
 import type { QueryKey, QueryClient, UseSuspenseQueryOptions, UseSuspenseQueryResult } from "@tanstack/react-query";
 import { getResearchers } from "../../clients/researchers/getResearchers.ts";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";

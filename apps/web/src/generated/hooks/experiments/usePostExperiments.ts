@@ -4,7 +4,7 @@
 */
 
 import type { PostExperimentsMutationRequest, PostExperimentsMutationResponse } from "../../types/experiments/PostExperiments.ts";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/fetch";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@/lib/api-client";
 import type { UseMutationOptions, UseMutationResult, QueryClient } from "@tanstack/react-query";
 import { postExperiments } from "../../clients/experiments/postExperiments.ts";
 import { mutationOptions, useMutation } from "@tanstack/react-query";

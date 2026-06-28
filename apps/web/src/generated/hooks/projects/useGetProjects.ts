@@ -4,7 +4,7 @@
 */
 
 import type { GetProjectsQueryResponse } from "../../types/projects/GetProjects.ts";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/fetch";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@/lib/api-client";
 import type { QueryKey, QueryClient, QueryObserverOptions, UseQueryResult } from "@tanstack/react-query";
 import { getProjects } from "../../clients/projects/getProjects.ts";
 import { queryOptions, useQuery } from "@tanstack/react-query";

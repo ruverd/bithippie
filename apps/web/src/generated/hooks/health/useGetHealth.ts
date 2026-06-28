@@ -4,7 +4,7 @@
 */
 
 import type { GetHealthQueryResponse } from "../../types/health/GetHealth.ts";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/fetch";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@/lib/api-client";
 import type { QueryKey, QueryClient, QueryObserverOptions, UseQueryResult } from "@tanstack/react-query";
 import { getHealth } from "../../clients/health/getHealth.ts";
 import { queryOptions, useQuery } from "@tanstack/react-query";

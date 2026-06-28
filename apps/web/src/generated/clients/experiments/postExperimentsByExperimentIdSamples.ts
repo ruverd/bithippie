@@ -3,9 +3,9 @@
 * Do not edit manually.
 */
 
-import fetch from "@kubb/plugin-client/clients/fetch";
+import fetch from "@/lib/api-client";
 import type { PostExperimentsByExperimentIdSamplesMutationRequest, PostExperimentsByExperimentIdSamplesMutationResponse, PostExperimentsByExperimentIdSamplesPathParams } from "../../types/experiments/PostExperimentsByExperimentIdSamples.ts";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/fetch";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@/lib/api-client";
 
 function getPostExperimentsByExperimentIdSamplesUrl(experimentId: PostExperimentsByExperimentIdSamplesPathParams["experimentId"]) {
   const res = { method: 'POST', url: `/experiments/${experimentId}/samples` as const }

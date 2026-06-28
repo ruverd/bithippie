@@ -3,9 +3,9 @@
 * Do not edit manually.
 */
 
-import fetch from "@kubb/plugin-client/clients/fetch";
+import fetch from "@/lib/api-client";
 import type { DeleteExperimentsByExperimentIdSamplesBySampleIdMutationResponse, DeleteExperimentsByExperimentIdSamplesBySampleIdPathParams } from "../../types/experiments/DeleteExperimentsByExperimentIdSamplesBySampleId.ts";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/fetch";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@/lib/api-client";
 
 function getDeleteExperimentsByExperimentIdSamplesBySampleIdUrl(experimentId: DeleteExperimentsByExperimentIdSamplesBySampleIdPathParams["experimentId"], sampleId: DeleteExperimentsByExperimentIdSamplesBySampleIdPathParams["sampleId"]) {
   const res = { method: 'DELETE', url: `/experiments/${experimentId}/samples/${sampleId}` as const }

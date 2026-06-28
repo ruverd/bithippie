@@ -4,7 +4,7 @@
 */
 
 import type { GetSamplesBySampleIdQueryResponse, GetSamplesBySampleIdPathParams } from "../../types/samples/GetSamplesBySampleId.ts";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/fetch";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@/lib/api-client";
 import type { QueryKey, QueryClient, QueryObserverOptions, UseQueryResult } from "@tanstack/react-query";
 import { getSamplesBySampleId } from "../../clients/samples/getSamplesBySampleId.ts";
 import { queryOptions, useQuery } from "@tanstack/react-query";

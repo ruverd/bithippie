@@ -21,12 +21,12 @@ export default defineConfig({
     pluginClient({
       output: { path: "clients" },
       group,
-      client: "fetch",
+      importPath: "@/lib/api-client",
     }),
     pluginReactQuery({
       output: { path: "hooks" },
       group,
-      client: { client: "fetch" },
+      client: { importPath: "@/lib/api-client" },
     }),
   ],
 });

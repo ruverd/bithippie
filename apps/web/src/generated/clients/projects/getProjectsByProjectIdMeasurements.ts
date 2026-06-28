@@ -3,9 +3,9 @@
 * Do not edit manually.
 */
 
-import fetch from "@kubb/plugin-client/clients/fetch";
+import fetch from "@/lib/api-client";
 import type { GetProjectsByProjectIdMeasurementsQueryResponse, GetProjectsByProjectIdMeasurementsPathParams } from "../../types/projects/GetProjectsByProjectIdMeasurements.ts";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/fetch";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@/lib/api-client";
 
 function getGetProjectsByProjectIdMeasurementsUrl(projectId: GetProjectsByProjectIdMeasurementsPathParams["projectId"]) {
   const res = { method: 'GET', url: `/projects/${projectId}/measurements` as const }

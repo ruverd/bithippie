@@ -4,7 +4,7 @@
 */
 
 import type { PatchExperimentsByExperimentIdMutationRequest, PatchExperimentsByExperimentIdMutationResponse, PatchExperimentsByExperimentIdPathParams } from "../../types/experiments/PatchExperimentsByExperimentId.ts";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@kubb/plugin-client/clients/fetch";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@/lib/api-client";
 import type { UseMutationOptions, UseMutationResult, QueryClient } from "@tanstack/react-query";
 import { patchExperimentsByExperimentId } from "../../clients/experiments/patchExperimentsByExperimentId.ts";
 import { mutationOptions, useMutation } from "@tanstack/react-query";
