@@ -19,8 +19,6 @@ import { TeamAvatars } from "@/features/projects/team-avatars";
 import { DataTable } from "@/components/data-table";
 import { relativeTime } from "@/utils/relative-time";
 
-// TODO: team membership is not in the projects list endpoint — placeholder
-
 type Project = GetProjects200[number];
 
 type StatusFilter = "all" | "ACTIVE" | "PLANNING" | "COMPLETED" | "CANCELLED";
@@ -58,7 +56,7 @@ const columns: ColumnDef<Project>[] = [
     header: "Team",
     enableSorting: false,
     meta: { headClassName: "w-[120px]" },
-    cell: ({ row }) => <TeamAvatars title={row.original.title} />,
+    cell: ({ row }) => <TeamAvatars members={row.original.team} />,
   },
   {
     id: "experiments",

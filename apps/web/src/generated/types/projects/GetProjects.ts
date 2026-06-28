@@ -32,6 +32,19 @@ export type GetProjects200 = {
      * @type string
     */
     updatedAt: string;
+    /**
+     * @type array
+    */
+    team: {
+        /**
+         * @type string
+        */
+        name: string;
+        /**
+         * @type string
+        */
+        projectRole: string;
+    }[];
 }[];
 
 export type GetProjectsQueryResponse = GetProjects200;

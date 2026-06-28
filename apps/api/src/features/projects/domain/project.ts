@@ -7,9 +7,15 @@ export interface Project {
   status: string | null;
 }
 
+export interface ProjectTeamMember {
+  name: string;
+  projectRole: string;
+}
+
 export interface ProjectListItem extends Project {
   experimentCount: number;
   updatedAt: string;
+  team: ProjectTeamMember[];
 }
 
 export interface ProjectDetail extends Project {

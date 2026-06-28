@@ -7,6 +7,7 @@ export const projectSchema = z.object({
   status: z.string().nullable(),
   experimentCount: z.number(),
   updatedAt: z.string(),
+  team: z.array(z.object({ name: z.string(), projectRole: z.string() })),
 });
 export const projectListSchema = z.array(projectSchema);
 

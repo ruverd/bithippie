@@ -14,7 +14,10 @@ export class PrismaProjectsRepository implements ProjectsRepository {
     return (
       await this.prisma.project.findMany({
         orderBy: { title: "asc" },
-        include: { _count: { select: { experiments: true } } },
+        include: {
+          _count: { select: { experiments: true } },
+          researchers: { include: { researcher: { select: { name: true } } } },
+        },
       })
     ).map(toProjectListItem);
   }

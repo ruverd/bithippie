@@ -27,6 +27,10 @@ export class InMemoryProjectsRepository implements ProjectsRepository {
       ...p,
       experimentCount: (this.experiments[p.id] ?? []).length,
       updatedAt: new Date(0).toISOString(),
+      team: (this.researchers[p.id] ?? []).map((m) => ({
+        name: m.name,
+        projectRole: m.projectRole,
+      })),
     }));
   }
 

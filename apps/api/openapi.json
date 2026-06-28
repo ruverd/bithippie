@@ -53,6 +53,25 @@
                       },
                       "updatedAt": {
                         "type": "string"
+                      },
+                      "team": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string"
+                            },
+                            "projectRole": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "name",
+                            "projectRole"
+                          ],
+                          "additionalProperties": false
+                        }
                       }
                     },
                     "required": [
@@ -61,7 +80,8 @@
                       "description",
                       "status",
                       "experimentCount",
-                      "updatedAt"
+                      "updatedAt",
+                      "team"
                     ],
                     "additionalProperties": false
                   },
