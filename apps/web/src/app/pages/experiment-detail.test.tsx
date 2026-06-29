@@ -48,7 +48,7 @@ vi.mock("@/generated/hooks/projects/useGetProjectsByProjectIdExperiments", () =>
   }),
 }));
 
-vi.mock("@/features/measurements/create-measurement-form", () => ({
+vi.mock("@/features/measurements/components/create-measurement-form", () => ({
   CreateMeasurementForm: () => null,
 }));
 

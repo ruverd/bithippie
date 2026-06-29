@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Plus, Search } from "lucide-react";
 import { useGetSamples } from "@/generated/hooks/samples/useGetSamples";
-import { SampleFormDialog } from "@/features/samples/sample-form-dialog";
+import { SampleFormDialog } from "@/features/samples/components/sample-form-dialog";
 import type { GetSamples200 } from "@/generated/types/samples/GetSamples";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

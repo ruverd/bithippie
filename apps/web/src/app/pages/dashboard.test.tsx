@@ -19,7 +19,7 @@ import { useGetProjects } from "@/generated/hooks/projects/useGetProjects";
 import { useGetExperiments } from "@/generated/hooks/experiments/useGetExperiments";
 import { useGetSamples } from "@/generated/hooks/samples/useGetSamples";
 import { useGetMeasurements } from "@/generated/hooks/measurements/useGetMeasurements";
-import { DashboardPage } from "./dashboard-page";
+import { DashboardPage } from "./dashboard";
 
 type QueryState = { data: unknown; isLoading: boolean; isError: boolean };
 

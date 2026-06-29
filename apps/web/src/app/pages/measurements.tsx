@@ -13,8 +13,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { DataTable } from "@/components/data-table";
-import { CreateMeasurementDialog } from "@/features/measurements/create-measurement-dialog";
-import { EditMeasurementDialog } from "@/features/measurements/edit-measurement-dialog";
+import { CreateMeasurementDialog } from "@/features/measurements/components/create-measurement-dialog";
+import { EditMeasurementDialog } from "@/features/measurements/components/edit-measurement-dialog";
 import { measurementValue } from "@/utils/measurement-value";
 import { initials } from "@/utils/initials";
 import { relativeTime } from "@/utils/relative-time";

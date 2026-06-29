@@ -1,15 +1,15 @@
 import { createBrowserRouter } from "react-router-dom";
 import { Layout } from "./layout";
-import { DashboardPage } from "@/features/dashboard/dashboard-page";
-import { ProjectsPage } from "./routes/projects";
-import { ProjectDetailPage } from "./routes/project-detail";
-import { ExperimentsPage } from "./routes/experiments";
-import { ExperimentDetailPage } from "./routes/experiment-detail";
-import { SamplesPage } from "./routes/samples";
-import { SampleDetailPage } from "./routes/sample-detail";
-import { MeasurementsPage } from "./routes/measurements";
-import { MeasurementDefinitionsPage } from "./routes/measurement-definitions";
-import { ResearchersPage } from "./routes/researchers";
+import { DashboardPage } from "./pages/dashboard";
+import { ProjectsPage } from "./pages/projects";
+import { ProjectDetailPage } from "./pages/project-detail";
+import { ExperimentsPage } from "./pages/experiments";
+import { ExperimentDetailPage } from "./pages/experiment-detail";
+import { SamplesPage } from "./pages/samples";
+import { SampleDetailPage } from "@/features/samples/components/sample-detail";
+import { MeasurementsPage } from "./pages/measurements";
+import { MeasurementDefinitionsPage } from "./pages/measurement-definitions";
+import { ResearchersPage } from "./pages/researchers";
 
 export const router = createBrowserRouter([
   {
