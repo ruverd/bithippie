@@ -1,15 +1,14 @@
 import { createBrowserRouter } from "react-router-dom";
 import { Layout } from "./layout";
-import { DashboardPage } from "./pages/dashboard";
-import { ProjectsPage } from "./pages/projects";
-import { ProjectDetailPage } from "./pages/project-detail";
-import { ExperimentsPage } from "./pages/experiments";
-import { ExperimentDetailPage } from "./pages/experiment-detail";
-import { SamplesPage } from "./pages/samples";
+import { DashboardPage } from "./pages/dashboard/dashboard";
+import { ProjectsPage } from "./pages/projects/projects";
+import { ProjectDetailPage } from "./pages/project-detail/project-detail";
+import { ExperimentsPage } from "./pages/experiments/experiments";
+import { ExperimentDetailPage } from "@/features/experiments/components/experiment-detail";
+import { SamplesPage } from "./pages/samples/samples";
 import { SampleDetailPage } from "@/features/samples/components/sample-detail";
-import { MeasurementsPage } from "./pages/measurements";
-import { MeasurementDefinitionsPage } from "./pages/measurement-definitions";
-import { ResearchersPage } from "./pages/researchers";
+import { MeasurementsPage } from "./pages/measurements/measurements";
+import { ResearchersPage } from "./pages/researchers/researchers";
 
 export const router = createBrowserRouter([
   {
@@ -24,7 +23,6 @@ export const router = createBrowserRouter([
       { path: "samples", element: <SamplesPage /> },
       { path: "samples/:sampleId", element: <SampleDetailPage /> },
       { path: "measurements", element: <MeasurementsPage /> },
-      { path: "measurement-definitions", element: <MeasurementDefinitionsPage /> },
       { path: "researchers", element: <ResearchersPage /> },
     ],
   },

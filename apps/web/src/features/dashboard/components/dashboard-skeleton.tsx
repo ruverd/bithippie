@@ -61,8 +61,8 @@ function BarChartSkeleton() {
         <Skeleton className="h-3 w-28" />
       </CardHeader>
       <CardContent className="flex flex-1 items-end gap-3 p-0">
-        {barHeights.map((h, i) => (
-          <Skeleton key={i} className={`flex-1 rounded-md ${h}`} />
+        {barHeights.map((height, i) => (
+          <Skeleton key={i} className={`flex-1 rounded-md ${height}`} />
         ))}
       </CardContent>
     </Card>

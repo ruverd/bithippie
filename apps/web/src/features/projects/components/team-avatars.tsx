@@ -26,18 +26,18 @@ export function TeamAvatars({ members }: { members: TeamMember[] }) {
   return (
     <TooltipProvider delay={0}>
       <AvatarGroup>
-        {visible.map((m, i) => (
+        {visible.map((member, i) => (
           <Tooltip key={i}>
             <TooltipTrigger
               render={
                 <Avatar size="sm" className="size-7 cursor-default border-2 border-card">
-                  <AvatarFallback className="text-xs">{initials(m.name)}</AvatarFallback>
+                  <AvatarFallback className="text-xs">{initials(member.name)}</AvatarFallback>
                 </Avatar>
               }
             />
             <TooltipContent>
-              {m.name}
-              {m.projectRole ? ` · ${formatRole(m.projectRole)}` : ""}
+              {member.name}
+              {member.projectRole ? ` · ${formatRole(member.projectRole)}` : ""}
             </TooltipContent>
           </Tooltip>
         ))}
@@ -53,7 +53,7 @@ export function TeamAvatars({ members }: { members: TeamMember[] }) {
             <TooltipContent>
               {members
                 .slice(MAX_VISIBLE)
-                .map((m) => m.name)
+                .map((member) => member.name)
                 .join(", ")}
             </TooltipContent>
           </Tooltip>

@@ -44,6 +44,7 @@ import { useDeleteExperimentsByExperimentId } from "@/generated/hooks/experiment
 import { useGetExperimentsByExperimentId } from "@/generated/hooks/experiments/useGetExperimentsByExperimentId";
 import { emptyToUndefined } from "@/utils/empty-to-undefined";
 import { invalidateByUrl } from "@/lib/invalidate-queries";
+import { STATUSES, STATUS_LABELS } from "@/constants/status";
 
 type ExperimentRef = { id: string; title: string };
 
@@ -51,7 +52,7 @@ const schema = z.object({
   title: z.string().min(1, "Required"),
   hypothesis: z.string().optional(),
   projectId: z.string().min(1, "Required"),
-  status: z.enum(["PLANNING", "ACTIVE", "COMPLETED", "CANCELLED"]).optional(),
+  status: z.enum(STATUSES).optional(),
   previousExperimentId: z.string().optional(),
   startDate: z.string().optional(),
   endDate: z.string().optional(),
@@ -107,7 +108,7 @@ export function ExperimentFormDialog({
 
   const selectedProjectId = watch("projectId");
   const followUpOptions = (experiments.data ?? []).filter(
-    (e) => e.projectId === selectedProjectId && e.id !== experiment?.id,
+    (option) => option.projectId === selectedProjectId && option.id !== experiment?.id,
   );
 
   useEffect(() => {
@@ -209,14 +210,14 @@ export function ExperimentFormDialog({
                 control={control}
                 name="projectId"
                 render={({ field }) => (
-                  <Select items={Object.fromEntries((projects.data ?? []).map((p) => [p.id, p.title]))} value={field.value} onValueChange={field.onChange}>
+                  <Select items={Object.fromEntries((projects.data ?? []).map((project) => [project.id, project.title]))} value={field.value} onValueChange={field.onChange}>
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select project" />
                     </SelectTrigger>
                     <SelectContent>
-                      {(projects.data ?? []).map((p) => (
-                        <SelectItem key={p.id} value={p.id}>
-                          {p.title}
+                      {(projects.data ?? []).map((project) => (
+                        <SelectItem key={project.id} value={project.id}>
+                          {project.title}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -230,7 +231,7 @@ export function ExperimentFormDialog({
                 control={control}
                 name="status"
                 render={({ field }) => (
-                  <Select items={{ PLANNING: "Planning", ACTIVE: "Active", COMPLETED: "Completed", CANCELLED: "Cancelled" }} value={field.value} onValueChange={field.onChange}>
+                  <Select items={STATUS_LABELS} value={field.value} onValueChange={field.onChange}>
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select status" />
                     </SelectTrigger>
@@ -287,9 +288,9 @@ export function ExperimentFormDialog({
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value={NONE}>None</SelectItem>
-                    {followUpOptions.map((e) => (
-                      <SelectItem key={e.id} value={e.id}>
-                        {e.title}
+                    {followUpOptions.map((option) => (
+                      <SelectItem key={option.id} value={option.id}>
+                        {option.title}
                       </SelectItem>
                     ))}
                   </SelectContent>

@@ -30,8 +30,8 @@ export function ChipMultiSelect({
   options,
   addPlaceholder = "+ Add",
 }: ChipMultiSelectProps) {
-  const labelOf = (id: string) => options.find((o) => o.id === id)?.label ?? id;
-  const available = options.filter((o) => !value.includes(o.id));
+  const labelOf = (id: string) => options.find((option) => option.id === id)?.label ?? id;
+  const available = options.filter((option) => !value.includes(option.id));
   return (
     <div className="flex flex-wrap items-center gap-2 rounded-md border border-input bg-background p-2">
       {value.map((id) => (
@@ -40,7 +40,7 @@ export function ChipMultiSelect({
           <button
             type="button"
             aria-label={`Remove ${labelOf(id)}`}
-            onClick={() => onChange(value.filter((x) => x !== id))}
+            onClick={() => onChange(value.filter((item) => item !== id))}
           >
             <X className="size-3" />
           </button>
@@ -52,9 +52,9 @@ export function ChipMultiSelect({
             <SelectValue placeholder={addPlaceholder} />
           </SelectTrigger>
           <SelectContent>
-            {available.map((o) => (
-              <SelectItem key={o.id} value={o.id}>
-                {o.label}
+            {available.map((option) => (
+              <SelectItem key={option.id} value={option.id}>
+                {option.label}
               </SelectItem>
             ))}
           </SelectContent>

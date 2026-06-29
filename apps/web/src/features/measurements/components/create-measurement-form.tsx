@@ -26,7 +26,7 @@ export function CreateMeasurementForm({ experimentId }: { experimentId: string }
   });
 
   const selectedId = watch("measurementDefinitionId");
-  const def = (definitions.data ?? []).find((d) => d.id === selectedId);
+  const def = (definitions.data ?? []).find((definition) => definition.id === selectedId);
 
   const onSubmit = handleSubmit((values) => {
     create.mutate(
@@ -54,9 +54,9 @@ export function CreateMeasurementForm({ experimentId }: { experimentId: string }
           <option value="" disabled>
             Select…
           </option>
-          {(definitions.data ?? []).map((d) => (
-            <option key={d.id} value={d.id}>
-              {d.name}
+          {(definitions.data ?? []).map((definition) => (
+            <option key={definition.id} value={definition.id}>
+              {definition.name}
             </option>
           ))}
         </select>

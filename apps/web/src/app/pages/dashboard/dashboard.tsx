@@ -12,8 +12,8 @@ export function DashboardPage() {
   const measurements = useGetMeasurements();
 
   const queries = [projects, experiments, samples, measurements];
-  const isLoading = queries.some((q) => q.isLoading);
-  const isError = queries.some((q) => q.isError);
+  const isLoading = queries.some((query) => query.isLoading);
+  const isError = queries.some((query) => query.isError);
 
   const now = new Date();
   const today = now.toLocaleDateString("en-US", {

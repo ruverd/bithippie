@@ -32,7 +32,7 @@ afterEach(() => {
 
 describe("api-client", () => {
   it("should build the url from baseURL and path and send JSON headers", async () => {
-    const res = await client({ method: "get", url: "/projects" });
+    const res = await client({ method: "GET", url: "/projects" });
 
     const [url, init] = fetchMock.mock.calls[0]!;
     expect(url).toBe("/api/projects");
@@ -44,14 +44,14 @@ describe("api-client", () => {
   });
 
   it("should append defined params as a query string and skip undefined", async () => {
-    await client({ method: "get", url: "/projects", params: { a: 1, b: undefined, c: null } });
+    await client({ method: "GET", url: "/projects", params: { a: 1, b: undefined, c: null } });
 
     const [url] = fetchMock.mock.calls[0]!;
     expect(url).toBe("/api/projects?a=1&c=null");
   });
 
   it("should JSON-stringify a non-FormData body", async () => {
-    await client({ method: "post", url: "/projects", data: { title: "Soil" } });
+    await client({ method: "POST", url: "/projects", data: { title: "Soil" } });
 
     const [, init] = fetchMock.mock.calls[0]!;
     expect(init.method).toBe("POST");
@@ -61,7 +61,7 @@ describe("api-client", () => {
   it("should pass FormData through without a Content-Type header", async () => {
     const form = new FormData();
     form.append("file", "x");
-    await client({ method: "post", url: "/upload", data: form });
+    await client({ method: "POST", url: "/upload", data: form });
 
     const [, init] = fetchMock.mock.calls[0]!;
     expect(init.body).toBe(form);
@@ -69,7 +69,7 @@ describe("api-client", () => {
   });
 
   it("should merge array-form headers", async () => {
-    await client({ method: "get", url: "/projects", headers: [["X-Trace", "abc"]] });
+    await client({ method: "GET", url: "/projects", headers: [["X-Trace", "abc"]] });
 
     const [, init] = fetchMock.mock.calls[0]!;
     expect(init.headers["X-Trace"]).toBe("abc");
@@ -77,7 +77,7 @@ describe("api-client", () => {
 
   it("should not parse a body for a 204 response", async () => {
     fetchMock.mockResolvedValueOnce(mockResponse({ status: 204, body: null }));
-    const res = await client({ method: "delete", url: "/projects/p1" });
+    const res = await client({ method: "DELETE", url: "/projects/p1" });
     expect(res.data).toEqual({});
     expect(res.status).toBe(204);
   });
@@ -87,12 +87,12 @@ describe("api-client", () => {
       mockResponse({ ok: false, status: 422, statusText: "Unprocessable", json: { message: "bad" } }),
     );
 
-    await expect(client({ method: "post", url: "/projects", data: {} })).rejects.toMatchObject({
+    await expect(client({ method: "POST", url: "/projects", data: {} })).rejects.toMatchObject({
       name: "ApiError",
       status: 422,
       data: { message: "bad" },
     });
-    await expect(client({ method: "post", url: "/projects", data: {} })).rejects.toBeInstanceOf(
+    await expect(client({ method: "POST", url: "/projects", data: {} })).rejects.toBeInstanceOf(
       ApiError,
     );
   });

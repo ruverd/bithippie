@@ -4,6 +4,7 @@ import { Plus, Search } from "lucide-react";
 import { useGetExperiments } from "@/generated/hooks/experiments/useGetExperiments";
 import { useGetProjects } from "@/generated/hooks/projects/useGetProjects";
 import type { GetExperiments200 } from "@/generated/types/experiments/GetExperiments";
+import { STATUS_LABELS, type StatusFilter } from "@/constants/status";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -19,8 +20,6 @@ import { ExperimentFormDialog } from "@/features/experiments/components/experime
 import { formatDate } from "@/utils/format-date";
 
 type Experiment = GetExperiments200[number];
-
-type StatusFilter = "all" | "ACTIVE" | "PLANNING" | "COMPLETED" | "CANCELLED";
 
 const columns: ColumnDef<Experiment>[] = [
   {
@@ -58,7 +57,7 @@ const columns: ColumnDef<Experiment>[] = [
   },
   {
     id: "lead",
-    accessorFn: (e) => e.leadName ?? "",
+    accessorFn: (experiment) => experiment.leadName ?? "",
     header: "Lead",
     meta: { headClassName: "w-[160px]", cellClassName: "text-[13px]" },
     cell: ({ row }) =>
@@ -92,16 +91,16 @@ export function ExperimentsPage() {
   const allExperiments = data ?? [];
   const projectList = projects.data ?? [];
 
-  const filtered = allExperiments.filter((e) => {
+  const filtered = allExperiments.filter((experiment) => {
     const term = search.toLowerCase();
     const matchesSearch =
-      e.title.toLowerCase().includes(term) ||
-      e.projectName.toLowerCase().includes(term) ||
-      (e.leadName?.toLowerCase().includes(term) ?? false) ||
-      (e.hypothesis?.toLowerCase().includes(term) ?? false);
+      experiment.title.toLowerCase().includes(term) ||
+      experiment.projectName.toLowerCase().includes(term) ||
+      (experiment.leadName?.toLowerCase().includes(term) ?? false) ||
+      (experiment.hypothesis?.toLowerCase().includes(term) ?? false);
     const matchesStatus =
-      statusFilter === "all" || (e.status?.toUpperCase() ?? "") === statusFilter;
-    const matchesProject = projectFilter === "all" || e.projectId === projectFilter;
+      statusFilter === "all" || (experiment.status?.toUpperCase() ?? "") === statusFilter;
+    const matchesProject = projectFilter === "all" || experiment.projectId === projectFilter;
     return matchesSearch && matchesStatus && matchesProject;
   });
 
@@ -137,11 +136,11 @@ export function ExperimentsPage() {
             className="pl-8"
             placeholder="Search experiments…"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(event) => setSearch(event.target.value)}
           />
         </div>
         <Select
-          items={Object.fromEntries(projectList.map((p) => [p.id, p.title]))}
+          items={Object.fromEntries(projectList.map((project) => [project.id, project.title]))}
           value={projectFilter === "all" ? undefined : projectFilter}
           onValueChange={(v) => setProjectFilter(v ?? "all")}
         >
@@ -150,15 +149,15 @@ export function ExperimentsPage() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All projects</SelectItem>
-            {projectList.map((p) => (
-              <SelectItem key={p.id} value={p.id}>
-                {p.title}
+            {projectList.map((project) => (
+              <SelectItem key={project.id} value={project.id}>
+                {project.title}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
         <Select
-          items={{ ACTIVE: "Active", PLANNING: "Planning", COMPLETED: "Completed", CANCELLED: "Cancelled" }}
+          items={STATUS_LABELS}
           value={statusFilter === "all" ? undefined : statusFilter}
           onValueChange={(v) => setStatusFilter((v ?? "all") as StatusFilter)}
         >

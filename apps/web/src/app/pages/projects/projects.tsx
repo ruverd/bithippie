@@ -5,6 +5,7 @@ import { Plus, Search } from "lucide-react";
 import { ProjectFormDialog } from "@/features/projects/components/project-form-dialog";
 import { useGetProjects } from "@/generated/hooks/projects/useGetProjects";
 import type { GetProjects200 } from "@/generated/types/projects/GetProjects";
+import { STATUS_LABELS, type StatusFilter } from "@/constants/status";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -20,8 +21,6 @@ import { DataTable } from "@/components/data-table";
 import { relativeTime } from "@/utils/relative-time";
 
 type Project = GetProjects200[number];
-
-type StatusFilter = "all" | "ACTIVE" | "PLANNING" | "COMPLETED" | "CANCELLED";
 
 const columns: ColumnDef<Project>[] = [
   {
@@ -82,12 +81,12 @@ export function ProjectsPage() {
 
   const allProjects = data ?? [];
 
-  const filtered = allProjects.filter((p) => {
+  const filtered = allProjects.filter((project) => {
     const matchesSearch =
-      p.title.toLowerCase().includes(search.toLowerCase()) ||
-      (p.description?.toLowerCase().includes(search.toLowerCase()) ?? false);
+      project.title.toLowerCase().includes(search.toLowerCase()) ||
+      (project.description?.toLowerCase().includes(search.toLowerCase()) ?? false);
     const matchesStatus =
-      statusFilter === "all" || (p.status?.toUpperCase() ?? "") === statusFilter;
+      statusFilter === "all" || (project.status?.toUpperCase() ?? "") === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
@@ -120,11 +119,11 @@ export function ProjectsPage() {
             className="pl-8"
             placeholder="Search projects..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(event) => setSearch(event.target.value)}
           />
         </div>
         <Select
-          items={{ ACTIVE: "Active", PLANNING: "Planning", COMPLETED: "Completed", CANCELLED: "Cancelled" }}
+          items={STATUS_LABELS}
           value={statusFilter === "all" ? undefined : statusFilter}
           onValueChange={(v) => setStatusFilter((v ?? "all") as StatusFilter)}
         >

@@ -15,17 +15,11 @@ import {
 } from "@/components/ui/select";
 import { DataTable } from "@/components/data-table";
 import { ResearcherFormDialog } from "@/features/researchers/components/researcher-form-dialog";
+import { RESEARCHER_ROLES } from "@/features/researchers/constants";
 import { initials } from "@/utils/initials";
 import { formatRole } from "@/utils/format-role";
 
 type Researcher = GetResearchers200[number];
-
-const ROLES = [
-  "PRINCIPAL_INVESTIGATOR",
-  "POSTDOC",
-  "GRADUATE_STUDENT",
-  "LAB_TECHNICIAN",
-] as const;
 
 const columns: ColumnDef<Researcher>[] = [
   {
@@ -80,13 +74,13 @@ export function ResearchersPage() {
 
   const allResearchers = data ?? [];
 
-  const filtered = allResearchers.filter((r) => {
+  const filtered = allResearchers.filter((researcher) => {
     const term = search.toLowerCase();
     const matchesSearch =
-      r.name.toLowerCase().includes(term) ||
-      r.email.toLowerCase().includes(term) ||
-      formatRole(r.globalRole).toLowerCase().includes(term);
-    const matchesRole = roleFilter === "all" || r.globalRole === roleFilter;
+      researcher.name.toLowerCase().includes(term) ||
+      researcher.email.toLowerCase().includes(term) ||
+      formatRole(researcher.globalRole).toLowerCase().includes(term);
+    const matchesRole = roleFilter === "all" || researcher.globalRole === roleFilter;
     return matchesSearch && matchesRole;
   });
 
@@ -115,11 +109,11 @@ export function ResearchersPage() {
             className="pl-8"
             placeholder="Search researchers…"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(event) => setSearch(event.target.value)}
           />
         </div>
         <Select
-          items={Object.fromEntries(ROLES.map((r) => [r, formatRole(r)]))}
+          items={Object.fromEntries(RESEARCHER_ROLES.map((role) => [role, formatRole(role)]))}
           value={roleFilter === "all" ? undefined : roleFilter}
           onValueChange={(v) => setRoleFilter(v ?? "all")}
         >
@@ -128,7 +122,7 @@ export function ResearchersPage() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All roles</SelectItem>
-            {ROLES.map((role) => (
+            {RESEARCHER_ROLES.map((role) => (
               <SelectItem key={role} value={role}>
                 {formatRole(role)}
               </SelectItem>

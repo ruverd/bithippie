@@ -22,8 +22,8 @@ export function statCards(
   measurements: Measurement[],
 ): DashboardStats {
   return {
-    activeProjects: projects.filter((p) => p.status === "ACTIVE").length,
-    runningExperiments: experiments.filter((e) => e.status === "ACTIVE").length,
+    activeProjects: projects.filter((project) => project.status === "ACTIVE").length,
+    runningExperiments: experiments.filter((experiment) => experiment.status === "ACTIVE").length,
     samplesLogged: samples.length,
     measurements: measurements.length,
   };

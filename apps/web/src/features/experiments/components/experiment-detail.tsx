@@ -39,9 +39,9 @@ export function ExperimentDetailPage() {
   const e = experiment.data;
   const experimentList = projectExperiments.data ?? [];
   const previous = e.previousExperimentId
-    ? experimentList.find((x) => x.id === e.previousExperimentId)
+    ? experimentList.find((experiment) => experiment.id === e.previousExperimentId)
     : undefined;
-  const followUps = experimentList.filter((x) => x.previousExperimentId === e.id);
+  const followUps = experimentList.filter((experiment) => experiment.previousExperimentId === e.id);
   const measurementRows = measurements.data ?? [];
   const sampleRows = samples.data ?? [];
 
@@ -87,19 +87,19 @@ export function ExperimentDetailPage() {
               empty={measurementRows.length === 0}
               emptyLabel="No measurements yet."
             >
-              {measurementRows.map((m) => (
-                <TableRow key={m.id} className="hover:bg-muted/40">
+              {measurementRows.map((measurement) => (
+                <TableRow key={measurement.id} className="hover:bg-muted/40">
                   <TableCell className="py-3 px-4 text-sm font-medium">
-                    {m.definitionName}
+                    {measurement.definitionName}
                   </TableCell>
                   <TableCell className="py-3 px-4 text-sm font-semibold">
-                    {measurementValue(m)}
+                    {measurementValue(measurement)}
                   </TableCell>
                   <TableCell className="py-3 px-4 text-[13px] text-muted-foreground">
-                    {formatDate(m.recordedAt)}
+                    {formatDate(measurement.recordedAt)}
                   </TableCell>
                   <TableCell className="py-3 px-4 text-[13px] text-muted-foreground">
-                    {m.notes ?? "—"}
+                    {measurement.notes ?? "—"}
                   </TableCell>
                 </TableRow>
               ))}
@@ -118,19 +118,19 @@ export function ExperimentDetailPage() {
             {sampleRows.length === 0 ? (
               <Empty>No samples linked.</Empty>
             ) : (
-              sampleRows.map((s) => (
+              sampleRows.map((sample) => (
                 <div
-                  key={s.id}
+                  key={sample.id}
                   className="flex items-center gap-3 border-b px-4 py-3 last:border-b-0"
                 >
                   <Link
-                    to={`/samples/${s.id}`}
+                    to={`/samples/${sample.id}`}
                     className="w-[96px] shrink-0 text-sm font-semibold hover:underline"
                   >
-                    {s.code}
+                    {sample.code}
                   </Link>
                   <span className="truncate text-[13px] text-muted-foreground">
-                    {s.specimenType}
+                    {sample.specimenType}
                   </span>
                 </div>
               ))
@@ -141,18 +141,18 @@ export function ExperimentDetailPage() {
             {followUps.length === 0 ? (
               <Empty>No follow-ups.</Empty>
             ) : (
-              followUps.map((f) => (
+              followUps.map((followUp) => (
                 <div
-                  key={f.id}
+                  key={followUp.id}
                   className="flex items-center justify-between border-b px-4 py-3 last:border-b-0"
                 >
                   <Link
-                    to={`/experiments/${f.id}`}
+                    to={`/experiments/${followUp.id}`}
                     className="text-sm font-medium hover:underline"
                   >
-                    {f.title}
+                    {followUp.title}
                   </Link>
-                  {f.status ? <StatusBadge status={f.status} /> : null}
+                  {followUp.status ? <StatusBadge status={followUp.status} /> : null}
                 </div>
               ))
             )}

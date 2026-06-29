@@ -26,7 +26,7 @@ export function SampleMultiSelect({ value, onChange, options, disabled }: Sample
     <ChipMultiSelect
       value={value}
       onChange={onChange}
-      options={options.map((s) => ({ id: s.id, label: s.code }))}
+      options={options.map((sample) => ({ id: sample.id, label: sample.code }))}
       addPlaceholder="+ Add sample"
     />
   );

@@ -80,7 +80,7 @@ export function CreateMeasurementDialog({
   });
 
   const selectedId = watch("measurementDefinitionId");
-  const def = (definitions.data ?? []).find((d) => d.id === selectedId);
+  const def = (definitions.data ?? []).find((definition) => definition.id === selectedId);
   const selectedExperimentId = watch("experimentId");
   const experimentSamples = useGetExperimentsByExperimentIdSamples(selectedExperimentId, {
     query: { enabled: Boolean(selectedExperimentId) },
@@ -134,7 +134,7 @@ export function CreateMeasurementDialog({
               name="measurementDefinitionId"
               render={({ field }) => (
                 <Select
-                  items={Object.fromEntries((definitions.data ?? []).map((d) => [d.id, d.name]))}
+                  items={Object.fromEntries((definitions.data ?? []).map((definition) => [definition.id, definition.name]))}
                   value={field.value || undefined}
                   onValueChange={(v) => field.onChange(v ?? "")}
                 >
@@ -142,9 +142,9 @@ export function CreateMeasurementDialog({
                     <SelectValue placeholder="Select definition" />
                   </SelectTrigger>
                   <SelectContent>
-                    {(definitions.data ?? []).map((d) => (
-                      <SelectItem key={d.id} value={d.id}>
-                        {d.name}
+                    {(definitions.data ?? []).map((definition) => (
+                      <SelectItem key={definition.id} value={definition.id}>
+                        {definition.name}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -159,7 +159,7 @@ export function CreateMeasurementDialog({
               name="experimentId"
               render={({ field }) => (
                 <Select
-                  items={Object.fromEntries((experiments.data ?? []).map((e) => [e.id, e.title]))}
+                  items={Object.fromEntries((experiments.data ?? []).map((experiment) => [experiment.id, experiment.title]))}
                   value={field.value || undefined}
                   onValueChange={(v) => {
                     field.onChange(v ?? "");
@@ -170,9 +170,9 @@ export function CreateMeasurementDialog({
                     <SelectValue placeholder="Select experiment" />
                   </SelectTrigger>
                   <SelectContent>
-                    {(experiments.data ?? []).map((e) => (
-                      <SelectItem key={e.id} value={e.id}>
-                        {e.title}
+                    {(experiments.data ?? []).map((experiment) => (
+                      <SelectItem key={experiment.id} value={experiment.id}>
+                        {experiment.title}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -239,7 +239,7 @@ export function CreateMeasurementDialog({
               name="recordedById"
               render={({ field }) => (
                 <Select
-                  items={Object.fromEntries((researchers.data ?? []).map((r) => [r.id, r.name]))}
+                  items={Object.fromEntries((researchers.data ?? []).map((researcher) => [researcher.id, researcher.name]))}
                   value={field.value || undefined}
                   onValueChange={(v) => field.onChange(v ?? "")}
                 >
@@ -247,9 +247,9 @@ export function CreateMeasurementDialog({
                     <SelectValue placeholder="Select researcher" />
                   </SelectTrigger>
                   <SelectContent>
-                    {(researchers.data ?? []).map((r) => (
-                      <SelectItem key={r.id} value={r.id}>
-                        {r.name}
+                    {(researchers.data ?? []).map((researcher) => (
+                      <SelectItem key={researcher.id} value={researcher.id}>
+                        {researcher.name}
                       </SelectItem>
                     ))}
                   </SelectContent>

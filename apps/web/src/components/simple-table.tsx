@@ -24,12 +24,12 @@ export function SimpleTable({
       <Table>
         <TableHeader className="bg-muted">
           <TableRow>
-            {head.map((h) => (
+            {head.map((header) => (
               <TableHead
-                key={h}
+                key={header}
                 className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground"
               >
-                {h}
+                {header}
               </TableHead>
             ))}
           </TableRow>
