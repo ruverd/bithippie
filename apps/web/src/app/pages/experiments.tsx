@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/select";
 import { StatusBadge } from "@/components/status-badge";
 import { DataTable } from "@/components/data-table";
-import { ExperimentFormDialog } from "@/features/experiments/experiment-form-dialog";
+import { ExperimentFormDialog } from "@/features/experiments/components/experiment-form-dialog";
 import { formatDate } from "@/utils/format-date";
 
 type Experiment = GetExperiments200[number];

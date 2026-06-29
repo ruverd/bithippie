@@ -19,11 +19,11 @@ import {
 import { NAV_ITEMS } from "@/components/layout/nav-items";
 import { useCommandPalette } from "./command-palette-context";
 import { useGetProjects } from "@/generated/hooks/projects/useGetProjects";
-import { ProjectFormDialog } from "@/features/projects/project-form-dialog";
-import { ExperimentFormDialog } from "@/features/experiments/experiment-form-dialog";
-import { SampleFormDialog } from "@/features/samples/sample-form-dialog";
-import { ResearcherFormDialog } from "@/features/researchers/researcher-form-dialog";
-import { CreateMeasurementDialog } from "@/features/measurements/create-measurement-dialog";
+import { ProjectFormDialog } from "@/features/projects/components/project-form-dialog";
+import { ExperimentFormDialog } from "@/features/experiments/components/experiment-form-dialog";
+import { SampleFormDialog } from "@/features/samples/components/sample-form-dialog";
+import { ResearcherFormDialog } from "@/features/researchers/components/researcher-form-dialog";
+import { CreateMeasurementDialog } from "@/features/measurements/components/create-measurement-dialog";
 
 type CreateTarget =
   | "project"

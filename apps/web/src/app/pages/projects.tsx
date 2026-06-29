@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Plus, Search } from "lucide-react";
-import { ProjectFormDialog } from "@/features/projects/project-form-dialog";
+import { ProjectFormDialog } from "@/features/projects/components/project-form-dialog";
 import { useGetProjects } from "@/generated/hooks/projects/useGetProjects";
 import type { GetProjects200 } from "@/generated/types/projects/GetProjects";
 import { Button } from "@/components/ui/button";
@@ -15,7 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { StatusBadge } from "@/components/status-badge";
-import { TeamAvatars } from "@/features/projects/team-avatars";
+import { TeamAvatars } from "@/features/projects/components/team-avatars";
 import { DataTable } from "@/components/data-table";
 import { relativeTime } from "@/utils/relative-time";
 

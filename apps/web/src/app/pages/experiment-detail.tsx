@@ -12,7 +12,7 @@ import { Empty } from "@/components/empty";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { formatDate } from "@/utils/format-date";
 import { measurementValue } from "@/utils/measurement-value";
-import { CreateMeasurementForm } from "@/features/measurements/create-measurement-form";
+import { CreateMeasurementForm } from "@/features/measurements/components/create-measurement-form";
 
 export function ExperimentDetailPage() {
   const { experimentId = "" } = useParams();

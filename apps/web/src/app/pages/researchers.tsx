@@ -14,7 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { DataTable } from "@/components/data-table";
-import { ResearcherFormDialog } from "@/features/researchers/researcher-form-dialog";
+import { ResearcherFormDialog } from "@/features/researchers/components/researcher-form-dialog";
 import { initials } from "@/utils/initials";
 import { formatRole } from "@/utils/format-role";
 

@@ -4,68 +4,17 @@ import { MeasurementsBarChart } from "./measurements-bar-chart";
 import { ExperimentsStatusDonut } from "./experiments-status-donut";
 import { RecentMeasurementsTable } from "./recent-measurements-table";
 import { ActiveExperimentsList } from "./active-experiments-list";
-import { DashboardSkeleton } from "./dashboard-skeleton";
-import { useGetProjects } from "@/generated/hooks/projects/useGetProjects";
-import { useGetExperiments } from "@/generated/hooks/experiments/useGetExperiments";
-import { useGetSamples } from "@/generated/hooks/samples/useGetSamples";
-import { useGetMeasurements } from "@/generated/hooks/measurements/useGetMeasurements";
 import type { GetProjects200 } from "@/generated/types/projects/GetProjects";
 import type { GetExperiments200 } from "@/generated/types/experiments/GetExperiments";
 import type { GetSamples200 } from "@/generated/types/samples/GetSamples";
 import type { GetMeasurements200 } from "@/generated/types/measurements/GetMeasurements";
-import {
-  statCards,
-  measurementsByMonth,
-  experimentsByStatus,
-  recentMeasurements,
-  activeExperiments,
-} from "./aggregate";
+import { statCards } from "../utils/stat-cards";
+import { measurementsByMonth } from "../utils/measurements-by-month";
+import { experimentsByStatus } from "../utils/experiments-by-status";
+import { recentMeasurements } from "../utils/recent-measurements";
+import { activeExperiments } from "../utils/active-experiments";
 
-export function DashboardPage() {
-  const projects = useGetProjects();
-  const experiments = useGetExperiments();
-  const samples = useGetSamples();
-  const measurements = useGetMeasurements();
-
-  const queries = [projects, experiments, samples, measurements];
-  const isLoading = queries.some((q) => q.isLoading);
-  const isError = queries.some((q) => q.isError);
-
-  const now = new Date();
-  const today = now.toLocaleDateString("en-US", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-
-  return (
-    <div className="flex flex-col gap-5 p-8">
-      <div className="flex flex-col gap-1">
-        <h1 className="text-[28px] font-bold leading-tight">Dashboard</h1>
-        <p className="text-sm text-muted-foreground">Lab activity overview · {today}</p>
-      </div>
-
-      {isLoading ? (
-        <DashboardSkeleton />
-      ) : isError ? (
-        <p className="text-sm text-muted-foreground" role="alert">
-          Failed to load dashboard data.
-        </p>
-      ) : (
-        <DashboardContent
-          projects={projects.data ?? []}
-          experiments={experiments.data ?? []}
-          samples={samples.data ?? []}
-          measurements={measurements.data ?? []}
-          now={now}
-        />
-      )}
-    </div>
-  );
-}
-
-interface DashboardContentProps {
+export interface DashboardContentProps {
   projects: GetProjects200;
   experiments: GetExperiments200;
   samples: GetSamples200;
@@ -73,7 +22,7 @@ interface DashboardContentProps {
   now: Date;
 }
 
-function DashboardContent({
+export function DashboardContent({
   projects,
   experiments,
   samples,
