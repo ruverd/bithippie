@@ -29,22 +29,16 @@ import { usePatchResearchersByResearcherId } from "@/generated/hooks/researchers
 import { getResearchersQueryKey } from "@/generated/hooks/researchers/useGetResearchers";
 import type { GetResearchers200 } from "@/generated/types/researchers/GetResearchers";
 import { formatRole } from "@/utils/format-role";
+import { RESEARCHER_ROLES } from "../constants";
 
 type Researcher = GetResearchers200[number];
-
-const GLOBAL_ROLES = [
-  "PRINCIPAL_INVESTIGATOR",
-  "POSTDOC",
-  "GRADUATE_STUDENT",
-  "LAB_TECHNICIAN",
-] as const;
 
 const PROJECT_ROLES = ["LEAD", "COLLABORATOR", "CONTRIBUTOR"] as const;
 
 const schema = z.object({
   name: z.string().min(1, "Required"),
   email: z.string().email("Invalid email"),
-  globalRole: z.enum(GLOBAL_ROLES),
+  globalRole: z.enum(RESEARCHER_ROLES),
   projectId: z.string().optional(),
   projectRole: z.enum(PROJECT_ROLES).optional(),
 });
@@ -146,12 +140,12 @@ export function ResearcherFormDialog({ open, onOpenChange, researcher }: Researc
               control={control}
               name="globalRole"
               render={({ field }) => (
-                <Select items={Object.fromEntries(GLOBAL_ROLES.map((r) => [r, formatRole(r)]))} value={field.value} onValueChange={field.onChange}>
+                <Select items={Object.fromEntries(RESEARCHER_ROLES.map((role) => [role, formatRole(role)]))} value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select role" />
                   </SelectTrigger>
                   <SelectContent>
-                    {GLOBAL_ROLES.map((role) => (
+                    {RESEARCHER_ROLES.map((role) => (
                       <SelectItem key={role} value={role}>
                         {formatRole(role)}
                       </SelectItem>
@@ -170,7 +164,7 @@ export function ResearcherFormDialog({ open, onOpenChange, researcher }: Researc
                   name="projectId"
                   render={({ field }) => (
                     <Select
-                      items={Object.fromEntries((projects.data ?? []).map((p) => [p.id, p.title]))}
+                      items={Object.fromEntries((projects.data ?? []).map((project) => [project.id, project.title]))}
                       value={field.value || undefined}
                       onValueChange={(v) => field.onChange(v ?? "")}
                     >
@@ -178,9 +172,9 @@ export function ResearcherFormDialog({ open, onOpenChange, researcher }: Researc
                         <SelectValue placeholder="Select project" />
                       </SelectTrigger>
                       <SelectContent>
-                        {(projects.data ?? []).map((p) => (
-                          <SelectItem key={p.id} value={p.id}>
-                            {p.title}
+                        {(projects.data ?? []).map((project) => (
+                          <SelectItem key={project.id} value={project.id}>
+                            {project.title}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -195,7 +189,7 @@ export function ResearcherFormDialog({ open, onOpenChange, researcher }: Researc
                   name="projectRole"
                   render={({ field }) => (
                     <Select
-                      items={Object.fromEntries(PROJECT_ROLES.map((r) => [r, formatRole(r)]))}
+                      items={Object.fromEntries(PROJECT_ROLES.map((role) => [role, formatRole(role)]))}
                       value={field.value || undefined}
                       onValueChange={(v) => field.onChange(v ?? "")}
                     >

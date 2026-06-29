@@ -45,12 +45,12 @@ export function ProjectResearchersTab({ projectId, members }: ProjectResearchers
   const patch = usePatchProjectsByProjectId();
   const [pendingRemove, setPendingRemove] = useState<string | null>(null);
 
-  const lead = members.find((m) => m.projectRole === "LEAD") ?? null;
+  const lead = members.find((member) => member.projectRole === "LEAD") ?? null;
   const collaboratorIds = members
-    .filter((m) => m.projectRole !== "LEAD")
-    .map((m) => m.researcherId);
-  const memberIds = new Set(members.map((m) => m.researcherId));
-  const available = (researchers.data ?? []).filter((r) => !memberIds.has(r.id));
+    .filter((member) => member.projectRole !== "LEAD")
+    .map((member) => member.researcherId);
+  const memberIds = new Set(members.map((member) => member.researcherId));
+  const available = (researchers.data ?? []).filter((researcher) => !memberIds.has(researcher.id));
 
   const invalidate = () => {
     queryClient.invalidateQueries({ queryKey: getProjectsByProjectIdResearchersQueryKey(projectId) });
@@ -112,9 +112,9 @@ export function ProjectResearchersTab({ projectId, members }: ProjectResearchers
             />
           </SelectTrigger>
           <SelectContent>
-            {available.map((r) => (
-              <SelectItem key={r.id} value={r.id}>
-                {r.name}
+            {available.map((researcher) => (
+              <SelectItem key={researcher.id} value={researcher.id}>
+                {researcher.name}
               </SelectItem>
             ))}
           </SelectContent>
@@ -126,18 +126,18 @@ export function ProjectResearchersTab({ projectId, members }: ProjectResearchers
         empty={members.length === 0}
         emptyLabel="No researchers."
       >
-        {members.map((m) => (
-          <TableRow key={m.researcherId} className="hover:bg-muted/40">
-            <TableCell className="py-3 px-4 text-sm font-medium">{m.name}</TableCell>
-            <TableCell className="py-3 px-4 text-[13px]">{formatRole(m.globalRole)}</TableCell>
-            <TableCell className="py-3 px-4 text-[13px] text-muted-foreground">{m.email}</TableCell>
+        {members.map((member) => (
+          <TableRow key={member.researcherId} className="hover:bg-muted/40">
+            <TableCell className="py-3 px-4 text-sm font-medium">{member.name}</TableCell>
+            <TableCell className="py-3 px-4 text-[13px]">{formatRole(member.globalRole)}</TableCell>
+            <TableCell className="py-3 px-4 text-[13px] text-muted-foreground">{member.email}</TableCell>
             <TableCell className="py-3 px-4">
-              <Badge variant="outline">{formatRole(m.projectRole)}</Badge>
+              <Badge variant="outline">{formatRole(member.projectRole)}</Badge>
             </TableCell>
             <TableCell className="py-3 px-4 text-right">
               <AlertDialog
-                open={pendingRemove === m.researcherId}
-                onOpenChange={(o) => setPendingRemove(o ? m.researcherId : null)}
+                open={pendingRemove === member.researcherId}
+                onOpenChange={(o) => setPendingRemove(o ? member.researcherId : null)}
               >
                 <AlertDialogTrigger
                   render={
@@ -145,7 +145,7 @@ export function ProjectResearchersTab({ projectId, members }: ProjectResearchers
                       variant="ghost"
                       size="icon-sm"
                       className="text-muted-foreground hover:text-destructive"
-                      aria-label={`Remove ${m.name}`}
+                      aria-label={`Remove ${member.name}`}
                     >
                       <Trash2 />
                     </Button>
@@ -155,7 +155,7 @@ export function ProjectResearchersTab({ projectId, members }: ProjectResearchers
                   <AlertDialogHeader>
                     <AlertDialogTitle>Remove researcher?</AlertDialogTitle>
                     <AlertDialogDescription>
-                      This removes {m.name} from this project. The researcher record is not deleted.
+                      This removes {member.name} from this project. The researcher record is not deleted.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
@@ -164,7 +164,7 @@ export function ProjectResearchersTab({ projectId, members }: ProjectResearchers
                       type="button"
                       variant="destructive"
                       disabled={patch.isPending}
-                      onClick={() => removeResearcher(m)}
+                      onClick={() => removeResearcher(member)}
                     >
                       Remove
                     </AlertDialogAction>

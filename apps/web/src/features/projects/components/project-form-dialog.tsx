@@ -32,14 +32,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Field } from "@/components/form-field";
-
-const STATUSES = ["PLANNING", "ACTIVE", "COMPLETED", "CANCELLED"] as const;
-const STATUS_LABELS: Record<string, string> = {
-  PLANNING: "Planning",
-  ACTIVE: "Active",
-  COMPLETED: "Completed",
-  CANCELLED: "Cancelled",
-};
+import { STATUSES, STATUS_LABELS } from "@/constants/status";
 
 const schema = z.object({
   title: z.string().min(1, "Required"),
@@ -102,9 +95,9 @@ export function ProjectFormDialog({
 
   const researcherList = researchers.data ?? [];
   const researcherItems: Record<string, string> = Object.fromEntries(
-    researcherList.map((r) => [r.id, r.name]),
+    researcherList.map((researcher) => [researcher.id, researcher.name]),
   );
-  const nameOf = (id: string) => researcherList.find((r) => r.id === id)?.name ?? id;
+  const nameOf = (id: string) => researcherList.find((researcher) => researcher.id === id)?.name ?? id;
   const leadId = watch("leadResearcherId");
 
   const onSubmit = handleSubmit((values) => {
@@ -165,9 +158,9 @@ export function ProjectFormDialog({
                       <SelectValue placeholder="Select…" />
                     </SelectTrigger>
                     <SelectContent>
-                      {STATUSES.map((s) => (
-                        <SelectItem key={s} value={s}>
-                          {STATUS_LABELS[s]}
+                      {STATUSES.map((status) => (
+                        <SelectItem key={status} value={status}>
+                          {STATUS_LABELS[status]}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -186,9 +179,9 @@ export function ProjectFormDialog({
                       <SelectValue placeholder="Select…" />
                     </SelectTrigger>
                     <SelectContent>
-                      {researcherList.map((r) => (
-                        <SelectItem key={r.id} value={r.id}>
-                          {r.name}
+                      {researcherList.map((researcher) => (
+                        <SelectItem key={researcher.id} value={researcher.id}>
+                          {researcher.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -205,7 +198,7 @@ export function ProjectFormDialog({
               render={({ field }) => {
                 const selected = field.value ?? [];
                 const available = researcherList.filter(
-                  (r) => !selected.includes(r.id) && r.id !== leadId,
+                  (researcher) => !selected.includes(researcher.id) && researcher.id !== leadId,
                 );
                 return (
                   <div className="flex flex-wrap items-center gap-2 rounded-md border border-input bg-background p-2">
@@ -215,7 +208,7 @@ export function ProjectFormDialog({
                         <button
                           type="button"
                           aria-label={`Remove ${nameOf(id)}`}
-                          onClick={() => field.onChange(selected.filter((x) => x !== id))}
+                          onClick={() => field.onChange(selected.filter((otherId) => otherId !== id))}
                         >
                           <X className="size-3" />
                         </button>
@@ -227,9 +220,9 @@ export function ProjectFormDialog({
                           <SelectValue placeholder="+ Add" />
                         </SelectTrigger>
                         <SelectContent>
-                          {available.map((r) => (
-                            <SelectItem key={r.id} value={r.id}>
-                              {r.name}
+                          {available.map((researcher) => (
+                            <SelectItem key={researcher.id} value={researcher.id}>
+                              {researcher.name}
                             </SelectItem>
                           ))}
                         </SelectContent>

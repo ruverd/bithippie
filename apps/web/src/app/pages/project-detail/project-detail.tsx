@@ -54,16 +54,16 @@ export function ProjectDetailPage() {
 
   const p = project.data;
   const memberList = members.data ?? [];
-  const lead = memberList.find((m) => m.projectRole === "LEAD");
+  const lead = memberList.find((member) => member.projectRole === "LEAD");
   const editInitial = {
     title: p.title,
     description: p.description ?? "",
     status: (p.status ?? undefined) as "PLANNING" | "ACTIVE" | "COMPLETED" | "CANCELLED" | undefined,
     leadResearcherId: lead?.researcherId,
-    collaboratorIds: memberList.filter((m) => m.projectRole !== "LEAD").map((m) => m.researcherId),
+    collaboratorIds: memberList.filter((member) => member.projectRole !== "LEAD").map((member) => member.researcherId),
   };
   const exps = experiments.data ?? [];
-  const experimentTitle = (id: string | null) => exps.find((e) => e.id === id)?.title ?? null;
+  const experimentTitle = (id: string | null) => exps.find((experiment) => experiment.id === id)?.title ?? null;
   const sampleRows = samples.data ?? [];
   const recentMeasurements = (measurements.data ?? []).slice(0, 5);
 
@@ -114,15 +114,15 @@ export function ProjectDetailPage() {
               {exps.length === 0 ? (
                 <Empty>No experiments.</Empty>
               ) : (
-                exps.slice(0, 6).map((e) => (
+                exps.slice(0, 6).map((experiment) => (
                   <div
-                    key={e.id}
+                    key={experiment.id}
                     className="flex items-center justify-between border-b px-4 py-3 last:border-b-0"
                   >
-                    <Link to={`/experiments/${e.id}`} className="text-sm font-medium hover:underline">
-                      {e.title}
+                    <Link to={`/experiments/${experiment.id}`} className="text-sm font-medium hover:underline">
+                      {experiment.title}
                     </Link>
-                    {e.status ? <StatusBadge status={e.status} /> : null}
+                    {experiment.status ? <StatusBadge status={experiment.status} /> : null}
                   </div>
                 ))
               )}
@@ -131,16 +131,16 @@ export function ProjectDetailPage() {
               {recentMeasurements.length === 0 ? (
                 <Empty>No measurements.</Empty>
               ) : (
-                recentMeasurements.map((m) => (
+                recentMeasurements.map((measurement) => (
                   <div
-                    key={m.id}
+                    key={measurement.id}
                     className="flex items-center justify-between border-b px-4 py-3 last:border-b-0"
                   >
                     <div className="flex flex-col">
-                      <span className="text-sm font-medium">{m.definitionName}</span>
-                      <span className="text-xs text-muted-foreground">{m.experimentName}</span>
+                      <span className="text-sm font-medium">{measurement.definitionName}</span>
+                      <span className="text-xs text-muted-foreground">{measurement.experimentName}</span>
                     </div>
-                    <span className="text-sm font-semibold">{measurementValue(m)}</span>
+                    <span className="text-sm font-semibold">{measurementValue(measurement)}</span>
                   </div>
                 ))
               )}
@@ -152,21 +152,21 @@ export function ProjectDetailPage() {
               {memberList.length === 0 ? (
                 <Empty>No members.</Empty>
               ) : (
-                memberList.map((m) => (
+                memberList.map((member) => (
                   <div
-                    key={m.researcherId}
+                    key={member.researcherId}
                     className="flex items-center gap-3 border-b px-4 py-3 last:border-b-0"
                   >
                     <Avatar className="size-9 bg-muted">
                       <AvatarFallback className="bg-muted text-xs font-semibold">
-                        {initials(m.name)}
+                        {initials(member.name)}
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex min-w-0 flex-1 flex-col">
-                      <span className="truncate text-sm font-medium">{m.name}</span>
-                      <span className="truncate text-xs text-muted-foreground">{m.email}</span>
+                      <span className="truncate text-sm font-medium">{member.name}</span>
+                      <span className="truncate text-xs text-muted-foreground">{member.email}</span>
                     </div>
-                    <Badge variant="outline">{formatRole(m.projectRole)}</Badge>
+                    <Badge variant="outline">{formatRole(member.projectRole)}</Badge>
                   </div>
                 ))
               )}
@@ -175,14 +175,14 @@ export function ProjectDetailPage() {
               {sampleRows.length === 0 ? (
                 <Empty>No samples.</Empty>
               ) : (
-                sampleRows.slice(0, 6).map((s) => (
+                sampleRows.slice(0, 6).map((sample) => (
                   <div
-                    key={s.id}
+                    key={sample.id}
                     className="flex items-center gap-3 border-b px-4 py-3 last:border-b-0"
                   >
-                    <span className="w-[84px] shrink-0 text-sm font-semibold">{s.code}</span>
+                    <span className="w-[84px] shrink-0 text-sm font-semibold">{sample.code}</span>
                     <span className="truncate text-[13px] text-muted-foreground">
-                      {s.specimenType}
+                      {sample.specimenType}
                     </span>
                   </div>
                 ))
@@ -203,26 +203,26 @@ export function ProjectDetailPage() {
             empty={exps.length === 0}
             emptyLabel="No experiments."
           >
-            {exps.map((e) => (
-              <TableRow key={e.id} className="hover:bg-muted/40">
+            {exps.map((experiment) => (
+              <TableRow key={experiment.id} className="hover:bg-muted/40">
                 <TableCell className="py-3 px-4">
-                  <Link to={`/experiments/${e.id}`} className="text-sm font-medium hover:underline">
-                    {e.title}
+                  <Link to={`/experiments/${experiment.id}`} className="text-sm font-medium hover:underline">
+                    {experiment.title}
                   </Link>
                 </TableCell>
                 <TableCell className="py-3 px-4">
-                  {e.status ? <StatusBadge status={e.status} /> : "—"}
+                  {experiment.status ? <StatusBadge status={experiment.status} /> : "—"}
                 </TableCell>
                 <TableCell className="py-3 px-4 text-[13px] text-muted-foreground">
-                  {e.previousExperimentId ? (experimentTitle(e.previousExperimentId) ?? "—") : "—"}
+                  {experiment.previousExperimentId ? (experimentTitle(experiment.previousExperimentId) ?? "—") : "—"}
                 </TableCell>
                 <TableCell className="py-3 px-4 text-right">
                   <Button
                     variant="ghost"
                     size="icon-sm"
                     className="text-muted-foreground hover:text-foreground"
-                    aria-label={`Edit ${e.title}`}
-                    onClick={() => setExpDialog({ mode: "edit", experiment: e })}
+                    aria-label={`Edit ${experiment.title}`}
+                    onClick={() => setExpDialog({ mode: "edit", experiment })}
                   >
                     <Pencil />
                   </Button>
@@ -248,25 +248,25 @@ export function ProjectDetailPage() {
             empty={sampleRows.length === 0}
             emptyLabel="No samples."
           >
-            {sampleRows.map((s) => (
-              <TableRow key={s.id} className="hover:bg-muted/40">
+            {sampleRows.map((sample) => (
+              <TableRow key={sample.id} className="hover:bg-muted/40">
                 <TableCell className="py-3 px-4">
-                  <Link to={`/samples/${s.id}`} className="text-sm font-semibold hover:underline">
-                    {s.code}
+                  <Link to={`/samples/${sample.id}`} className="text-sm font-semibold hover:underline">
+                    {sample.code}
                   </Link>
                 </TableCell>
-                <TableCell className="py-3 px-4 text-sm">{s.specimenType}</TableCell>
+                <TableCell className="py-3 px-4 text-sm">{sample.specimenType}</TableCell>
                 <TableCell className="py-3 px-4 text-[13px] text-muted-foreground">
-                  {formatDate(s.collectedAt)}
+                  {formatDate(sample.collectedAt)}
                 </TableCell>
-                <TableCell className="py-3 px-4 text-[13px]">{s.storageLocation ?? "—"}</TableCell>
+                <TableCell className="py-3 px-4 text-[13px]">{sample.storageLocation ?? "—"}</TableCell>
                 <TableCell className="py-3 px-4 text-right">
                   <Button
                     variant="ghost"
                     size="icon-sm"
                     className="text-muted-foreground hover:text-foreground"
-                    aria-label={`Edit ${s.code}`}
-                    onClick={() => setSampleDialog({ mode: "edit", sample: s })}
+                    aria-label={`Edit ${sample.code}`}
+                    onClick={() => setSampleDialog({ mode: "edit", sample })}
                   >
                     <Pencil />
                   </Button>
@@ -292,7 +292,7 @@ export function ProjectDetailPage() {
           if (!o) setSampleDialog(null);
         }}
         sample={sampleDialog?.mode === "edit" ? sampleDialog.sample : null}
-        availableExperiments={exps.map((e) => ({ id: e.id, title: e.title }))}
+        availableExperiments={exps.map((experiment) => ({ id: experiment.id, title: experiment.title }))}
       />
     </div>
   );

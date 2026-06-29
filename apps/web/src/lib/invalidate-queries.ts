@@ -10,7 +10,7 @@ export function invalidateByUrl(queryClient: QueryClient, ...fragments: string[]
     refetchType: "all",
     predicate: (query) => {
       const key = query.queryKey?.[0] as { url?: string } | undefined;
-      return typeof key?.url === "string" && fragments.some((f) => key.url!.includes(f));
+      return typeof key?.url === "string" && fragments.some((fragment) => key.url!.includes(fragment));
     },
   });
 }

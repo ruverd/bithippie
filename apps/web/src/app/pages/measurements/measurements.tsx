@@ -37,7 +37,7 @@ const columns: ColumnDef<Measurement>[] = [
   },
   {
     id: "value",
-    accessorFn: (m) => measurementValue(m),
+    accessorFn: (measurement) => measurementValue(measurement),
     header: "Value",
     meta: { headClassName: "w-[130px]", cellClassName: "text-sm font-semibold" },
     cell: ({ row }) => measurementValue(row.original),
@@ -50,7 +50,7 @@ const columns: ColumnDef<Measurement>[] = [
   },
   {
     id: "recordedBy",
-    accessorFn: (m) => m.recordedByName ?? "",
+    accessorFn: (measurement) => measurement.recordedByName ?? "",
     header: "Recorded By",
     meta: { headClassName: "w-[170px]" },
     cell: ({ row }) =>
@@ -86,24 +86,24 @@ export function MeasurementsPage() {
   const allMeasurements = data ?? [];
 
   const definitionNames = Array.from(
-    new Set(allMeasurements.map((m) => m.definitionName)),
+    new Set(allMeasurements.map((measurement) => measurement.definitionName)),
   ).sort();
 
   const experiments = Array.from(
-    new Map(allMeasurements.map((m) => [m.experimentId, m.experimentName])).entries(),
-  ).sort((a, b) => a[1].localeCompare(b[1]));
+    new Map(allMeasurements.map((measurement) => [measurement.experimentId, measurement.experimentName])).entries(),
+  ).sort((firstEntry, secondEntry) => firstEntry[1].localeCompare(secondEntry[1]));
 
-  const filtered = allMeasurements.filter((m) => {
+  const filtered = allMeasurements.filter((measurement) => {
     const term = search.toLowerCase();
     const matchesSearch =
-      m.definitionName.toLowerCase().includes(term) ||
-      m.experimentName.toLowerCase().includes(term) ||
-      measurementValue(m).toLowerCase().includes(term) ||
-      (m.recordedByName?.toLowerCase().includes(term) ?? false);
+      measurement.definitionName.toLowerCase().includes(term) ||
+      measurement.experimentName.toLowerCase().includes(term) ||
+      measurementValue(measurement).toLowerCase().includes(term) ||
+      (measurement.recordedByName?.toLowerCase().includes(term) ?? false);
     const matchesDefinition =
-      definitionFilter === "all" || m.definitionName === definitionFilter;
+      definitionFilter === "all" || measurement.definitionName === definitionFilter;
     const matchesExperiment =
-      experimentFilter === "all" || m.experimentId === experimentFilter;
+      experimentFilter === "all" || measurement.experimentId === experimentFilter;
     return matchesSearch && matchesDefinition && matchesExperiment;
   });
 
@@ -129,7 +129,7 @@ export function MeasurementsPage() {
             className="pl-8"
             placeholder="Search measurements…"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(event) => setSearch(event.target.value)}
           />
         </div>
         <Select

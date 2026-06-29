@@ -40,7 +40,7 @@ const columns: ColumnDef<Sample>[] = [
   },
   {
     id: "storage",
-    accessorFn: (s) => s.storageLocation ?? "",
+    accessorFn: (sample) => sample.storageLocation ?? "",
     header: "Storage",
     meta: { headClassName: "w-[170px]", cellClassName: "text-[13px]" },
     cell: ({ row }) =>
@@ -67,16 +67,16 @@ export function SamplesPage() {
   const allSamples = data ?? [];
 
   const specimenTypes = Array.from(
-    new Set(allSamples.map((s) => s.specimenType)),
+    new Set(allSamples.map((sample) => sample.specimenType)),
   ).sort();
 
-  const filtered = allSamples.filter((s) => {
+  const filtered = allSamples.filter((sample) => {
     const term = search.toLowerCase();
     const matchesSearch =
-      s.code.toLowerCase().includes(term) ||
-      s.specimenType.toLowerCase().includes(term) ||
-      (s.storageLocation?.toLowerCase().includes(term) ?? false);
-    const matchesType = typeFilter === "all" || s.specimenType === typeFilter;
+      sample.code.toLowerCase().includes(term) ||
+      sample.specimenType.toLowerCase().includes(term) ||
+      (sample.storageLocation?.toLowerCase().includes(term) ?? false);
+    const matchesType = typeFilter === "all" || sample.specimenType === typeFilter;
     return matchesSearch && matchesType;
   });
 
@@ -105,7 +105,7 @@ export function SamplesPage() {
             className="pl-8"
             placeholder="Search samples…"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(event) => setSearch(event.target.value)}
           />
         </div>
         <Select
@@ -117,9 +117,9 @@ export function SamplesPage() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All types</SelectItem>
-            {specimenTypes.map((t) => (
-              <SelectItem key={t} value={t}>
-                {t}
+            {specimenTypes.map((type) => (
+              <SelectItem key={type} value={type}>
+                {type}
               </SelectItem>
             ))}
           </SelectContent>

@@ -11,12 +11,12 @@ export interface ActiveExperimentItem {
 
 export function activeExperiments(experiments: Experiment[], limit = 5): ActiveExperimentItem[] {
   return experiments
-    .filter((e) => e.status === "ACTIVE")
+    .filter((experiment) => experiment.status === "ACTIVE")
     .slice(0, limit)
-    .map((e) => ({
-      id: e.id,
-      name: e.title,
-      project: e.projectName,
-      measurementCount: e.measurementCount,
+    .map((experiment) => ({
+      id: experiment.id,
+      name: experiment.title,
+      project: experiment.projectName,
+      measurementCount: experiment.measurementCount,
     }));
 }

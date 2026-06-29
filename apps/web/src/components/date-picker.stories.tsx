@@ -5,6 +5,7 @@ import { DatePicker } from "./date-picker";
 const meta = {
   title: "Components/DatePicker",
   component: DatePicker,
+  args: { onChange: () => {} },
 } satisfies Meta<typeof DatePicker>;
 
 export default meta;

@@ -15,12 +15,12 @@ export interface RecentMeasurementRow {
 }
 
 export function recentMeasurements(measurements: Measurement[], limit = 5): RecentMeasurementRow[] {
-  return measurements.slice(0, limit).map((m) => ({
-    id: m.id,
-    definition: m.definitionName,
-    experiment: m.experimentName,
-    value: measurementValue(m),
-    recordedBy: initials(m.recordedByName ?? ""),
-    time: relativeTime(m.recordedAt),
+  return measurements.slice(0, limit).map((measurement) => ({
+    id: measurement.id,
+    definition: measurement.definitionName,
+    experiment: measurement.experimentName,
+    value: measurementValue(measurement),
+    recordedBy: initials(measurement.recordedByName ?? ""),
+    time: relativeTime(measurement.recordedAt),
   }));
 }

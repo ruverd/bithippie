@@ -227,9 +227,9 @@ export function SampleFormDialog({
                       <SelectValue placeholder="Select type" />
                     </SelectTrigger>
                     <SelectContent>
-                      {specimenTypes.map((t) => (
-                        <SelectItem key={t} value={t}>
-                          {t}
+                      {specimenTypes.map((type) => (
+                        <SelectItem key={type} value={type}>
+                          {type}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -274,7 +274,7 @@ export function SampleFormDialog({
                 <ChipMultiSelect
                   value={selectedExperiments}
                   onChange={setSelectedExperiments}
-                  options={availableExperiments.map((e) => ({ id: e.id, label: e.title }))}
+                  options={availableExperiments.map((experiment) => ({ id: experiment.id, label: experiment.title }))}
                   addPlaceholder="+ Add experiment"
                 />
               )}

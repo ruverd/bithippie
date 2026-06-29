@@ -18,7 +18,7 @@ function derivePageTitle(pathname: string): string {
   if (!first) return "Dashboard";
   return first
     .split("-")
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 }
 

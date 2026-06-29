@@ -48,9 +48,9 @@ export function MeasurementValueField({
         <option value="" disabled>
           Select…
         </option>
-        {allowedCategories.map((c) => (
-          <option key={c} value={c}>
-            {c}
+        {allowedCategories.map((category) => (
+          <option key={category} value={category}>
+            {category}
           </option>
         ))}
       </select>

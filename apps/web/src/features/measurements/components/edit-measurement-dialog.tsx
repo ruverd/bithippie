@@ -75,7 +75,7 @@ export function EditMeasurementDialog({ open, onOpenChange, measurement }: EditM
 
   if (!measurement) return null;
 
-  const def = (definitions.data ?? []).find((d) => d.id === measurement.measurementDefinitionId);
+  const def = (definitions.data ?? []).find((definition) => definition.id === measurement.measurementDefinitionId);
   const allowedCategories = def?.allowedCategories ?? [];
 
   const invalidate = () => invalidateByUrl(queryClient, "measurements");
@@ -162,7 +162,7 @@ export function EditMeasurementDialog({ open, onOpenChange, measurement }: EditM
 
           <Field label="Recorded by">
             <Select
-              items={Object.fromEntries((researchers.data ?? []).map((r) => [r.id, r.name]))}
+              items={Object.fromEntries((researchers.data ?? []).map((researcher) => [researcher.id, researcher.name]))}
               value={recordedById || undefined}
               onValueChange={(v) => setRecordedById(v ?? "")}
             >
@@ -170,9 +170,9 @@ export function EditMeasurementDialog({ open, onOpenChange, measurement }: EditM
                 <SelectValue placeholder="Select researcher" />
               </SelectTrigger>
               <SelectContent>
-                {(researchers.data ?? []).map((r) => (
-                  <SelectItem key={r.id} value={r.id}>
-                    {r.name}
+                {(researchers.data ?? []).map((researcher) => (
+                  <SelectItem key={researcher.id} value={researcher.id}>
+                    {researcher.name}
                   </SelectItem>
                 ))}
               </SelectContent>

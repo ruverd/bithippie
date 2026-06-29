@@ -1,8 +1,8 @@
 export function initials(name: string): string {
   return name
     .split(/\s+/)
-    .filter((w) => w && !w.endsWith("."))
+    .filter((word) => word && !word.endsWith("."))
     .slice(0, 2)
-    .map((w) => w[0]?.toUpperCase() ?? "")
+    .map((word) => word[0]?.toUpperCase() ?? "")
     .join("");
 }

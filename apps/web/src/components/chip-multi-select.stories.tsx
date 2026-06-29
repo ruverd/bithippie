@@ -11,6 +11,7 @@ const options = [
 const meta = {
   title: "Components/ChipMultiSelect",
   component: ChipMultiSelect,
+  args: { value: [], onChange: () => {}, options },
 } satisfies Meta<typeof ChipMultiSelect>;
 
 export default meta;

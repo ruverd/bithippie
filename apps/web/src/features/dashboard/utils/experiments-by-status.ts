@@ -22,11 +22,11 @@ export function experimentsByStatus(experiments: Experiment[]): StatusBreakdown 
       counts.set(e.status, (counts.get(e.status) ?? 0) + 1);
     }
   }
-  const items = STATUS_ORDER.filter((s) => (counts.get(s) ?? 0) > 0).map((s) => ({
-    status: STATUS_META[s].label,
-    count: counts.get(s) ?? 0,
-    color: STATUS_META[s].color,
+  const items = STATUS_ORDER.filter((status) => (counts.get(status) ?? 0) > 0).map((status) => ({
+    status: STATUS_META[status].label,
+    count: counts.get(status) ?? 0,
+    color: STATUS_META[status].color,
   }));
-  const total = items.reduce((sum, it) => sum + it.count, 0);
+  const total = items.reduce((sum, item) => sum + item.count, 0);
   return { items, total };
 }
